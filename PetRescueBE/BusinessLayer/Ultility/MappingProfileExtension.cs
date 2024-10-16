@@ -13,7 +13,7 @@ namespace BusinessLayer.Utilities
             CreateMap<UserRequestModel, User>()
                 .ForMember(dest => dest.PasswordHash, opt => opt.MapFrom(src => Helper.HashPassword(src.Password)));
             CreateMap<UserRequestModelForUpdate, User>()
-                .ForMember(dest => dest.UserId, opt => opt.Ignore());
+                .ForMember(dest => dest.PasswordHash, opt => opt.MapFrom(src => Helper.HashPassword(src.Password)));
         }
     }
 }

@@ -40,7 +40,7 @@ namespace DataAccessLayer.Context
             modelBuilder.Entity<AdoptionApplication>(entity =>
             {
                 entity.HasKey(e => e.ApplicationId)
-                    .HasName("PK__Adoption__C93A4F7995D4C7D4");
+                    .HasName("PK__Adoption__C93A4F79C7433110");
 
                 entity.ToTable("AdoptionApplication");
 

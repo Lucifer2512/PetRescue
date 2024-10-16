@@ -121,14 +121,14 @@ namespace BusinessLayer.Services
                 };
             }
 
-            var editingUser = _mapper.Map<User>(request);
+            _mapper.Map(request, existedUser);
             await _unitOfWork.SaveChangesAsync();
 
             try
             {
                 await _unitOfWork.BeginTransaction();
 
-                await userRepository.UpdateAsync(editingUser, saveChanges: false); // Defer saving
+                await userRepository.UpdateAsync(existedUser, saveChanges: false); // Defer saving
 
                 await _unitOfWork.SaveChangesAsync();
 
