@@ -83,8 +83,6 @@ namespace BusinessLayer.Services
 
                 await userRepository.InsertAsync(newUser);
 
-                await _unitOfWork.SaveChangesAsync();
-
                 await _unitOfWork.CommitTransaction();
             }
             catch (Exception ex)
@@ -122,15 +120,12 @@ namespace BusinessLayer.Services
             }
 
             _mapper.Map(request, existedUser);
-            await _unitOfWork.SaveChangesAsync();
 
             try
             {
                 await _unitOfWork.BeginTransaction();
 
-                await userRepository.UpdateAsync(existedUser, saveChanges: false); // Defer saving
-
-                await _unitOfWork.SaveChangesAsync();
+                await userRepository.UpdateAsync(existedUser);
 
                 await _unitOfWork.CommitTransaction();
 
@@ -221,9 +216,7 @@ namespace BusinessLayer.Services
             {
                 await _unitOfWork.BeginTransaction();
 
-                await userRepository.DeleteAsync(existedUser, saveChanges: false);
-
-                await _unitOfWork.SaveChangesAsync();
+                await userRepository.DeleteAsync(existedUser);
 
                 await _unitOfWork.CommitTransaction();
 

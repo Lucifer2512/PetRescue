@@ -1,4 +1,6 @@
 ﻿using BusinessLayer.IServices;
+using BusinessLayer.Service.Implement;
+using BusinessLayer.Service.Interface;
 using BusinessLayer.Services;
 using BusinessLayer.Utilities;
 using DataAccessLayer.Context;
@@ -37,6 +39,7 @@ namespace WellMeetAPI.AppStarts
 
             // Other Service
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IShelterService, ShelterService>();
         }
     }
 }

@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using BusinessLayer.Model.Request;
+using BusinessLayer.Model.Response;
 using BusinessLayer.Models.Request;
 using BusinessLayer.Models.Response;
 using DataAccessLayer.Entity;
@@ -14,6 +16,9 @@ namespace BusinessLayer.Utilities
                 .ForMember(dest => dest.PasswordHash, opt => opt.MapFrom(src => Helper.HashPassword(src.Password)));
             CreateMap<UserRequestModelForUpdate, User>()
                 .ForMember(dest => dest.PasswordHash, opt => opt.MapFrom(src => Helper.HashPassword(src.Password)));
+            CreateMap<Shelter, ShelterResponseModel>();
+            CreateMap<ShelterRequestModel, Shelter>();
+            CreateMap<ShelterRequestModelForUpdate, Shelter>();
         }
     }
 }
