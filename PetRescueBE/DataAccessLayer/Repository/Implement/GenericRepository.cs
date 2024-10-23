@@ -107,5 +107,15 @@ namespace DataLayer.Repository
 
         public IQueryable<T> GetAll()
             => Entities.Where(x => true).AsQueryable();
+
+        public async Task<int> SaveChangesAsync()
+        {
+            return await DbContext.SaveChangesAsync();
+        }
+
+        public int SaveChanges()
+        {
+            return DbContext.SaveChanges();
+        }
     }
 }
