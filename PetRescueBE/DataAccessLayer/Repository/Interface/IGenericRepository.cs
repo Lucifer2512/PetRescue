@@ -20,5 +20,7 @@ namespace DataAccessLayer.Repository.Interface
         Task UpdateRangeAsync(IEnumerable<T> entities, bool saveChanges = true);
         Task<T?> GetAsync(Expression<Func<T, bool>> predicate, CancellationToken cancellationToken = default);
         IQueryable<T> GetAll();
+        Task<int> SaveChangesAsync();
+        int SaveChanges();
     }
 }
