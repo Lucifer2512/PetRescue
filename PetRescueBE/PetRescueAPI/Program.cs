@@ -1,10 +1,14 @@
+using System.Text.Json.Serialization;
 using WellMeetAPI.AppStarts;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(opt =>
+{
+    opt.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+});
 // Install DI and dbcontext
 builder.Services.InstallService(builder.Configuration);
 // Swagger config

@@ -11,5 +11,7 @@ namespace BusinessLayer.IServices
         Task<BaseResponseModel<UserResponseModel>> UpdateAsync(UserRequestModelForUpdate user, Guid id);
         Task<BaseResponseModel> DeleteAsync(Guid id);
         Task<BaseResponseModel<UserResponseModel>> GetDetailAsync(Guid id);
+        
+        Task<BaseResponseModel> AddRoleAsync(string role);
     }
 }

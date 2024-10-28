@@ -1,4 +1,7 @@
-﻿namespace BusinessLayer.Model.Request;
+﻿using System.ComponentModel;
+using BusinessLayer.Model.Enums;
+
+namespace BusinessLayer.Model.Request;
 
 public class EventRequestModel
 {
@@ -15,6 +18,8 @@ public class EventRequestModel4Create
     public string? Location { get; set; }
     public string? EventType { get; set; }
     public string? Goal { get; set; }
+    [DefaultValue("ACTIVE")]
+    public Status? Status { get; set; }
     public Guid? ShelterId { get; set; }
     
     /*
@@ -31,4 +36,6 @@ public class EventRequestModel4Update
     public string? Location { get; set; }
     public string? EventType { get; set; }
     public string? Goal { get; set; }
+    public Status? Status { get; set; }
+
 }
