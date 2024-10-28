@@ -19,6 +19,8 @@ namespace BusinessLayer.Utilities
             CreateMap<Shelter, ShelterResponseModel>();
             CreateMap<ShelterRequestModel, Shelter>();
             CreateMap<ShelterRequestModelForUpdate, Shelter>();
+            CreateMap<DonationRequestModel,Donation>();
+            CreateMap<Donation, DonationReponseModel>();
         }
     }
 }
