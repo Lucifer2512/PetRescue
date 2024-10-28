@@ -41,6 +41,8 @@ namespace WellMeetAPI.AppStarts
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IShelterService, ShelterService>();
             services.AddScoped<IEventService, EventService>();
+            services.AddScoped<IDonationService, DonationService>();
+
         }
     }
 }
