@@ -172,6 +172,52 @@ namespace BusinessLayer.Services
             };
         }
 
+        public async Task<BaseResponseModel> AddRoleAsync(string role)
+        {
+            var roleRepository = _unitOfWork.Repository<Role>();
+
+            var existedRole = await roleRepository.GetAsync(r => r.RoleName == role);
+
+            if (existedRole != null)
+            {
+                return new BaseResponseModel
+                {
+                    Code = 400,
+                    Message = "Role already exists",
+                };
+            }
+
+            var newRole = new Role
+            {
+                RoleId = Guid.NewGuid(),
+                RoleName = role
+            };
+
+            try
+            {
+                await _unitOfWork.BeginTransaction();
+
+                await roleRepository.InsertAsync(newRole);
+
+                await _unitOfWork.CommitTransaction();
+            }
+            catch (Exception ex)
+            {
+                await _unitOfWork.RollbackTransaction();
+                return new BaseResponseModel
+                {
+                    Code = 500,
+                    Message = ex.Message,
+                };
+            }
+
+            return new BaseResponseModel
+            {
+                Code = 201,
+                Message = "Role Created Success",
+            };
+        }
+
         public async Task<BaseResponseModel<IEnumerable<UserResponseModel>>> GetAllUsersAsync()
         {
             var userRepository = _unitOfWork.Repository<User>();

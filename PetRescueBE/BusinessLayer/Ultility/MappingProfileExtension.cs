@@ -21,6 +21,15 @@ namespace BusinessLayer.Utilities
             CreateMap<ShelterRequestModelForUpdate, Shelter>();
             CreateMap<DonationRequestModel,Donation>();
             CreateMap<Donation, DonationReponseModel>();
+
+            #region Event families
+            
+            CreateMap<Event, EventResponseModel>();
+            CreateMap<EventRequestModel4Create, Event>();
+            CreateMap<EventRequestModel4Update, Event>();
+            CreateMap<Event, EventResponseModel>();
+
+            #endregion
         }
     }
 }
