@@ -1,0 +1,78 @@
+﻿@page
+@model PetRescueFE.Pages.DonationPage.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Donation[0].Amount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Donation[0].DonationDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Donation[0].PaymentMethod)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Donation[0].Notes)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Donation[0].Status)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Donation[0].Event)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Donation[0].Shelter)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Donation[0].User)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Donation) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Amount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DonationDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PaymentMethod)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Notes)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Event.EventType)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Shelter.ShelterAddress)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.User.Email)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.DonationId">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.DonationId">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.DonationId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
