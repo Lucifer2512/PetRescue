@@ -396,3 +396,5 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+/PetRescueBE/PetRescueAPI/appsettings.json
+/PetRescueBE/PetRescueFE/appsettings.json
