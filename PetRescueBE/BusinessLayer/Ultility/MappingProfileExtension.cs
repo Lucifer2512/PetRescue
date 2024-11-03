@@ -24,10 +24,10 @@ namespace BusinessLayer.Utilities
 
             #region Event families
             
-            CreateMap<Event, EventResponseModel>();
-            CreateMap<EventRequestModel4Create, Event>();
-            CreateMap<EventRequestModel4Update, Event>();
-            CreateMap<Event, EventResponseModel>();
+            CreateMap<Event, EventResponseModel>().ReverseMap();
+            CreateMap<EventRequestModel4Create, Event>().ReverseMap();
+            CreateMap<EventRequestModel4Update, Event>().ReverseMap();
+            CreateMap<Event, EventResponseModel>().ReverseMap();
 
             #endregion
         }
