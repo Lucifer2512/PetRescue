@@ -1,60 +1,56 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using DataAccessLayer.Context;
-using DataAccessLayer.Entity;
+using BusinessLayer.Models.Response;
 
 namespace PetRescueFE.Pages.UserPage
 {
     public class DeleteModel : PageModel
     {
-        private readonly DataAccessLayer.Context.PetRescueDbContext _context;
+        private readonly ApiService _apiService;
 
-        public DeleteModel(DataAccessLayer.Context.PetRescueDbContext context)
+        public DeleteModel(ApiService apiService)
         {
-            _context = context;
+            _apiService = apiService;
         }
 
         [BindProperty]
-      public User User { get; set; } = default!;
+        public UserResponseModel User { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(Guid? id)
         {
-            if (id == null || _context.Users == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
-            var user = await _context.Users.FirstOrDefaultAsync(m => m.UserId == id);
+            var apiUrl = $"https://localhost:7297/api/users/{id}";
+            var response = await _apiService.GetAsync<BaseResponseModel<UserResponseModel>>(apiUrl);
 
-            if (user == null)
+            if (response.Data == null)
             {
                 return NotFound();
             }
-            else 
-            {
-                User = user;
-            }
+
+            User = response.Data;
             return Page();
         }
 
         public async Task<IActionResult> OnPostAsync(Guid? id)
         {
-            if (id == null || _context.Users == null)
+            if (id == null)
             {
                 return NotFound();
             }
-            var user = await _context.Users.FindAsync(id);
 
-            if (user != null)
+            var apiUrl = $"https://localhost:7297/api/users/{id}";
+            var response = await _apiService.DeleteAsync(apiUrl);
+
+            if (!response == null)
             {
-                User = user;
-                _context.Users.Remove(User);
-                await _context.SaveChangesAsync();
+                ModelState.AddModelError(string.Empty, "Failed to delete user.");
+                return Page();
             }
 
             return RedirectToPage("./Index");

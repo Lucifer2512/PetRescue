@@ -39,17 +39,21 @@
                 <span asp-validation-for="User.Address" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="User.PasswordHash" class="control-label"></label>
-                <input asp-for="User.PasswordHash" class="form-control" />
-                <span asp-validation-for="User.PasswordHash" class="text-danger"></span>
+                <label asp-for="User.Password" class="control-label"></label>
+                <input asp-for="User.Password" class="form-control" type="password" />
+                <span asp-validation-for="User.Password" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="User.RoleId" class="control-label"></label>
-                <select asp-for="User.RoleId" class ="form-control" asp-items="ViewBag.RoleId"></select>
+                <select asp-for="User.RoleId" class="form-control" asp-items="Model.RoleList"></select>
+                <span asp-validation-for="User.RoleId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="User.Status" class="control-label"></label>
-                <input asp-for="User.Status" class="form-control" />
+                <select asp-for="User.Status" class="form-control">
+                    <option value="ACTIVE">Active</option>
+                    <option value="INACTIVE">Inactive</option>
+                </select>
                 <span asp-validation-for="User.Status" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -64,5 +68,7 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

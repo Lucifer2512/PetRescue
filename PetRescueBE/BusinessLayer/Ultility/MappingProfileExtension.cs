@@ -11,11 +11,11 @@ namespace BusinessLayer.Utilities
     {
         public MappingProfileExtension()
         {
-            CreateMap<User, UserResponseModel>();
+            CreateMap<User, UserResponseModel>()
+                .ForMember(dest => dest.RoleName, opt => opt.MapFrom(src => src.Role.RoleName));
             CreateMap<UserRequestModel, User>()
                 .ForMember(dest => dest.PasswordHash, opt => opt.MapFrom(src => Helper.HashPassword(src.Password)));
-            CreateMap<UserRequestModelForUpdate, User>()
-                .ForMember(dest => dest.PasswordHash, opt => opt.MapFrom(src => Helper.HashPassword(src.Password)));
+            CreateMap<UserRequestModelForUpdate, User>();
             CreateMap<Shelter, ShelterResponseModel>();
             CreateMap<ShelterRequestModel, Shelter>();
             CreateMap<ShelterRequestModelForUpdate, Shelter>();

@@ -7,36 +7,37 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using DataAccessLayer.Context;
 using DataAccessLayer.Entity;
+using BusinessLayer.Models.Response;
 
 namespace PetRescueFE.Pages.UserPage
 {
     public class DetailsModel : PageModel
     {
-        private readonly DataAccessLayer.Context.PetRescueDbContext _context;
+        private readonly ApiService _apiService;
 
-        public DetailsModel(DataAccessLayer.Context.PetRescueDbContext context)
+        public DetailsModel(ApiService apiService)
         {
-            _context = context;
+            _apiService = apiService;
         }
 
-      public User User { get; set; } = default!; 
+        public UserResponseModel User { get; set; } = default!; 
 
         public async Task<IActionResult> OnGetAsync(Guid? id)
         {
-            if (id == null || _context.Users == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
-            var user = await _context.Users.FirstOrDefaultAsync(m => m.UserId == id);
-            if (user == null)
+            var apiUrl = $"https://localhost:7297/api/users/{id}";
+            var response = await _apiService.GetAsync<BusinessLayer.Models.Response.BaseResponseModel<UserResponseModel>>(apiUrl);
+
+            if (response.Data == null)
             {
                 return NotFound();
             }
-            else 
-            {
-                User = user;
-            }
+
+            User = response.Data;
             return Page();
         }
     }

@@ -1,78 +1,79 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using DataAccessLayer.Context;
+using BusinessLayer.Models.Response;
+using BusinessLayer.Models.Request;
 using DataAccessLayer.Entity;
 
 namespace PetRescueFE.Pages.UserPage
 {
     public class EditModel : PageModel
     {
-        private readonly DataAccessLayer.Context.PetRescueDbContext _context;
+        private readonly ApiService _apiService;
 
-        public EditModel(DataAccessLayer.Context.PetRescueDbContext context)
+        public EditModel(ApiService apiService)
         {
-            _context = context;
+            _apiService = apiService;
         }
 
         [BindProperty]
-        public User User { get; set; } = default!;
+        public UserResponseModel User { get; set; } = default!;
+
+        public List<SelectListItem> RoleList { get; set; } = new List<SelectListItem>();
 
         public async Task<IActionResult> OnGetAsync(Guid? id)
         {
-            if (id == null || _context.Users == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
-            var user =  await _context.Users.FirstOrDefaultAsync(m => m.UserId == id);
-            if (user == null)
+            // Fetch user details
+            var apiUrlUser = $"https://localhost:7297/api/users/{id}";
+            var userResponse = await _apiService.GetAsync<BaseResponseModel<UserResponseModel>>(apiUrlUser);
+            if (userResponse.Data == null)
             {
                 return NotFound();
             }
-            User = user;
-           ViewData["RoleId"] = new SelectList(_context.Roles, "RoleId", "RoleName");
+            User = userResponse.Data;
+
+            // Fetch roles for the dropdown
+            var apiUrlRoles = "https://localhost:7297/api/users/roles";
+            var rolesResponse = await _apiService.GetAsync<BaseResponseModel<List<Role>>>(apiUrlRoles);
+            if (rolesResponse.Data != null)
+            {
+                RoleList = rolesResponse.Data.ConvertAll(role =>
+                    new SelectListItem { Value = role.RoleId.ToString(), Text = role.RoleName });
+            }
+
             return Page();
         }
 
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync()
         {
-            if (!ModelState.IsValid)
+
+            var apiUrl = $"https://localhost:7297/api/users/{User.UserId}";
+            var userRequest = new UserRequestModelForUpdate
             {
+                FirstName = User.FirstName,
+                LastName = User.LastName,
+                Email = User.Email,
+                PhoneNumber = User.PhoneNumber,
+                Address = User.Address,
+                Status = User.Status
+            };
+
+            var response = await _apiService.PutAsync<UserRequestModelForUpdate, BaseResponseModel<UserResponseModel>>(apiUrl, userRequest);
+            if (response.Code != 200)
+            {
+                ModelState.AddModelError(string.Empty, "Failed to update user.");
                 return Page();
             }
 
-            _context.Attach(User).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!UserExists(User.UserId))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
             return RedirectToPage("./Index");
-        }
-
-        private bool UserExists(Guid id)
-        {
-          return (_context.Users?.Any(e => e.UserId == id)).GetValueOrDefault();
         }
     }
 }

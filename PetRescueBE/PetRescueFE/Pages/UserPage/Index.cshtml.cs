@@ -9,6 +9,7 @@ using DataAccessLayer.Context;
 using DataAccessLayer.Entity;
 using Pages.Model;
 using Azure;
+using BusinessLayer.Models.Response;
 
 namespace PetRescueFE.Pages.UserPage
 {
@@ -21,15 +22,15 @@ namespace PetRescueFE.Pages.UserPage
             _apiService = apiService;
         }
 
-        public IList<User> Users { get;set; } = default!;
+        public IList<UserResponseModel> Users { get;set; } = default!;
 
 
         public async Task OnGetAsync()
         {
             var apiUrl = "https://localhost:7297/api/users";
-            var response = await _apiService.GetAsync<BaseResponseModel<IList<User>>>(apiUrl);
+            var response = await _apiService.GetAsync<BusinessLayer.Models.Response.BaseResponseModel<IList<UserResponseModel>>>(apiUrl);
 
-            if (response != null)
+            if (response.Data != null)
             {
                 Users = response.Data;
             }
