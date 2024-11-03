@@ -21,13 +21,17 @@ namespace BusinessLayer.Utilities
             CreateMap<ShelterRequestModelForUpdate, Shelter>();
             CreateMap<DonationRequestModel,Donation>();
             CreateMap<Donation, DonationReponseModel>();
-
+            CreateMap<AdoptionApplicationRequestModel, AdoptionApplication>();
+            CreateMap<AdoptionApplication, AdoptionApplicationResponseModel>()
+                .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.User.FirstName))
+                .ForMember(dest => dest.PetName, opt => opt.MapFrom(src => src.Pet.Name));
+           
             #region Event families
             
-            CreateMap<Event, EventResponseModel>();
-            CreateMap<EventRequestModel4Create, Event>();
-            CreateMap<EventRequestModel4Update, Event>();
-            CreateMap<Event, EventResponseModel>();
+            CreateMap<Event, EventResponseModel>().ReverseMap();
+            CreateMap<EventRequestModel4Create, Event>().ReverseMap();
+            CreateMap<EventRequestModel4Update, Event>().ReverseMap();
+            CreateMap<Event, EventResponseModel>().ReverseMap();
 
             #endregion
         }
