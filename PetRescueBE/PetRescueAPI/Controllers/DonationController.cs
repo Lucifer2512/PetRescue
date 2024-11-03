@@ -23,11 +23,18 @@ namespace PetRescueAPI.Controllers
             return StatusCode((int)response.Code, response);
         }
 
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetDonationbyId(Guid id)
+        {
+            var response = await _donationService.GetDetailAsync(id);
+            return StatusCode((int)response.Code, response);
+        }
         [HttpGet("GetAllDonation")]
         public async Task<IActionResult> GetDonation()
         {
             var response = await _donationService.GetAllAsync();
             return StatusCode((int)response.Code, response);
         }
+
     }
 }

@@ -1,0 +1,61 @@
+﻿@page
+@model PetRescueFE.Pages.DonationPage.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Donation</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+           @*  <div class="form-group">
+                <label asp-for="Donation.EventId" class="control-label"></label>
+                <select asp-for="Donation.EventId" class ="form-control" asp-items="ViewBag.EventId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Donation.ShelterId" class="control-label"></label>
+                <select asp-for="Donation.ShelterId" class ="form-control" asp-items="ViewBag.ShelterId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Donation.UserId" class="control-label"></label>
+                <select asp-for="Donation.UserId" class ="form-control" asp-items="ViewBag.UserId"></select>
+            </div> *@
+            <div class="form-group">
+                <label asp-for="Donation.Amount" class="control-label"></label>
+                <input asp-for="Donation.Amount" class="form-control" />
+                <span asp-validation-for="Donation.Amount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Donation.PaymentMethod" class="control-label"></label>
+                <input asp-for="Donation.PaymentMethod" class="form-control" />
+                <span asp-validation-for="Donation.PaymentMethod" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Donation.Notes" class="control-label"></label>
+                <input asp-for="Donation.Notes" class="form-control" />
+                <span asp-validation-for="Donation.Notes" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Donation.Status" class="control-label"></label>
+                <input asp-for="Donation.Status" class="form-control" />
+                <span asp-validation-for="Donation.Status" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" asp-page-handler="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
