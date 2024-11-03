@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccessLayer", "DataAcce
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PetRescueAPI", "PetRescueAPI\PetRescueAPI.csproj", "{D529222A-530F-4769-B1F9-4C920100D82D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetRescueFE", "PetRescueFE\PetRescueFE.csproj", "{92167690-2B81-45F9-BDCF-41DD9FA56B0F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PetRescueFE", "PetRescueFE\PetRescueFE.csproj", "{92167690-2B81-45F9-BDCF-41DD9FA56B0F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -10,7 +10,7 @@ using DataAccessLayer.UnitOfWork.Interface;
 using DataLayer.Repository;
 using Microsoft.EntityFrameworkCore;
 
-namespace WellMeetAPI.AppStarts
+namespace PetRescueAPI.AppStarts
 {
     public static class DependencyInjection
     {

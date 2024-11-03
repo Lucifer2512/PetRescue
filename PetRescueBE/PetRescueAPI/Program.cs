@@ -1,5 +1,5 @@
 using System.Text.Json.Serialization;
-using WellMeetAPI.AppStarts;
+using PetRescueAPI.AppStarts;
 
 var builder = WebApplication.CreateBuilder(args);
 
