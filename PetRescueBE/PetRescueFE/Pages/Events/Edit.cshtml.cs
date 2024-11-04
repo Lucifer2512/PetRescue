@@ -49,7 +49,7 @@ namespace PetRescueFE.Pages.Events
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync()
+        public async Task<IActionResult> OnPostAsync(Guid Id)
         {
             if (!ModelState.IsValid)
             {

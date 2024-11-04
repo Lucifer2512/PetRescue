@@ -19,7 +19,7 @@ namespace PetRescueFE.Pages.Events
 
         public async Task<ActionResult> OnGetAsync()
         {
-            var data = await TryGetData(EventUrlProfile.GETS);
+            var data = await TryGetData(EventUrlProfile.BASE_URL_S + EventUrlProfile.GETS);
             if (data is null)
             {
                 return NotFound();
