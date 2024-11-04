@@ -12,6 +12,7 @@ namespace PetRescueFE.Pages.DonationPage
 {
     public class IndexModel : PageModel
     {
+
         private readonly DataAccessLayer.Context.PetRescueDbContext _context;
 
         public IndexModel(DataAccessLayer.Context.PetRescueDbContext context)
@@ -19,7 +20,7 @@ namespace PetRescueFE.Pages.DonationPage
             _context = context;
         }
 
-        public IList<Donation> Donation { get;set; } = default!;
+        public IList<Donation> Donation { get; set; } = default!;
 
         public async Task OnGetAsync()
         {

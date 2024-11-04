@@ -29,7 +29,7 @@ namespace PetRescueFE.Pages.Events
 
         public async Task<IActionResult> OnGetAsync(Guid? id)
         {
-            var response = await _apiService.GetAsync<BaseResponseModel<EventResponseModel>>("events/" + id);
+            var response = await _apiService.GetAsync<BaseResponseModelFE<EventResponseModel>>("events/" + id);
             if (response == null)
             {
                 return NotFound();

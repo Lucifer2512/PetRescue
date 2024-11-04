@@ -1,0 +1,313 @@
+﻿@page
+@model PetRescueFE.Pages.SignUpModel
+@{
+    ViewData["Title"] = "Register Page";
+    // Layout = null;
+}
+
+<div class="main-content">
+    <div class="background"></div>
+    <div class="login-container">
+        <a href="/Index" class="close-icon">&times;</a>
+        <h2>Sign Up</h2>
+        <form method="post">
+            <input asp-for="AccountRegister.FirstName" type="text" required placeholder="First Name">
+            <input asp-for="AccountRegister.LastName" type="text" required placeholder="Last Name">
+            <input asp-for="AccountRegister.Email" type="email" required placeholder="Email">
+            <input asp-for="AccountRegister.PhoneNumber" type="text" required placeholder="Phone Number">
+            <input asp-for="AccountRegister.Address" type="text" required placeholder="Address">
+
+
+            <input asp-for="AccountRegister.Password" type="password" required placeholder="Password">
+
+            <input asp-for="AccountRegister.ConfirmPassword" type="password" required placeholder="Confirm Password">
+          
+
+              <select name="RoleAccount" class="choose_role">
+                  <option value="">Choose your role</option>
+                  <option value="e7b8f3d2-4a2f-4c3b-8f4d-9c5d8a3e1b2c">User</option>
+                  <option value="f3c8d4e5-6b7a-4c9d-8e2f-0a1b2c3d4e5f">ShelterOwner</option>
+              </select> 
+            <input asp-for="AccountRegister.Status" hidden="true" type="text"  placeholder="Status">
+
+            <div asp-validation-summary="All" class="text-danger">
+                @if (TempData["ErrorMessage"] != null)
+                {
+                    <p>@TempData["ErrorMessage"]</p>
+                }
+            </div>
+            <button type="submit">Sign Up</button>
+        </form>
+        <div class="social-login">
+            <p>Or sign in with:</p>
+            <button class="google-btn" onclick="window.location.href='@Url.Page("/ExternalLogin", new { provider = "Google" })'">
+                <i class="fab fa-google"></i> Sign in with Google
+            </button>
+        </div>
+        <p>Already have an account? <a asp-page="/Login">Login</a></p>
+    </div>
+</div>
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Check if the success flag is set
+            var success = @Json.Serialize(TempData["Success"]);
+            if (success) {
+                // Close the window
+                window.close();
+
+                // Fallback: If window.close() does not work due to security restrictions, inform the user
+                if (!window.closed) {
+                    alert('Form submitted successfully. Please close this tab manually.');
+                }
+            }
+        });
+    </script>
+}
+<script>
+    function search() {
+        var input = document.getElementById('searchInput').value;
+        alert('Searching for: ' + input);
+    }
+
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const togglePassword = document.querySelector('#togglePassword');
+        const password = document.querySelector('#password');
+        togglePassword.addEventListener('click', function (e) {
+            const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+            password.setAttribute('type', type);
+            this.classList.toggle('fa-eye-slash');
+        });
+
+        const toggleConfirmPassword = document.querySelector('#toggleConfirmPassword');
+        const confirmPassword = document.querySelector('#confirmPassword');
+        toggleConfirmPassword.addEventListener('click', function (e) {
+            const type = confirmPassword.getAttribute('type') === 'password' ? 'text' : 'password';
+            confirmPassword.setAttribute('type', type);
+            this.classList.toggle('fa-eye-slash');
+        });
+    });
+</script>
+<style>
+    .navbar {
+        display: none;
+    }
+
+    .text-danger {
+        color: red;
+        font-size: 20px;
+        margin-bottom: 10px;
+    }
+
+    .main-content {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 120vh; /* Đảm bảo Sign In box nằm giữa theo cả chiều dọc */
+        position: relative;
+        overflow: hidden; /* Ngăn chặn cuộn */
+    }
+
+    .background {
+        position: fixed; /* Fixed to cover the whole viewport */
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: url('https://cdn.tradeforgood.com.au/app/uploads/2022/05/petrescue-cat.jpg?strip=all&lossy=1&ssl=1&fit=1082,788');
+        background-size: cover;
+        z-index: -1; /* Place background behind other elements */
+    }
+    /* Close icon styling */
+    .close-icon {
+        position: absolute;
+        top: 10px;
+        right: 20px;
+        font-size: 30px;
+        color: #34363C;
+        text-decoration: none;
+        z-index: 2;
+    }
+
+        .close-icon:hover {
+            color: red;
+        }
+    .login-container {
+        width: 25%; /* Reduced width for a smaller container */
+        background-color: transparent;
+        backdrop-filter: blur(20px);
+        padding: 35px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        z-index: 1; /* Ensure it's in front of the background */
+        border-radius: 0px 50px 0px 50px;
+        border: 2px solid rgba(255,255,255,.2);
+    }
+
+        .login-container h2 {
+            margin-bottom: 20px;
+            padding-top: 20px;
+            font-size: 50px;
+            color: #34363C;
+        }
+
+        .login-container form {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .login-container input {
+            padding: 10px;
+            margin-bottom: 20px;
+            outline: none;
+            border: none;
+            border-bottom: 1px solid #ccc;
+            margin-top: 10px;
+            font-size: 20px;
+            background: none;
+        }
+
+            .login-container input::placeholder {
+                color: #34363C;
+                font-size: 20px;
+                font: 16px/1.4em madefor-text,helveticaneuew01-45ligh,helveticaneuew02-45ligh,helveticaneuew10-45ligh,sans-serif;
+            }
+
+            .login-container input:hover {
+                border-bottom: 2px solid #34363C;
+            }
+
+        .login-container select {
+            padding: 10px;
+            margin-bottom: 20px;
+            outline: none;
+            border: none;
+            border-bottom: 1px solid #ccc;
+            margin-top: 10px;
+            font-size: 20px;
+            background: none;
+        }
+
+        .login-container .password-container {
+            position: relative;
+            width: 100%;
+        }
+
+            .login-container .password-container input {
+                width: 100%;
+                padding-right: 40px; /* Add padding to the right to make space for the eye icon */
+                box-sizing: border-box; /* Include padding and border in element's total width and height */
+            }
+
+            .login-container .password-container i {
+                position: absolute;
+                right: 10px;
+                top: 50%;
+                transform: translateY(-50%);
+                cursor: pointer;
+                color: #888;
+                font-size: 1.2em; /* Adjust the icon size if needed */
+            }
+
+    .choose_role{
+        color: #34363C;
+        font-size: 20px;
+        font: 16px/1.4em madefor-text,helveticaneuew01-45ligh,helveticaneuew02-45ligh,helveticaneuew10-45ligh,sans-serif;
+    }
+
+
+
+    .recaptcha-container {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        margin-bottom: 20px;
+    }
+
+    .login-container .g-recaptcha {
+        transform: scale(0.89); /* Adjust the scale as necessary */
+        transform-origin: 0 0; /* Set the origin to top-left */
+    }
+
+    .login-container button {
+        margin-top: 10px;
+        padding: 15px 20px;
+        background-color: #34363C;
+        font: 16px/1.4em madefor-text,helveticaneuew01-45ligh,helveticaneuew02-45ligh,helveticaneuew10-45ligh,sans-serif;
+        color: white;
+        font-size: 20px;
+        border: none;
+        border-radius: 3px;
+        cursor: pointer;
+    }
+
+        .login-container button:hover {
+            background-color: black;
+        }
+
+    .social-login {
+        width: 100%;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+        .social-login p {
+            font: cera-round-pro, "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+            margin-top: 20px;
+        }
+
+        .social-login button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .social-login .google-btn {
+            background-color: #dd4b39;
+            color: white;
+        }
+
+            .social-login .google-btn i {
+                margin-right: 10px;
+            }
+
+        .social-login .facebook-btn {
+            background-color: #3b5998;
+            color: white;
+        }
+
+            .social-login .facebook-btn i {
+                margin-right: 10px;
+            }
+
+    .login-container p {
+        font: cera-round-pro, "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+    }
+
+        .login-container p a {
+            color: black;
+            font-weight: 600;
+            text-decoration: none
+        }
+
+    .social-login .google-btn,
+    .social-login .facebook-btn {
+        width: 200px; /* Điều chỉnh kích thước tùy theo nhu cầu */
+        margin: 0 auto;
+        margin-bottom: 10px;
+        padding: 10px;
+    }
+
+</style>
