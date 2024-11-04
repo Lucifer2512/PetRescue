@@ -13,6 +13,6 @@ namespace BusinessLayer.Model.Response
         public string ShelterAddress { get; set; } = null!;
         public string ShelterPhoneNumber { get; set; } = null!;
         public decimal Balance { get; set; }
-        public Guid UsersId { get; set; }
+        public string UserEmail { get; set; }
     }
 }

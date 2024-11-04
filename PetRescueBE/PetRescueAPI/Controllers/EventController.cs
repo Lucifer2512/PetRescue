@@ -42,7 +42,7 @@ public class EventController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [HttpGet("{id}")]
-    public async Task<ActionResult<BaseResponseModel<EventResponseModel>>> Get(Guid id)
+    public async Task<ActionResult<BaseResponseModel<string>>> Get(Guid id)
     {
         var response = await _eventService.GetAsync(id);
         return StatusCode((int)response.Code!, response);

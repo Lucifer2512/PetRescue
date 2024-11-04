@@ -40,6 +40,8 @@ namespace BusinessLayer.Utilities
                 Subject = new ClaimsIdentity(new[]
                 {
                     new Claim(ClaimTypes.Role, user.RoleId.ToString()),
+                    new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
+                    new Claim(ClaimTypes.Email, user.Email),
                 }),
                 Expires = DateTime.UtcNow.AddDays(7),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)

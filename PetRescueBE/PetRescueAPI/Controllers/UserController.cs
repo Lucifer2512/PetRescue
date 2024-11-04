@@ -56,20 +56,15 @@ namespace PetRescueAPI.Controllers
             var response = await _userService.DeleteAsync(id);
             return StatusCode((int)response.Code, response);
         }
-        
-        /*[HttpGet("roles")]
-        public IActionResult GetRoles()
+
+        [HttpGet("roles")]
+        public async Task<IActionResult> GetAllRoles()
         {
-            var roles = Enum.GetNames(typeof(Role));
-            return Ok(new BaseResponseModel<IEnumerable<string>>
-            {
-                Code = 200,
-                Message = "Success",
-                Data = roles
-            });
-        }*/
-        
-        [HttpPost("roles")]
+            var response = await _userService.GetAllRoleAsync();
+            return StatusCode((int)response.Code, response);
+        }
+
+        [HttpPost("role")]
         public async Task<IActionResult> AddRole([FromBody] string role)
         {
             var response = await _userService.AddRoleAsync(role);

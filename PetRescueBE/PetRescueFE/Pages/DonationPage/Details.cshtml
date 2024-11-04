@@ -1,0 +1,57 @@
+﻿@page
+@model PetRescueFE.Pages.DonationPage.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+   <div class="container py-4">
+    <h4 class="mb-3">Donation</h4>
+    <hr class="mb-4" />
+
+    <dl class="row g-4">
+        <dt class="col-sm-3 text-sm-end">
+                @Html.DisplayNameFor(model => model.Donation.Data.Amount)  
+                
+        </dt>
+        <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.Donation.Data.Amount)
+        </dd>
+
+        <dt class="col-sm-3 text-sm-end">
+                @Html.DisplayNameFor(model => model.Donation.Data.DonationDate)
+        </dt>
+        <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.Donation.Data.DonationDate)
+        </dd>
+
+        <dt class="col-sm-3 text-sm-end">
+                @Html.DisplayNameFor(model => model.Donation.Data.PaymentMethod)  
+        </dt>
+        <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.Donation.Data.PaymentMethod)
+        </dd>
+
+        <dt class="col-sm-3 text-sm-end">
+                @Html.DisplayNameFor(model => model.Donation.Data.Notes)
+        </dt>
+        <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.Donation.Data.Notes)
+        </dd>
+
+        <dt class="col-sm-3 text-sm-end">
+                @Html.DisplayNameFor(model => model.Donation.Data.Status)
+        </dt>
+        <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.Donation.Data.Status)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-page="/donationpage/Edit" asp-route-id="@Model.Donation?.Data.DonationId">Edit</a> |
+    <a asp-page="/donationpage/Index">Back to List</a>
+</div>
+</div>

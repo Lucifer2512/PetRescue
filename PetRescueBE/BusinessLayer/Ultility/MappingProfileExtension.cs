@@ -11,23 +11,28 @@ namespace BusinessLayer.Utilities
     {
         public MappingProfileExtension()
         {
-            CreateMap<User, UserResponseModel>();
+            CreateMap<User, UserResponseModel>()
+                .ForMember(dest => dest.RoleName, opt => opt.MapFrom(src => src.Role.RoleName));
             CreateMap<UserRequestModel, User>()
                 .ForMember(dest => dest.PasswordHash, opt => opt.MapFrom(src => Helper.HashPassword(src.Password)));
-            CreateMap<UserRequestModelForUpdate, User>()
-                .ForMember(dest => dest.PasswordHash, opt => opt.MapFrom(src => Helper.HashPassword(src.Password)));
-            CreateMap<Shelter, ShelterResponseModel>();
+            CreateMap<UserRequestModelForUpdate, User>();
+            CreateMap<Shelter, ShelterResponseModel>()
+                .ForMember(dest => dest.UserEmail, opt => opt.MapFrom(src => src.Users.Email));
             CreateMap<ShelterRequestModel, Shelter>();
             CreateMap<ShelterRequestModelForUpdate, Shelter>();
             CreateMap<DonationRequestModel,Donation>();
             CreateMap<Donation, DonationReponseModel>();
-
+            CreateMap<AdoptionApplicationRequestModel, AdoptionApplication>();
+            CreateMap<AdoptionApplication, AdoptionApplicationResponseModel>()
+                .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.User.FirstName))
+                .ForMember(dest => dest.PetName, opt => opt.MapFrom(src => src.Pet.Name));
+           
             #region Event families
             
-            CreateMap<Event, EventResponseModel>();
-            CreateMap<EventRequestModel4Create, Event>();
-            CreateMap<EventRequestModel4Update, Event>();
-            CreateMap<Event, EventResponseModel>();
+            CreateMap<Event, EventResponseModel>().ReverseMap();
+            CreateMap<EventRequestModel4Create, Event>().ReverseMap();
+            CreateMap<EventRequestModel4Update, Event>().ReverseMap();
+            CreateMap<Event, EventResponseModel>().ReverseMap();
 
             #endregion
         }

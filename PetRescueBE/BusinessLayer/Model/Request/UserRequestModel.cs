@@ -1,34 +1,64 @@
 ﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace BusinessLayer.Models.Request
 {
     public class UserRequestModel
     {
-        public string? FirstName { get; set; }
-        public string? LastName { get; set; }
-        public string Email { get; set; } = null!;
-        public string? PhoneNumber { get; set; }
-        public string? Address { get; set; }
-        public string Password { get; set; } = null!;
-        // role default as user
-        [DefaultValue("E7B8F3D2-4A2F-4C3B-8F4D-9C5D8A3E1B2C")]
+        [Required(ErrorMessage = "First name is required.")]
+        [StringLength(50, ErrorMessage = "First name cannot exceed 50 characters.")]
+        public string FirstName { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "Last name is required.")]
+        [StringLength(50, ErrorMessage = "Last name cannot exceed 50 characters.")]
+        public string LastName { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "Email is required.")]
+        [EmailAddress(ErrorMessage = "Invalid email format.")]
+        public string Email { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "Phone number is required.")]
+        [Phone(ErrorMessage = "Invalid phone number format.")]
+        public string PhoneNumber { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "Address is required.")]
+        public string Address { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "Password is required.")]
+        [StringLength(100, MinimumLength = 6, ErrorMessage = "Password must be at least 6 characters long.")]
+        public string Password { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "Role selection is required.")]
         public Guid RoleId { get; set; }
-        [DefaultValue("Active")]
-        public string Status { get; set; } = null!;
+
+        [Required(ErrorMessage = "Status is required.")]
+        [RegularExpression("ACTIVE|INACTIVE", ErrorMessage = "Status must be either 'ACTIVE' or 'INACTIVE'.")]
+        public string Status { get; set; } = "ACTIVE";
     }
 
     public class UserRequestModelForUpdate
     {
-        public string? FirstName { get; set; }
-        public string? LastName { get; set; }
-        public string Email { get; set; } = null!;
-        public string? PhoneNumber { get; set; }
-        public string? Address { get; set; }
-        public string Password { get; set; } = null!;
-        // role default as user
-        [DefaultValue("E7B8F3D2-4A2F-4C3B-8F4D-9C5D8A3E1B2C")]
-        public Guid RoleId { get; set; }
-        [DefaultValue("Active")]
-        public string Status { get; set; } = null!;
+        [Required(ErrorMessage = "First name is required.")]
+        [StringLength(50, ErrorMessage = "First name cannot exceed 50 characters.")]
+        public string FirstName { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "Last name is required.")]
+        [StringLength(50, ErrorMessage = "Last name cannot exceed 50 characters.")]
+        public string LastName { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "Email is required.")]
+        [EmailAddress(ErrorMessage = "Invalid email format.")]
+        public string Email { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "Phone number is required.")]
+        [Phone(ErrorMessage = "Invalid phone number format.")]
+        public string PhoneNumber { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "Address is required.")]
+        public string Address { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "Status is required.")]
+        [RegularExpression("ACTIVE|INACTIVE", ErrorMessage = "Status must be either 'ACTIVE' or 'INACTIVE'.")]
+        public string Status { get; set; } = "ACTIVE";
     }
 }

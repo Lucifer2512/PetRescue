@@ -5,6 +5,7 @@ using BusinessLayer.Models.Response;
 using BusinessLayer.Utilities;
 using DataAccessLayer.Entity;
 using DataAccessLayer.UnitOfWork.Interface;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
 namespace BusinessLayer.Services
@@ -25,7 +26,7 @@ namespace BusinessLayer.Services
         {
             var userRepository = _unitOfWork.Repository<User>();
 
-            var user = await userRepository.GetAsync(u => u.Email == request.Email);
+            var user = await userRepository.GetAll().Include(u => u.Role).FirstOrDefaultAsync(u => u.Email == request.Email);
 
             if (user != null && Helper.VerifyPassword(request.Password, user.PasswordHash))
             {
@@ -61,7 +62,7 @@ namespace BusinessLayer.Services
         {
             var userRepository = _unitOfWork.Repository<User>();
 
-            var existedUser = await userRepository.GetAsync(u => u.Email == request.Email);
+            var existedUser = await userRepository.GetAll().Include(u => u.Role).FirstOrDefaultAsync(u => u.Email == request.Email);
 
             if (existedUser != null)
             {
@@ -107,7 +108,7 @@ namespace BusinessLayer.Services
         {
             var userRepository = _unitOfWork.Repository<User>();
 
-            var existedUser = await userRepository.FindAsync(id);
+            var existedUser = await userRepository.GetAll().Include(u => u.Role).FirstOrDefaultAsync(u => u.UserId == id);
 
             if (existedUser == null)
             {
@@ -152,7 +153,7 @@ namespace BusinessLayer.Services
         {
             var userRepository = _unitOfWork.Repository<User>();
 
-            var existedUser = await userRepository.FindAsync(id);
+            var existedUser = await userRepository.GetAll().Include(u => u.Role).FirstOrDefaultAsync(u => u.UserId == id);
 
             if (existedUser == null)
             {
@@ -222,7 +223,7 @@ namespace BusinessLayer.Services
         {
             var userRepository = _unitOfWork.Repository<User>();
 
-            var users = await userRepository.GetAllAsync();
+            var users = await userRepository.GetAll().Include(u=> u.Role).ToListAsync();
             var userResponseModels = _mapper.Map<IEnumerable<UserResponseModel>>(users);
 
             if (users.Count() == 0)
@@ -240,6 +241,30 @@ namespace BusinessLayer.Services
                 Code = 200,
                 Message = "Users retrieved successfully",
                 Data = userResponseModels
+            };
+        }
+
+        public async Task<BaseResponseModel<IEnumerable<DataAccessLayer.Entity.Role>>> GetAllRoleAsync()
+        {
+            var roleRepository = _unitOfWork.Repository<Role>();
+
+            var roles = await roleRepository.GetAllAsync();
+
+            if (roles.Count() == 0)
+            {
+                return new BaseResponseModel<IEnumerable<DataAccessLayer.Entity.Role>>
+                {
+                    Code = 200,
+                    Message = "No Role in the list",
+                    Data = roles
+                };
+            }
+
+            return new BaseResponseModel<IEnumerable<DataAccessLayer.Entity.Role>>
+            {
+                Code = 200,
+                Message = "Roles retrieved successfully",
+                Data = roles
             };
         }
 
