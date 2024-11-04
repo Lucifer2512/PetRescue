@@ -1,6 +1,6 @@
 ﻿namespace Pages.Model
 {
-    public class BaseResponseModel<T>
+    public class BaseResponseModelFE<T>
     {
         public int? Code { get; set; }
         public string? Message { get; set; }

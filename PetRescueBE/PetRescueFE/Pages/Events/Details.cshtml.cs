@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using DataAccessLayer.Entity;
 using Pages.Model;
 using Pages.Model.Events;
 
@@ -33,7 +32,7 @@ namespace PetRescueFE.Pages.Events
         
         private async Task<EventResponseModel> TryGetData(string url)
         {
-            var data = await _apiService.GetAsync<BaseResponseModel<EventResponseModel>>(url);
+            var data = await _apiService.GetAsync<BaseResponseModelFE<EventResponseModel>>(url);
             if (data is null)
             {
                 return null;

@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.RazorPages;
-using BusinessLayer.Models.Response;
+using Pages.Model;
 
 namespace PetRescueFE.Pages.UserPage
 {
@@ -18,7 +18,7 @@ namespace PetRescueFE.Pages.UserPage
         public async Task OnGetAsync()
         {
             var apiUrl = "https://localhost:7297/api/users";
-            var response = await _apiService.GetAsync<BaseResponseModel<IList<UserResponseModel>>>(apiUrl);
+            var response = await _apiService.GetAsync<BaseResponseModelFE<IList<UserResponseModel>>>(apiUrl);
 
             if (response.Data != null)
             {

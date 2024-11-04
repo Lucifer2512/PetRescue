@@ -83,7 +83,7 @@ namespace PetRescueFE.Pages.Events
                     Event.Status = "ACTIVE";
                 }
 
-                await _apiService.PostAsync<EventRequestModel4Create, BaseResponseModel<EventResponseModel>>(
+                await _apiService.PostAsync<EventRequestModel4Create, BaseResponseModelFE<EventResponseModel>>(
                     EventUrlProfile.POST_CREATE, 
                     Event
                 );
@@ -130,7 +130,7 @@ namespace PetRescueFE.Pages.Events
         /// <returns>List of Shelter4EventResponse</returns>
         private async Task<List<Shelter4EventResponse>> GetShelterList(string url)
         {
-            var response = await _apiService.GetAsync<BaseResponseModel<List<Shelter4EventResponse>>>(url);
+            var response = await _apiService.GetAsync<BaseResponseModelFE<List<Shelter4EventResponse>>>(url);
             return response?.Data ?? new List<Shelter4EventResponse>();
         }
     }

@@ -7,9 +7,9 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using DataAccessLayer.Context;
 using DataAccessLayer.Entity;
-using BusinessLayer.Models.Request;
-using BusinessLayer.Models.Response;
 using System.Linq.Expressions;
+using Pages.Model;
+using Pages.Models;
 
 namespace PetRescueFE.Pages.UserPage
 {
@@ -25,12 +25,12 @@ namespace PetRescueFE.Pages.UserPage
         public List<SelectListItem> RoleList { get; set; }
 
         [BindProperty]
-        public UserRequestModel User { get; set; } = new UserRequestModel();
+        public UserRequestModelFE User { get; set; } = new UserRequestModelFE();
 
         public async Task<IActionResult> OnGetAsync()
         {
             var apiUrl = "https://localhost:7297/api/users/roles";
-            var response = await _apiService.GetAsync<BaseResponseModel<IEnumerable<Role>>>(apiUrl);
+            var response = await _apiService.GetAsync<BaseResponseModelFE<IEnumerable<Role>>>(apiUrl);
 
             if (response.Data != null)
             {
@@ -55,7 +55,7 @@ namespace PetRescueFE.Pages.UserPage
 
             try
             {
-                var response = await _apiService.PostAsync<UserRequestModel, BaseResponseModel<UserResponseModel>>(apiUrl, User);
+                var response = await _apiService.PostAsync<UserRequestModelFE, BaseResponseModelFE<UserResponseModel>>(apiUrl, User);
             }
             catch (Exception ex)
             {

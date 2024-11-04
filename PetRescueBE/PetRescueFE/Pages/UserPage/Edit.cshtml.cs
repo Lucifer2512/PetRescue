@@ -4,10 +4,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using BusinessLayer.Models.Response;
-using BusinessLayer.Models.Request;
 using DataAccessLayer.Entity;
 using System.ComponentModel.DataAnnotations;
+using Pages.Model;
+using Pages.Models;
 
 namespace PetRescueFE.Pages.UserPage
 {
@@ -34,7 +34,7 @@ namespace PetRescueFE.Pages.UserPage
 
             // Fetch user details
             var apiUrlUser = $"https://localhost:7297/api/users/{id}";
-            var userResponse = await _apiService.GetAsync<BaseResponseModel<UserResponseModel>>(apiUrlUser);
+            var userResponse = await _apiService.GetAsync<BaseResponseModelFE<UserResponseModel>>(apiUrlUser);
             if (userResponse.Data == null)
             {
                 return NotFound();
@@ -43,7 +43,7 @@ namespace PetRescueFE.Pages.UserPage
 
             // Fetch roles for the dropdown
             var apiUrlRoles = "https://localhost:7297/api/users/roles";
-            var rolesResponse = await _apiService.GetAsync<BaseResponseModel<List<Role>>>(apiUrlRoles);
+            var rolesResponse = await _apiService.GetAsync<BaseResponseModelFE<List<Role>>>(apiUrlRoles);
             if (rolesResponse.Data != null)
             {
                 RoleList = rolesResponse.Data.ConvertAll(role =>
@@ -56,7 +56,7 @@ namespace PetRescueFE.Pages.UserPage
         public async Task<IActionResult> OnPostAsync()
         {
             var apiUrl = $"https://localhost:7297/api/users/{User.UserId}";
-            var userRequest = new UserRequestModelForUpdate
+            var userRequest = new UserRequestModelForUpdate()
             {
                 FirstName = User.FirstName,
                 LastName = User.LastName,
@@ -81,7 +81,7 @@ namespace PetRescueFE.Pages.UserPage
 
             try
             {
-                var response = await _apiService.PutAsync<UserRequestModelForUpdate, BaseResponseModel<UserResponseModel>>(apiUrl, userRequest);
+                var response = await _apiService.PutAsync<UserRequestModelForUpdate, BaseResponseModelFE<UserResponseModel>>(apiUrl, userRequest);
             }
             catch (Exception ex)
             {

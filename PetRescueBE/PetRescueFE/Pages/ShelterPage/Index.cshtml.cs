@@ -7,8 +7,8 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using DataAccessLayer.Context;
 using DataAccessLayer.Entity;
-using BusinessLayer.Model.Response;
-using BusinessLayer.Models.Response;
+using Pages.Model;
+using PetRescueFE.Pages.Model.Shelters;
 
 namespace PetRescueFE.Pages.ShelterPage
 {
@@ -26,7 +26,7 @@ namespace PetRescueFE.Pages.ShelterPage
         public async Task OnGetAsync()
         {
             var apiUrl = "https://localhost:7297/api/shelter";
-            var response = await _apiService.GetAsync<BaseResponseModel<IList<ShelterResponseModel>>>(apiUrl);
+            var response = await _apiService.GetAsync<BaseResponseModelFE<IList<ShelterResponseModel>>>(apiUrl);
 
             if (response.Data != null)
             {

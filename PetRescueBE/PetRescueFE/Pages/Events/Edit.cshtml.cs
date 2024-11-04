@@ -60,7 +60,7 @@ namespace PetRescueFE.Pages.Events
             try 
             {
                 var url = $"{EventUrlProfile.PUT_UPDATE}{Id}";
-                await _apiService.PutAsync<EventRequestModel4Update, BaseResponseModel<object>>(url, Event);
+                await _apiService.PutAsync<EventRequestModel4Update, BaseResponseModelFE<object>>(url, Event);
                 
                 TempData["SuccessMessage"] = "Event updated successfully";
                 
@@ -78,7 +78,7 @@ namespace PetRescueFE.Pages.Events
 
         private async Task<EventResponseModel> TryGetEvent(string url, Guid id)
         {
-            var response = await _apiService.GetAsync<BaseResponseModel<EventResponseModel>>(url + id);
+            var response = await _apiService.GetAsync<BaseResponseModelFE<EventResponseModel>>(url + id);
             return response?.Data;
         }
     }

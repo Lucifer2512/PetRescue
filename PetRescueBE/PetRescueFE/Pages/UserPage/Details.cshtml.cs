@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using DataAccessLayer.Context;
 using DataAccessLayer.Entity;
-using BusinessLayer.Models.Response;
+using Pages.Model;
 
 namespace PetRescueFE.Pages.UserPage
 {
@@ -30,7 +30,7 @@ namespace PetRescueFE.Pages.UserPage
             }
 
             var apiUrl = $"https://localhost:7297/api/users/{id}";
-            var response = await _apiService.GetAsync<BaseResponseModel<UserResponseModel>>(apiUrl);
+            var response = await _apiService.GetAsync<BaseResponseModelFE<UserResponseModel>>(apiUrl);
 
             if (response.Data == null)
             {
