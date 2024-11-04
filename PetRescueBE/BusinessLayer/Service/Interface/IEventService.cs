@@ -6,6 +6,7 @@ namespace BusinessLayer.Service.Interface;
 
 public interface IEventService
 {
+    public Task<BaseResponseModel<PaginatedList<EventResponseModel>>> GetsPagedAsync(int index, int size);
     public Task<BaseResponseModel<IEnumerable<EventResponseModel>>> GetsAsync();
     public Task<BaseResponseModel<EventResponseModel>> GetAsync(Guid id);
     public Task<BaseResponseModel<EventResponseModel>> CreateAsync(EventRequestModel4Create request);

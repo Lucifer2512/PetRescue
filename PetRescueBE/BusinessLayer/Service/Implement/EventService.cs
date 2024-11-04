@@ -5,6 +5,7 @@ using BusinessLayer.Models.Response;
 using BusinessLayer.Service.Interface;
 using DataAccessLayer.Entity;
 using DataAccessLayer.UnitOfWork.Interface;
+using Microsoft.EntityFrameworkCore;
 
 namespace BusinessLayer.Service.Implement;
 
@@ -17,6 +18,28 @@ public class EventService : IEventService
     {
         _unitOfWork = unitOfWork;
         _mapper = mapper;
+    }
+
+    public async Task<BaseResponseModel<PaginatedList<EventResponseModel>>> GetsPagedAsync(int index, int size)
+    {
+        var eventRepo = _unitOfWork.Repository<Event>();
+        var events = await eventRepo.DbContext.Set<Event>().OrderBy(e => e.StartDateTime).Skip((index - 1) * size)
+            .Take(size).ToListAsync();
+        var count = await eventRepo.DbContext.Set<Event>().CountAsync();
+        var total = (int)Math.Ceiling(count / (double)size);
+
+        var eventResponse = _mapper.Map<List<EventResponseModel>>(events);
+        return new BaseResponseModel<PaginatedList<EventResponseModel>>
+        {
+            Code = 200,
+            Message = "Success",
+            Data = new PaginatedList<EventResponseModel>
+            {
+                Items = eventResponse,
+                PageIndex = index,
+                TotalPages = total
+            }
+        };
     }
 
     public async Task<BaseResponseModel<IEnumerable<EventResponseModel>>> GetsAsync()
@@ -84,11 +107,12 @@ public class EventService : IEventService
                     Data = null
                 };
             }
+
             return new BaseResponseModel<EventResponseModel>
             {
                 Code = 201,
                 Message = "Created",
-                Data =/* _mapper.Map<EventResponseModel>(newEvent)*/ null
+                Data = /* _mapper.Map<EventResponseModel>(newEvent)*/ null
             };
         }
         catch (Exception e)
@@ -116,7 +140,7 @@ public class EventService : IEventService
                 Data = null
             };
         }
-        
+
         _mapper.Map(request, isEvent);
 
         try
@@ -132,6 +156,7 @@ public class EventService : IEventService
                     Data = null
                 };
             }
+
             return new BaseResponseModel<EventResponseModel>
             {
                 Code = 201,

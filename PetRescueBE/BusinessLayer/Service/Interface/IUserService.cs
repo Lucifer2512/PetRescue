@@ -1,5 +1,7 @@
-﻿using BusinessLayer.Models.Request;
+﻿using BusinessLayer.Model.Enums;
+using BusinessLayer.Models.Request;
 using BusinessLayer.Models.Response;
+using DataAccessLayer.Entity;
 
 namespace BusinessLayer.IServices
 {
@@ -11,5 +13,7 @@ namespace BusinessLayer.IServices
         Task<BaseResponseModel<UserResponseModel>> UpdateAsync(UserRequestModelForUpdate user, Guid id);
         Task<BaseResponseModel> DeleteAsync(Guid id);
         Task<BaseResponseModel<UserResponseModel>> GetDetailAsync(Guid id);
+        Task<BaseResponseModel<IEnumerable<DataAccessLayer.Entity.Role>>> GetAllRoleAsync();
+        Task<BaseResponseModel> AddRoleAsync(string role);
     }
 }

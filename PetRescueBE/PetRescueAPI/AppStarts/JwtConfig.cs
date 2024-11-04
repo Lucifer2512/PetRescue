@@ -2,7 +2,7 @@
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
-namespace WellMeetAPI.AppStarts
+namespace PetRescueAPI.AppStarts
 {
     public static class JwtConfig
     {

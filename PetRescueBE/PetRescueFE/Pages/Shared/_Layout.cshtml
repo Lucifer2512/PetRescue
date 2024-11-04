@@ -1,0 +1,252 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - PetRescueFE</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/PetRescueFE.styles.css" asp-append-version="true" />
+    <style>
+        .popup-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 300px;
+            z-index: 1000;
+        }
+
+        .notification {
+            background-color: #f8f9fa;
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            font-size: 16px;
+            text-align: center;
+        }
+
+        .notification-label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .notification-link {
+            display: block;
+            color: #007bff;
+            text-decoration: none;
+        }
+
+            .notification-link:hover {
+                text-decoration: underline;
+            }
+
+        .close-button {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .navbar {
+            height: auto; /* Đảm bảo chiều cao navbar không bị bóp */
+            padding: 15px; /* Giữ padding như mong muốn */
+            min-height: 80px; /* Đặt chiều cao tối thiểu nếu cần */
+        }
+
+            .navbar h1 {
+                font-size: 1.5em; /* Tùy chỉnh kích thước chữ cho phần h1 */
+            }
+
+            .navbar .container1 {
+                max-width: 100%; /* Đảm bảo container không bị bóp */
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+        
+
+        
+    </style>
+</head>
+<body>
+    <header class="navbar">
+        <div class="container1">
+            <h1>PetRescue</h1>
+            <nav>
+                <ul>
+                    <li><a asp-page="/Index">PetRescueFE</a></li>
+
+                </ul>
+            </nav>
+            <div class="right-section">
+                @if (!string.IsNullOrEmpty(Context.Session.GetString("Role")))
+                {
+                    <div class="dropdown" id="userDropdown">
+                        <i class="fa fa-user" onclick="toggleDropdown()"></i>
+                        <div class="dropdown-content">
+                            <a asp-page="/shelterpage/Index" asp-route-accId="@Context.Session.GetString("AccountId")"><i class="fa-solid fa-user-tie"></i>Shelter</a>
+                            <a asp-page="/Admin">Admin</a>
+                            <a asp-page="/userpage/Index" asp-route-accId="@Context.Session.GetString("AccountId")"><i class="fa-solid fa-user"></i> User</a>
+                            <a asp-page="/Payment"><i class="fa-solid fa-credit-card"></i>Payment</a>
+                            <a asp-page="/donationpage/Create"><i class="fa-solid fa-money-check-dollar"></i>Donation</a>
+                            <a asp-page="/Logout"><i class="fa-solid fa-right-from-bracket"></i>Log out</a>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    
+                    <button class="login-btn" onclick="location.href='@Url.Page("/Login")'">Login/Sign Up</button>
+                   
+                }
+            </div>
+        </div>
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2024 - PetRescueFE - <a asp-area="" asp-page="/Privacy">Privacy</a>
+        </div>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+    @await Component.InvokeAsync("Notyf")
+    
+</body>
+</html>
+<style>
+    body {
+        font-family: Arial,Helvetica,sans-serif;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+    }
+
+    .navbar {
+        position: fixed;
+        top: 0;
+        right: 0;
+        left: 0;
+        background-image: url("https://static.wixstatic.com/media/3cfc42_7b5254501c1046c89ef45878e2185b01~mv2.png/v1/fill/w_1225,h_63,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/3cfc42_7b5254501c1046c89ef45878e2185b01~mv2.png");
+        color: white;
+        padding: 15px 15px;
+        z-index: 10;
+        height: 40px;
+    }
+
+        .navbar .container1 {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .navbar h1 {
+            margin: 0;
+        }
+
+        .navbar nav {
+            flex-grow: 1;
+        }
+
+            .navbar nav ul {
+                list-style: none;
+                margin: 0;
+                padding: 0;
+                display: flex;
+                justify-content: center;
+            }
+
+                .navbar nav ul li {
+                    margin-left: 20px;
+                    font: 20px syne, sans-serif;
+                }
+
+                    .navbar nav ul li a {
+                        color: white;
+                        text-decoration: none;
+                    }
+
+    .right-section {
+        display: flex;
+        align-items: center;
+    }
+
+
+    .login-btn {
+        background-color: rgba(60,83,244,0.5);
+        color: white;
+        border: 1px solid white;
+        padding: 10px 20px;
+        border-radius: 20px;
+        cursor: pointer;
+        font-weight: bold;
+        font-size: 15px;
+        font: syne, sans-serif;
+    }
+
+        .login-btn:hover {
+            background-color: white;
+            color: #3572EF;
+        }
+
+
+    /* Add this CSS for dropdown */
+    .dropdown i {
+        position: relative;
+        font-size: 20px;
+        margin-right: 20px;
+        cursor: pointer;
+    }
+
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        text-align: center;
+        background-color: #f9f9f9;
+        border-radius: 5px;
+        min-width: 160px;
+        box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+        z-index: 1000;
+    }
+
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+            .dropdown-content a:hover {
+                background-color: #f1f1f1;
+            }
+
+    .container {
+        position: relative;
+        top: 0;
+        margin-top: 40px;
+    }
+
+    
+    /* End of dropdown CSS */
+
+</style>

@@ -1,6 +1,6 @@
 ﻿using Microsoft.OpenApi.Models;
 
-namespace WellMeetAPI.AppStarts
+namespace PetRescueAPI.AppStarts
 {
     public static class SwaggerConfig
     {
