@@ -16,5 +16,7 @@ namespace BusinessLayer.Model.Response
         public DateTime RequestDate { get; set; }
         public string Status { get; set; } = null!;
         public string? Notes { get; set; }
+        public string UserName { get; set; } = null!;
+        public string PetName { get; set; } = null!;
     }
 }
