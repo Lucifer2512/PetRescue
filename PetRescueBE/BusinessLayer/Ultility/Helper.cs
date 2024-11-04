@@ -6,7 +6,7 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace BusinessLayer.Utilities
+namespace BusinessLayer.Ultility
 {
     public class Helper
     {

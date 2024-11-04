@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace Pages.Models
+namespace PetRescueFE.Pages.Model
 {
     public class UserRequestModelFE
     {
@@ -28,7 +28,7 @@ namespace Pages.Models
         [StringLength(100, MinimumLength = 6, ErrorMessage = "Password must be at least 6 characters long.")]
         public string Password { get; set; } = string.Empty;
         [Required(ErrorMessage = "ConfirmPassword is required.")]
-        [Compare(("Password"), ErrorMessage = "Passwords do not match")]
+        [Compare("Password", ErrorMessage = "Passwords do not match")]
 
         [StringLength(100, MinimumLength = 6, ErrorMessage = "Password must be at least 6 characters long.")]
         public string ConfirmPassword { get; set; } = string.Empty;
@@ -36,7 +36,7 @@ namespace Pages.Models
         [Required(ErrorMessage = "Role selection is required.")]
         public Guid RoleId { get; set; }
 
-        
+
         public string? Status { get; set; }
     }
     public class UserRequestModelv2FE
@@ -63,7 +63,7 @@ namespace Pages.Models
         [Required(ErrorMessage = "Password is required.")]
         [StringLength(100, MinimumLength = 6, ErrorMessage = "Password must be at least 6 characters long.")]
         public string Password { get; set; } = string.Empty;
-      
+
 
         [Required(ErrorMessage = "Role selection is required.")]
         public Guid RoleId { get; set; }

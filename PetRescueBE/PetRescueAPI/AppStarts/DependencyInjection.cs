@@ -1,13 +1,11 @@
-﻿using BusinessLayer.IServices;
-using BusinessLayer.Service.Implement;
+﻿using BusinessLayer.Service.Implement;
 using BusinessLayer.Service.Interface;
-using BusinessLayer.Services;
-using BusinessLayer.Utilities;
+using BusinessLayer.Ultility;
 using DataAccessLayer.Context;
+using DataAccessLayer.Repository.Implement;
 using DataAccessLayer.Repository.Interface;
 using DataAccessLayer.UnitOfWork.Implement;
 using DataAccessLayer.UnitOfWork.Interface;
-using DataLayer.Repository;
 using Microsoft.EntityFrameworkCore;
 
 namespace PetRescueAPI.AppStarts
@@ -42,8 +40,8 @@ namespace PetRescueAPI.AppStarts
             services.AddScoped<IShelterService, ShelterService>();
             services.AddScoped<IEventService, EventService>();
             services.AddScoped<IDonationService, DonationService>();
-            /*services.AddScoped<IAdoptionApplicationService, AdoptionApplicationService>();*/
-            services.AddScoped<IAdoptionApplicationservice, IAdoptionApplicationservice>();
+            services.AddScoped<IAdoptionApplicationService, AdoptionApplicationService>();
+
         }
     }
 }

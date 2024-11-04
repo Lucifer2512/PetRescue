@@ -6,8 +6,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using DataAccessLayer.Entity;
 using System.ComponentModel.DataAnnotations;
-using Pages.Model;
-using Pages.Models;
+using PetRescueFE.Pages.Model;
 
 namespace PetRescueFE.Pages.UserPage
 {

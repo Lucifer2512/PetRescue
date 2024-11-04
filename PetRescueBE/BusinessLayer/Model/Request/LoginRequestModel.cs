@@ -1,4 +1,4 @@
-﻿namespace BusinessLayer.Models.Request
+﻿namespace BusinessLayer.Model.Request
 {
     public class LoginRequestModel
     {

@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.RazorPages;
-using Pages.Model;
+using PetRescueFE.Pages.Model;
 
 namespace PetRescueFE.Pages.UserPage
 {

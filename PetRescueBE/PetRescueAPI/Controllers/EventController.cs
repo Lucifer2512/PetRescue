@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using BusinessLayer.Model.Request;
 using BusinessLayer.Model.Response;
-using BusinessLayer.Models.Response;
 using BusinessLayer.Service.Interface;
 using Microsoft.AspNetCore.Mvc;
 

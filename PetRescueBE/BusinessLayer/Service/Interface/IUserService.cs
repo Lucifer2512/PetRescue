@@ -1,9 +1,9 @@
 ﻿using BusinessLayer.Model.Enums;
-using BusinessLayer.Models.Request;
-using BusinessLayer.Models.Response;
+using BusinessLayer.Model.Request;
+using BusinessLayer.Model.Response;
 using DataAccessLayer.Entity;
 
-namespace BusinessLayer.IServices
+namespace BusinessLayer.Service.Interface
 {
     public interface IUserService
     {

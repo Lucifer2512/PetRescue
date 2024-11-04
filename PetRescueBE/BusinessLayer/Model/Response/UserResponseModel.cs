@@ -1,4 +1,4 @@
-﻿namespace BusinessLayer.Models.Response
+﻿namespace BusinessLayer.Model.Response
 {
     public class UserResponseModel
     {

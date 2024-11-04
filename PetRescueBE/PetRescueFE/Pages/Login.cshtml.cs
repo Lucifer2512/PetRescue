@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Newtonsoft.Json.Linq;
-using Pages.Model;
+using PetRescueFE.Pages.Model;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 

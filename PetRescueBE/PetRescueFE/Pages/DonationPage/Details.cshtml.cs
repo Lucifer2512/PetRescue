@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using DataAccessLayer.Context;
 using DataAccessLayer.Entity;
-using Pages.Model;
+using PetRescueFE.Pages.Model;
 
 namespace PetRescueFE.Pages.DonationPage
 {

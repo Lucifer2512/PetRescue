@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.Linq.Expressions;
 
-namespace DataLayer.Repository
+namespace DataAccessLayer.Repository.Implement
 {
     public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
@@ -16,7 +16,7 @@ namespace DataLayer.Repository
             DbContext = dbContext;
         }
 
-      
+
         public async Task DeleteAsync(int id, bool saveChanges = true)
         {
             var entity = await Entities.FindAsync(id);

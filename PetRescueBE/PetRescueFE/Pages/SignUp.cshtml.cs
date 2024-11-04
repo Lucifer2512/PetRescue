@@ -1,9 +1,7 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-
-using Pages.Model;
-using Pages.Models;
+using PetRescueFE.Pages.Model;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net;
 

@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.IdentityModel.Tokens;
-using Pages.Model;
-using Pages.Model.Events;
+using PetRescueFE.Pages.Model;
+using PetRescueFE.Pages.Model.Events;
 
 namespace PetRescueFE.Pages.Events
 {

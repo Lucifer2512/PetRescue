@@ -1,110 +1,53 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
-using BusinessLayer.Model.Request;
-using BusinessLayer.Model.Response;
-using BusinessLayer.Models.Response;
+﻿using BusinessLayer.Model.Request;
 using BusinessLayer.Service.Interface;
-using DataAccessLayer.Entity;
-using DataAccessLayer.UnitOfWork.Interface;
+using Microsoft.AspNetCore.Mvc;
 
-namespace BusinessLayer.Service.Implement
+namespace PetRescueAPI.Controllers
 {
-    public class AdoptionApplicationservice : IAdoptionApplicationservice
+    [ApiController]
+    [Route("api/[controller]")]
+    public class AdoptionApplicationController : Controller
     {
-        private readonly IMapper _mapper;
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly IAdoptionApplicationService _adoptionApplicationService;
 
-        public AdoptionApplicationservice(IUnitOfWork unitOfWork, IMapper mapper)
+        public AdoptionApplicationController(IAdoptionApplicationService adoptionApplicationService)
         {
-            _unitOfWork = unitOfWork;
-            _mapper = mapper;
+            _adoptionApplicationService = adoptionApplicationService;
         }
 
-        public async Task<BaseResponseModel<AdoptionApplicationResponseModel>> AddAsync(AdoptionApplicationRequestModel request)
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetApplicationDetail(Guid id)
         {
-            var username = GetUsernameFromToken();
-            if (string.IsNullOrEmpty(username))
-            {
-                return new BaseResponseModel<AdoptionApplicationResponseModel>
-                {
-                    Code = 401,
-                    Message = "User not authenticated.",
-                    Data = null
-                };
-            }
-
-            // Tìm user bằng username
-            var user = await _unitOfWork.Repository<User>().FirstOrDefaultAsync(u => u.Email == username);
-
-            if (user == null)
-            {
-                return new BaseResponseModel<AdoptionApplicationResponseModel>
-                {
-                    Code = 404,
-                    Message = "User not found.",
-                    Data = null
-                };
-            }
-
-            // Tạo mới đối tượng AdoptionApplication
-            var newAdoptionApplication = _mapper.Map<AdoptionApplication>(request);
-            newAdoptionApplication.ApplicationId = Guid.NewGuid();
-            newAdoptionApplication.UserId = user.UserId;
-            newAdoptionApplication.Status = request.Status;
-            newAdoptionApplication.RequestDate = DateTime.Now;
-   //         var checkPet = _unitOfWork.Repository<Pet>.Ge
-            // Lưu đối tượng mới
-            await _unitOfWork.Repository<AdoptionApplication>().InsertAsync(newAdoptionApplication);
-            await _unitOfWork.SaveChangesAsync();
-
-            // Chuẩn bị đối tượng phản hồi
-            var responseModel = _mapper.Map<AdoptionApplicationResponseModel>(newAdoptionApplication);
-
-            // Trả về kết quả thành công
-            return new BaseResponseModel<AdoptionApplicationResponseModel>
-            {
-                Code = 200,
-                Message = "Adoption application created successfully.",
-                Data = responseModel
-            };
+            var response = await _adoptionApplicationService.GetDetailAsync(id);
+            return StatusCode((int)response.Code, response);
         }
 
-        public Task<BaseResponseModel> DeleteAsync(Guid id)
+        [HttpGet]
+        public async Task<IActionResult> GetAllApplications()
         {
-            throw new NotImplementedException();
+            var response = await _adoptionApplicationService.GetAllAsync();
+            return StatusCode((int)response.Code, response);
         }
 
-        public Task<BaseResponseModel<IEnumerable<AdoptionApplicationResponseModel>>> GetAllAsync()
+        [HttpPost]
+        public async Task<IActionResult> AddApplication([FromBody] AdoptionApplicationRequestModel request)
         {
-            throw new NotImplementedException();
+            var response = await _adoptionApplicationService.AddAsync(request);
+            return StatusCode((int)response.Code, response);
         }
 
-        public Task<BaseResponseModel<AdoptionApplicationResponseModel>> GetDetailAsync(Guid id)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateApplication(Guid id, [FromBody] AdoptionApplicationRequestModelForUpdate request)
         {
-            throw new NotImplementedException();
+            var response = await _adoptionApplicationService.UpdateAsync(request, id);
+            return StatusCode((int)response.Code, response);
         }
 
-        public Task<BaseResponseModel<AdoptionApplicationResponseModel>> UpdateAsunc(Guid id,AdoptionApplicationRequestModel request)
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteApplication(Guid id)
         {
-            throw new NotImplementedException();
+            var response = await _adoptionApplicationService.DeleteAsync(id);
+            return StatusCode((int)response.Code, response);
         }
-
-        private string GetUsernameFromToken()
-        {
-            var username = string.Empty;
-            if (ClaimsPrincipal.Current != null)
-            {
-                username = ClaimsPrincipal.Current.FindFirst(ClaimTypes.Name)?.Value;
-            }
-            return username;
-        }
-   
-
-       
     }
 }

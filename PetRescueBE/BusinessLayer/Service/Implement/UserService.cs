@@ -1,14 +1,14 @@
 ﻿using AutoMapper;
-using BusinessLayer.IServices;
-using BusinessLayer.Models.Request;
-using BusinessLayer.Models.Response;
-using BusinessLayer.Utilities;
+using BusinessLayer.Model.Request;
+using BusinessLayer.Model.Response;
+using BusinessLayer.Service.Interface;
+using BusinessLayer.Ultility;
 using DataAccessLayer.Entity;
 using DataAccessLayer.UnitOfWork.Interface;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
-namespace BusinessLayer.Services
+namespace BusinessLayer.Service.Implement
 {
     public class UserService : IUserService
     {
@@ -223,7 +223,7 @@ namespace BusinessLayer.Services
         {
             var userRepository = _unitOfWork.Repository<User>();
 
-            var users = await userRepository.GetAll().Include(u=> u.Role).ToListAsync();
+            var users = await userRepository.GetAll().Include(u => u.Role).ToListAsync();
             var userResponseModels = _mapper.Map<IEnumerable<UserResponseModel>>(users);
 
             if (users.Count() == 0)
@@ -244,7 +244,7 @@ namespace BusinessLayer.Services
             };
         }
 
-        public async Task<BaseResponseModel<IEnumerable<DataAccessLayer.Entity.Role>>> GetAllRoleAsync()
+        public async Task<BaseResponseModel<IEnumerable<Role>>> GetAllRoleAsync()
         {
             var roleRepository = _unitOfWork.Repository<Role>();
 
@@ -252,7 +252,7 @@ namespace BusinessLayer.Services
 
             if (roles.Count() == 0)
             {
-                return new BaseResponseModel<IEnumerable<DataAccessLayer.Entity.Role>>
+                return new BaseResponseModel<IEnumerable<Role>>
                 {
                     Code = 200,
                     Message = "No Role in the list",
@@ -260,7 +260,7 @@ namespace BusinessLayer.Services
                 };
             }
 
-            return new BaseResponseModel<IEnumerable<DataAccessLayer.Entity.Role>>
+            return new BaseResponseModel<IEnumerable<Role>>
             {
                 Code = 200,
                 Message = "Roles retrieved successfully",

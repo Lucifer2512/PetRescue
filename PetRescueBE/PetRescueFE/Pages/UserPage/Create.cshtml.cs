@@ -8,8 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using DataAccessLayer.Context;
 using DataAccessLayer.Entity;
 using System.Linq.Expressions;
-using Pages.Model;
-using Pages.Models;
+using PetRescueFE.Pages.Model;
 
 namespace PetRescueFE.Pages.UserPage
 {

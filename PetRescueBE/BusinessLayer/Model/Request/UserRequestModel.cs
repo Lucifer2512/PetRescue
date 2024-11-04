@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace BusinessLayer.Models.Request
+namespace BusinessLayer.Model.Request
 {
     public class UserRequestModel
     {

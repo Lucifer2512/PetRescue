@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.EntityFrameworkCore;
 using DataAccessLayer.UnitOfWork.Interface;
 using System.Data;
-using DataLayer.Repository;
+using DataAccessLayer.Repository.Implement;
 
 namespace DataAccessLayer.UnitOfWork.Implement
 {

@@ -1,11 +1,11 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace Pages.Model.Events;
+namespace PetRescueFE.Pages.Model.Events;
 
 public class EventDTO
 {
-    
+
 }
 
 public class EventResponseModel
@@ -51,32 +51,32 @@ public class EventRequestModel4Create
 {
     [Required]
     public string? Name { get; set; }
-    
+
     public string? ImageUrl { get; set; }
-    
+
     public string? Description { get; set; }
-    
+
     [Required]
     [DataType(DataType.DateTime)]
     [DisplayFormat(DataFormatString = "{0:yyyy-MM-ddTHH:mm}", ApplyFormatInEditMode = true)]
     public DateTime StartDateTime { get; set; }
-    
+
     [Required]
     [DataType(DataType.DateTime)]
     [DisplayFormat(DataFormatString = "{0:yyyy-MM-ddTHH:mm}", ApplyFormatInEditMode = true)]
     public DateTime EndDateTime { get; set; }
-    
+
     [Required]
     public string? Location { get; set; }
-    
+
     [Required]
     public string? EventType { get; set; }
-    
+
     public string? Goal { get; set; }
-    
+
     [DefaultValue("ACTIVE")]
     public string? Status { get; set; }
-    
+
     [Required]
     public Guid? ShelterId { get; set; }
 }
@@ -85,25 +85,25 @@ public class EventRequestModel4Update
 {
     [Required]
     public string? Name { get; set; }
-    
+
     public string? ImageUrl { get; set; }
-    
+
     public string? Description { get; set; }
-    
+
     [Required]
     public DateTime? StartDateTime { get; set; }
-    
+
     [Required]
     public DateTime? EndDateTime { get; set; }
-    
+
     [Required]
     public string? Location { get; set; }
-    
+
     [Required]
     public string? EventType { get; set; }
-    
+
     public string? Goal { get; set; }
-    
+
     [Required]
     public string? Status { get; set; }
 }
