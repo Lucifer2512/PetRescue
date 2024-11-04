@@ -1,4 +1,4 @@
-@page
+@page "{id:guid}"
 @model PetRescueFE.Pages.Events.EditModel
 
 @{
@@ -13,22 +13,18 @@
 <div class="row">
     <div class="col-md-4">
         <form method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Event.EventId" />
-            <div class="form-group">
-                <label asp-for="Event.ShelterId" class="control-label"></label>
-                <select asp-for="Event.ShelterId" class="form-control" asp-items="ViewBag.ShelterId"></select>
-                <span asp-validation-for="Event.ShelterId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Event.ImageUrl" class="control-label"></label>
-                <input asp-for="Event.ImageUrl" class="form-control" />
-                <span asp-validation-for="Event.ImageUrl" class="text-danger"></span>
-            </div>
-            <div class="form-group">
+            @* Remove or comment out this line to hide the error message *@
+            @* <div asp-validation-summary="ModelOnly" class="text-danger"></div> *@
+            
+            <div class="form-group mb-3">
                 <label asp-for="Event.Name" class="control-label"></label>
                 <input asp-for="Event.Name" class="form-control" />
                 <span asp-validation-for="Event.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-3">
+                <label asp-for="Event.ImageUrl" class="control-label"></label>
+                <input asp-for="Event.ImageUrl" class="form-control" />
+                <span asp-validation-for="Event.ImageUrl" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Event.Description" class="control-label"></label>
@@ -52,7 +48,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="Event.Status" class="control-label"></label>
-                <input asp-for="Event.Status" class="form-control" />
+                <select asp-for="Event.Status" class="form-control" asp-items="Model.StatusList"></select>
                 <span asp-validation-for="Event.Status" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -75,4 +71,8 @@
 <div>
     <a asp-page="./Index">Back to List</a>
 </div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
 

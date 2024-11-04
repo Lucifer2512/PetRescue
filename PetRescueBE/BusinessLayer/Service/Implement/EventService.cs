@@ -20,6 +20,7 @@ public class EventService : IEventService
         _mapper = mapper;
     }
 
+    
     public async Task<BaseResponseModel<PaginatedList<EventResponseModel>>> GetsPagedAsync(int index, int size)
     {
         var eventRepo = _unitOfWork.Repository<Event>();
@@ -42,11 +43,17 @@ public class EventService : IEventService
         };
     }
 
+    
     public async Task<BaseResponseModel<IEnumerable<EventResponseModel>>> GetsAsync()
     {
         var eventRepo = _unitOfWork.Repository<Event>();
-        var events = await eventRepo.GetAllAsync();
-        var eventResponse = _mapper.Map<IEnumerable<EventResponseModel>>(events);
+        
+        var events = await eventRepo.DbContext.Set<Event>()
+            .Include(e => e.Shelter)
+            .Include(e => e.Donations)
+            .ToListAsync();
+        
+        var eventResponse = _mapper.Map<List<EventResponseModel>>(events);
 
         if (events.Count() == 0)
         {
@@ -66,6 +73,7 @@ public class EventService : IEventService
         };
     }
 
+    
     public async Task<BaseResponseModel<EventResponseModel>> GetAsync(Guid id)
     {
         var eventRepo = _unitOfWork.Repository<Event>();
@@ -88,7 +96,8 @@ public class EventService : IEventService
         };
     }
 
-    public async Task<BaseResponseModel<EventResponseModel>> CreateAsync(EventRequestModel4Create request)
+    
+    public async Task<BaseResponseModel<string>> CreateAsync(EventRequestModel4Create request)
     {
         var eventRepo = _unitOfWork.Repository<Event>();
         var newEvent = _mapper.Map<Event>(request);
@@ -100,7 +109,7 @@ public class EventService : IEventService
             var isSaved = await _unitOfWork.SaveChangesAsync();
             if (isSaved == 0)
             {
-                return new BaseResponseModel<EventResponseModel>
+                return new BaseResponseModel<string>
                 {
                     Code = 501,
                     Message = "Failed to save event",
@@ -108,7 +117,7 @@ public class EventService : IEventService
                 };
             }
 
-            return new BaseResponseModel<EventResponseModel>
+            return new BaseResponseModel<string>
             {
                 Code = 201,
                 Message = "Created",
@@ -118,7 +127,7 @@ public class EventService : IEventService
         catch (Exception e)
         {
             Console.WriteLine(e);
-            return new BaseResponseModel<EventResponseModel>
+            return new BaseResponseModel<string>
             {
                 Code = 500,
                 Message = "Failed to save event, " + e.InnerException,

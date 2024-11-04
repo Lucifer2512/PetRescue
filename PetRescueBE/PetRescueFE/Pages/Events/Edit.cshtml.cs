@@ -1,70 +1,85 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
-using BusinessLayer.Model.Request;
-using BusinessLayer.Model.Response;
-using BusinessLayer.Models.Response;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Pages.Model.Events;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using DataAccessLayer.Context;
-using DataAccessLayer.Entity;
+using Pages.Model;
 
 namespace PetRescueFE.Pages.Events
 {
     public class EditModel : PageModel
     {
         private readonly ApiService _apiService;
-        private readonly IMapper _mapper;
 
-        public EditModel(ApiService apiService, IMapper mapper)
+        public EditModel(ApiService apiService)
         {
             _apiService = apiService;
-            _mapper = mapper;
         }
+        
+        [BindProperty] 
+        public EventRequestModel4Update Event { get; set; } = default!;
+        
+        [BindProperty(SupportsGet = true)]
+        public Guid Id { get; set; }  // Add this to bind the ID from route
 
+        public SelectList StatusList { get; set; }
 
-        [BindProperty] public Event Event { get; set; } = default!;
-        private Guid? eventIdTmp = null;
-
-        public async Task<IActionResult> OnGetAsync(Guid? id)
+        public async Task<IActionResult> OnGetAsync()
         {
-            var response = await _apiService.GetAsync<BaseResponseModel<EventResponseModel>>("events/" + id);
+            var response = await TryGetEvent(EventUrlProfile.GET_DETAIL, Id);
             if (response == null)
             {
                 return NotFound();
             }
-
-            var data = response.Data;
-            Event = _mapper.Map<Event>(data);
-            eventIdTmp = Event.EventId;
+            
+            Event = new EventRequestModel4Update
+            {
+                ImageUrl = response.ImageUrl,
+                Name = response.Name,
+                Description = response.Description,
+                StartDateTime = response.StartDateTime,
+                EndDateTime = response.EndDateTime,
+                Location = response.Location,
+                EventType = response.EventType,
+                Goal = response.Goal,
+                Status = response.Status
+            };
+            
+            StatusList = new SelectList(Enum.GetNames(typeof(Status)));
+            
             return Page();
         }
 
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see https://aka.ms/RazorPagesCRUD.
-        public async Task<IActionResult> OnPostAsync(Guid? id)
+        public async Task<IActionResult> OnPostAsync()
         {
-            if (!ModelState.IsValid || _apiService == null || Event == null)
+            if (!ModelState.IsValid)
             {
+                StatusList = new SelectList(Enum.GetNames(typeof(Status)));
                 return Page();
             }
             
-            // do something to update the event
-            EventRequestModel4Update? update = _mapper.Map<EventRequestModel4Update>(Event) ?? new ();
-            
-            await _apiService.PutAsync<EventRequestModel4Update, ActionResult>("events/" + Event.EventId, update);
-            
-            return RedirectToPage("./Index");
+            try 
+            {
+                var url = $"{EventUrlProfile.PUT_UPDATE}{Id}";
+                await _apiService.PutAsync<EventRequestModel4Update, BaseResponseModel<object>>(url, Event);
+                
+                TempData["SuccessMessage"] = "Event updated successfully";
+                
+                return RedirectToPage("/Events/Index");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error updating event: {ex.Message}");
+                
+                StatusList = new SelectList(Enum.GetNames(typeof(Status)));
+                
+                return Page();
+            }
         }
-        
-        
-        /*private bool EventExists(Guid id)
+
+        private async Task<EventResponseModel> TryGetEvent(string url, Guid id)
         {
-            return (_context.Events?.Any(e => e.EventId == id)).GetValueOrDefault();
-        }*/
+            var response = await _apiService.GetAsync<BaseResponseModel<EventResponseModel>>(url + id);
+            return response?.Data;
+        }
     }
 }
