@@ -7,9 +7,10 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using DataAccessLayer.Context;
 using DataAccessLayer.Entity;
+using BusinessLayer.Model.Response;
 using BusinessLayer.Models.Response;
 
-namespace PetRescueFE.Pages.UserPage
+namespace PetRescueFE.Pages.ShelterPage
 {
     public class DetailsModel : PageModel
     {
@@ -20,7 +21,7 @@ namespace PetRescueFE.Pages.UserPage
             _apiService = apiService;
         }
 
-        public UserResponseModel User { get; set; } = default!; 
+        public ShelterResponseModel Shelter { get; set; } = default!; 
 
         public async Task<IActionResult> OnGetAsync(Guid? id)
         {
@@ -29,15 +30,15 @@ namespace PetRescueFE.Pages.UserPage
                 return NotFound();
             }
 
-            var apiUrl = $"https://localhost:7297/api/users/{id}";
-            var response = await _apiService.GetAsync<BaseResponseModel<UserResponseModel>>(apiUrl);
+            var apiUrl = $"https://localhost:7297/api/shelter/{id}";
+            var response = await _apiService.GetAsync<BaseResponseModel<ShelterResponseModel>>(apiUrl);
 
             if (response.Data == null)
             {
                 return NotFound();
             }
 
-            User = response.Data;
+            Shelter = response.Data;
             return Page();
         }
     }

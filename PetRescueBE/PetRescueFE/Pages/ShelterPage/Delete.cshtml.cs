@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using BusinessLayer.Model.Response;
 using BusinessLayer.Models.Response;
 
-namespace PetRescueFE.Pages.UserPage
+namespace PetRescueFE.Pages.ShelterPage
 {
     public class DeleteModel : PageModel
     {
@@ -16,7 +19,7 @@ namespace PetRescueFE.Pages.UserPage
         }
 
         [BindProperty]
-        public UserResponseModel User { get; set; } = default!;
+      public ShelterResponseModel Shelter { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(Guid? id)
         {
@@ -25,15 +28,15 @@ namespace PetRescueFE.Pages.UserPage
                 return NotFound();
             }
 
-            var apiUrl = $"https://localhost:7297/api/users/{id}";
-            var response = await _apiService.GetAsync<BaseResponseModel<UserResponseModel>>(apiUrl);
+            var apiUrl = $"https://localhost:7297/api/shelter/{id}";
+            var response = await _apiService.GetAsync<BaseResponseModel<ShelterResponseModel>>(apiUrl);
 
             if (response.Data == null)
             {
                 return NotFound();
             }
 
-            User = response.Data;
+            Shelter = response.Data;
             return Page();
         }
 
@@ -44,7 +47,7 @@ namespace PetRescueFE.Pages.UserPage
                 return NotFound();
             }
 
-            var apiUrl = $"https://localhost:7297/api/users/{id}";
+            var apiUrl = $"https://localhost:7297/api/shelter/{id}";
 
             try
             {
@@ -52,7 +55,7 @@ namespace PetRescueFE.Pages.UserPage
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError(string.Empty, "Failed to delete user.");
+                ModelState.AddModelError(string.Empty, "Failed to delete shelter.");
                 return Page();
             }
 

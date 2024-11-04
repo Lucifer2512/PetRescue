@@ -1,14 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using DataAccessLayer.Context;
-using DataAccessLayer.Entity;
-using Pages.Model;
-using Azure;
+﻿using Microsoft.AspNetCore.Mvc.RazorPages;
 using BusinessLayer.Models.Response;
 
 namespace PetRescueFE.Pages.UserPage
@@ -28,7 +18,7 @@ namespace PetRescueFE.Pages.UserPage
         public async Task OnGetAsync()
         {
             var apiUrl = "https://localhost:7297/api/users";
-            var response = await _apiService.GetAsync<BusinessLayer.Models.Response.BaseResponseModel<IList<UserResponseModel>>>(apiUrl);
+            var response = await _apiService.GetAsync<BaseResponseModel<IList<UserResponseModel>>>(apiUrl);
 
             if (response.Data != null)
             {

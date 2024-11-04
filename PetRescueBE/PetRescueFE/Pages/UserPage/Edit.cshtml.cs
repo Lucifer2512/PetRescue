@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using BusinessLayer.Models.Response;
 using BusinessLayer.Models.Request;
 using DataAccessLayer.Entity;
+using System.ComponentModel.DataAnnotations;
 
 namespace PetRescueFE.Pages.UserPage
 {
@@ -54,7 +55,6 @@ namespace PetRescueFE.Pages.UserPage
 
         public async Task<IActionResult> OnPostAsync()
         {
-
             var apiUrl = $"https://localhost:7297/api/users/{User.UserId}";
             var userRequest = new UserRequestModelForUpdate
             {
@@ -66,8 +66,24 @@ namespace PetRescueFE.Pages.UserPage
                 Status = User.Status
             };
 
-            var response = await _apiService.PutAsync<UserRequestModelForUpdate, BaseResponseModel<UserResponseModel>>(apiUrl, userRequest);
-            if (response.Code != 200)
+            var validationContext = new ValidationContext(userRequest);
+            var validationResults = new List<ValidationResult>();
+            bool isValid = Validator.TryValidateObject(userRequest, validationContext, validationResults, true);
+
+            if (!isValid)
+            {
+                foreach (var validationResult in validationResults)
+                {
+                    ModelState.AddModelError(string.Empty, validationResult.ErrorMessage);
+                }
+                return Page(); 
+            }
+
+            try
+            {
+                var response = await _apiService.PutAsync<UserRequestModelForUpdate, BaseResponseModel<UserResponseModel>>(apiUrl, userRequest);
+            }
+            catch (Exception ex)
             {
                 ModelState.AddModelError(string.Empty, "Failed to update user.");
                 return Page();

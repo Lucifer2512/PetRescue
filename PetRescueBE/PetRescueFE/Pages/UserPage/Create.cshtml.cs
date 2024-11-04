@@ -9,6 +9,7 @@ using DataAccessLayer.Context;
 using DataAccessLayer.Entity;
 using BusinessLayer.Models.Request;
 using BusinessLayer.Models.Response;
+using System.Linq.Expressions;
 
 namespace PetRescueFE.Pages.UserPage
 {
@@ -51,9 +52,12 @@ namespace PetRescueFE.Pages.UserPage
             }
 
             var apiUrl = "https://localhost:7297/api/users";
-            var response = await _apiService.PostAsync<UserRequestModel, BaseResponseModel<UserResponseModel>>(apiUrl, User);
 
-            if (response.Code != 201)
+            try
+            {
+                var response = await _apiService.PostAsync<UserRequestModel, BaseResponseModel<UserResponseModel>>(apiUrl, User);
+            }
+            catch (Exception ex)
             {
                 ModelState.AddModelError(string.Empty, "Error creating user.");
                 return Page();

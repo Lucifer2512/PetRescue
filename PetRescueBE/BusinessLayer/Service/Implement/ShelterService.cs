@@ -7,6 +7,7 @@ using BusinessLayer.Service.Interface;
 using BusinessLayer.Utilities;
 using DataAccessLayer.Entity;
 using DataAccessLayer.UnitOfWork.Interface;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -33,9 +34,26 @@ namespace BusinessLayer.Service.Implement
         {
             var shelterRepository = _unitOfWork.Repository<Shelter>();
 
+            var userRepository = _unitOfWork.Repository<User>();
+
             var newShelter = _mapper.Map<Shelter>(request);
 
-            newShelter.ShelterId = Guid.NewGuid();
+            var user = await userRepository.GetAll().Include(u => u.Role).FirstOrDefaultAsync(u => u.Email == request.UserEmail);
+
+            if (user == null)
+            {
+                return new BaseResponseModel<ShelterResponseModel>
+                {
+                    Code = 400,
+                    Message = "User email not exists",
+                    Data = null
+                };
+            }
+
+            var shelterId = Guid.NewGuid();
+
+            newShelter.ShelterId = shelterId;
+            newShelter.UsersId = user.UserId;
 
             try
             {
@@ -56,11 +74,13 @@ namespace BusinessLayer.Service.Implement
                 };
             }
 
+            var createdShelter = await shelterRepository.GetAll().Include(s => s.Users).FirstOrDefaultAsync(s =>s.ShelterId == shelterId);
+
             return new BaseResponseModel<ShelterResponseModel>
             {
                 Code = 201,
                 Message = "Shelter Created Success",
-                Data = _mapper.Map<ShelterResponseModel>(newShelter)
+                Data = _mapper.Map<ShelterResponseModel>(createdShelter)
             };
         }
 
@@ -68,7 +88,7 @@ namespace BusinessLayer.Service.Implement
         {
             var shelterRepository = _unitOfWork.Repository<Shelter>();
 
-            var existedShelter = await shelterRepository.FindAsync(id);
+            var existedShelter = await shelterRepository.GetAll().Include(s => s.Users).FirstOrDefaultAsync(s =>s.ShelterId == id);
 
             if (existedShelter == null)
             {
@@ -76,6 +96,20 @@ namespace BusinessLayer.Service.Implement
                 {
                     Code = 404,
                     Message = "Shelter not exists",
+                    Data = null
+                };
+            }
+
+            var userRepository = _unitOfWork.Repository<User>();
+
+            var user = await userRepository.GetAll().Include(u => u.Role).FirstOrDefaultAsync(u => u.Email == request.UserEmail);
+
+            if (user == null)
+            {
+                return new BaseResponseModel<ShelterResponseModel>
+                {
+                    Code = 400,
+                    Message = "User email not exists",
                     Data = null
                 };
             }
@@ -114,7 +148,7 @@ namespace BusinessLayer.Service.Implement
         {
             var shelterRepository = _unitOfWork.Repository<Shelter>();
 
-            var existedShelter = await shelterRepository.FindAsync(id);
+            var existedShelter = await shelterRepository.GetAll().Include(s => s.Users).FirstOrDefaultAsync(s => s.ShelterId == id);
 
             if (existedShelter == null)
             {
@@ -138,7 +172,7 @@ namespace BusinessLayer.Service.Implement
         {
             var shelterRepository = _unitOfWork.Repository<Shelter>();
 
-            var shelters = await shelterRepository.GetAllAsync();
+            var shelters = await shelterRepository.GetAll().Include(s => s.Users).ToListAsync();
             var shelterResponseModels = _mapper.Map<IEnumerable<ShelterResponseModel>>(shelters);
 
             if (shelters.Count() == 0)

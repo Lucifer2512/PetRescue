@@ -16,7 +16,8 @@ namespace BusinessLayer.Utilities
             CreateMap<UserRequestModel, User>()
                 .ForMember(dest => dest.PasswordHash, opt => opt.MapFrom(src => Helper.HashPassword(src.Password)));
             CreateMap<UserRequestModelForUpdate, User>();
-            CreateMap<Shelter, ShelterResponseModel>();
+            CreateMap<Shelter, ShelterResponseModel>()
+                .ForMember(dest => dest.UserEmail, opt => opt.MapFrom(src => src.Users.Email));
             CreateMap<ShelterRequestModel, Shelter>();
             CreateMap<ShelterRequestModelForUpdate, Shelter>();
             CreateMap<DonationRequestModel,Donation>();
