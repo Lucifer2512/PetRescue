@@ -83,7 +83,7 @@
                 <ul>
                     <li><a asp-page="/Index">PetRescueFE</a></li>
 
-                </ul>
+                    </ul>
             </nav>
             <div class="right-section">
                 @if (!string.IsNullOrEmpty(Context.Session.GetString("Role")))
@@ -97,8 +97,8 @@
                             <a asp-page="/Payment"><i class="fa-solid fa-credit-card"></i>Payment</a>
                             <a asp-page="/donationpage/Create"><i class="fa-solid fa-money-check-dollar"></i>Donation</a>
                             <a asp-page="/Logout"><i class="fa-solid fa-right-from-bracket"></i>Log out</a>
-                        </div>
-                    </div>
+                </div>
+            </div>
                 }
                 else
                 {

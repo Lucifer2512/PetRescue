@@ -32,4 +32,5 @@ namespace PetRescueFE.Pages.DonationPage
                 .Include(d => d.User).ToListAsync();
             }
         }
+    }
 }
