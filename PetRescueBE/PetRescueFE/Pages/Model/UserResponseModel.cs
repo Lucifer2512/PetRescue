@@ -1,4 +1,4 @@
-﻿namespace Pages.Models
+﻿namespace PetRescueFE.Pages.Model
 {
     public class UserResponseModelFE
     {

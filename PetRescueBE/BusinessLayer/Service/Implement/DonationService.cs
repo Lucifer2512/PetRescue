@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using BusinessLayer.Model.Request;
 using BusinessLayer.Model.Response;
-using BusinessLayer.Models.Response;
 using BusinessLayer.Service.Interface;
 using DataAccessLayer.Entity;
 using DataAccessLayer.UnitOfWork.Interface;

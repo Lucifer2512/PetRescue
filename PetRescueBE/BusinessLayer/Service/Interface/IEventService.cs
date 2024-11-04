@@ -1,6 +1,5 @@
 ﻿using BusinessLayer.Model.Request;
 using BusinessLayer.Model.Response;
-using BusinessLayer.Models.Response;
 
 namespace BusinessLayer.Service.Interface;
 

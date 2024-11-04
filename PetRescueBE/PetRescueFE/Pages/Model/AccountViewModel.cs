@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Pages.Model
+namespace PetRescueFE.Pages.Model
 {
     public class AccountViewModel
     {
@@ -23,7 +23,7 @@ namespace Pages.Model
         public string? Password { get; set; }
 
         [Required(ErrorMessage = "Confirm password is required")]
-        [Compare(("Password"), ErrorMessage = "Passwords do not match")]
+        [Compare("Password", ErrorMessage = "Passwords do not match")]
         [MinLength(3, ErrorMessage = "Password must be at least 3 characters long")]
         public string? ConfirmPassword { get; set; }
 

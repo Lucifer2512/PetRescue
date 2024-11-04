@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Pages.Model;
+using PetRescueFE.Pages.Model;
 using PetRescueFE.Pages.Model.Shelters;
 
 namespace PetRescueFE.Pages.ShelterPage

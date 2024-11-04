@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Pages.Model;
+using PetRescueFE.Pages.Model;
 
 namespace PetRescueFE.Pages.UserPage
 {

@@ -1,11 +1,9 @@
 ﻿using AutoMapper;
 using BusinessLayer.Model.Request;
 using BusinessLayer.Model.Response;
-using BusinessLayer.Models.Request;
-using BusinessLayer.Models.Response;
 using DataAccessLayer.Entity;
 
-namespace BusinessLayer.Utilities
+namespace BusinessLayer.Ultility
 {
     public class MappingProfileExtension : Profile
     {
@@ -20,15 +18,15 @@ namespace BusinessLayer.Utilities
                 .ForMember(dest => dest.UserEmail, opt => opt.MapFrom(src => src.Users.Email));
             CreateMap<ShelterRequestModel, Shelter>();
             CreateMap<ShelterRequestModelForUpdate, Shelter>();
-            CreateMap<DonationRequestModel,Donation>();
+            CreateMap<DonationRequestModel, Donation>();
             CreateMap<Donation, DonationReponseModel>();
             CreateMap<AdoptionApplicationRequestModel, AdoptionApplication>();
             CreateMap<AdoptionApplication, AdoptionApplicationResponseModel>()
                 .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.User.FirstName))
                 .ForMember(dest => dest.PetName, opt => opt.MapFrom(src => src.Pet.Name));
-           
+
             #region Event families
-            
+
             CreateMap<Event, EventResponseModel>().ReverseMap();
             CreateMap<EventRequestModel4Create, Event>().ReverseMap();
             CreateMap<EventRequestModel4Update, Event>().ReverseMap();

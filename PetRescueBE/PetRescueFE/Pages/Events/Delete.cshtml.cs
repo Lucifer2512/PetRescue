@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using Pages.Model.Events;
+using PetRescueFE.Pages.Model.Events;
 
 namespace PetRescueFE.Pages.Events
 {

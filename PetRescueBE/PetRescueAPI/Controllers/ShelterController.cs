@@ -1,6 +1,4 @@
-﻿using BusinessLayer.IServices;
-using BusinessLayer.Model.Request;
-using BusinessLayer.Models.Request;
+﻿using BusinessLayer.Model.Request;
 using BusinessLayer.Service.Interface;
 using Microsoft.AspNetCore.Mvc;
 

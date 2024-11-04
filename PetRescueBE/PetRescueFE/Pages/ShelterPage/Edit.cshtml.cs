@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore;
 using DataAccessLayer.Context;
 using DataAccessLayer.Entity;
 using System.ComponentModel.DataAnnotations;
-using Pages.Model;
 using PetRescueFE.Pages.Model.Shelters;
+using PetRescueFE.Pages.Model;
 
 namespace PetRescueFE.Pages.ShelterPage
 {
