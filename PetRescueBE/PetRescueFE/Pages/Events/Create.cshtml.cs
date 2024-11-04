@@ -9,10 +9,12 @@ namespace PetRescueFE.Pages.Events
     public class CreateModel : PageModel
     {
         private readonly ApiService _apiService;
+        private readonly EventGlobalUtility _eventGlobalUtility;
 
-        public CreateModel(ApiService apiService)
+        public CreateModel(ApiService apiService, EventGlobalUtility eventGlobalUtility)
         {
             _apiService = apiService;
+            _eventGlobalUtility = eventGlobalUtility;
         }
         
         [BindProperty]
@@ -35,8 +37,8 @@ namespace PetRescueFE.Pages.Events
                     return Page();
                 }
                 
-                // when bug, check this line as user identity is use or not idk
-                var userMail = User.Identity?.Name ?? string.Empty;
+                // Replace User.Identity?.Name with GetUserMail()
+                var userMail = _eventGlobalUtility.GetUserMail() ?? string.Empty;
                 var filteredShelters = FilteredShelterWithUserMail(response, userMail);
                 
                 if (!filteredShelters.Any())
