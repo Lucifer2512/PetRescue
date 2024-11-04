@@ -1,6 +1,4 @@
-﻿using BusinessLayer.Models.Response;
-using DataAccessLayer.Entity;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Newtonsoft.Json.Linq;
 using Pages.Model;

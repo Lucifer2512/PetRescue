@@ -1,15 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
-using BusinessLayer.Model.Response;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using DataAccessLayer.Context;
-using DataAccessLayer.Entity;
 using Pages.Model;
+using Pages.Model.Events;
 
 namespace PetRescueFE.Pages.Events
 {
@@ -17,29 +9,35 @@ namespace PetRescueFE.Pages.Events
     {
         
         private readonly ApiService _apiService;
-        private readonly IMapper _mapper;
 
-        public IndexModel(ApiService apiService, IMapper mapper)
+        public IndexModel(ApiService apiService)
         {
             _apiService = apiService;
-            _mapper = mapper;
         }
 
-        public IList<Event> Event { get;set; } = default!;
+        public IList<EventResponseModel> Event { get;set; } = default!;
 
         public async Task<ActionResult> OnGetAsync()
         {
-            var data = await _apiService.GetAsync<BaseResponseModelFE<List<EventResponseModel>>>("events/");
+            var data = await TryGetData(EventUrlProfile.GETS);
             if (data is null)
             {
                 return NotFound();
             }
             
-            var eventsRaw = data.Data.ToList();
-            
-            var eventCooked = _mapper.Map<List<Event>>(eventsRaw);
+            Event = data;
             
             return Page();
+        }
+
+        private async Task<List<EventResponseModel>> TryGetData(string url)
+        {
+            var data = await _apiService.GetAsync<BaseResponseModelFE<List<EventResponseModel>>>(url);
+            if (data is null)
+            {
+                return null;
+            }
+            return data.Data;
         }
     }
 }

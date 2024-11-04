@@ -8,11 +8,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DataAccessLayer.Context;
 using DataAccessLayer.Entity;
-using BusinessLayer.Model.Response;
-using BusinessLayer.Models.Response;
-using BusinessLayer.Models.Request;
 using System.ComponentModel.DataAnnotations;
-using BusinessLayer.Model.Request;
+using Pages.Model;
+using PetRescueFE.Pages.Model.Shelters;
 
 namespace PetRescueFE.Pages.ShelterPage
 {
@@ -36,7 +34,7 @@ namespace PetRescueFE.Pages.ShelterPage
             }
 
             var apiUrl = $"https://localhost:7297/api/shelter/{id}";
-            var response = await _apiService.GetAsync<BaseResponseModel<ShelterResponseModel>>(apiUrl);
+            var response = await _apiService.GetAsync<BaseResponseModelFE<ShelterResponseModel>>(apiUrl);
 
             if (response.Data == null)
             {
@@ -74,7 +72,7 @@ namespace PetRescueFE.Pages.ShelterPage
 
             try
             {
-                var response = await _apiService.PutAsync<ShelterRequestModelForUpdate, BaseResponseModel<ShelterResponseModel>>(apiUrl, shelterRequest);
+                var response = await _apiService.PutAsync<ShelterRequestModelForUpdate, BaseResponseModelFE<ShelterResponseModel>>(apiUrl, shelterRequest);
             }
             catch (Exception ex)
             {

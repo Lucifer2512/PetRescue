@@ -7,10 +7,8 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using DataAccessLayer.Context;
 using DataAccessLayer.Entity;
-using BusinessLayer.Models.Request;
-using BusinessLayer.Model.Request;
-using BusinessLayer.Models.Response;
-using BusinessLayer.Model.Response;
+using Pages.Model;
+using PetRescueFE.Pages.Model.Shelters;
 
 namespace PetRescueFE.Pages.ShelterPage
 {
@@ -37,7 +35,7 @@ namespace PetRescueFE.Pages.ShelterPage
             var apiUrl = "https://localhost:7297/api/shelter";
             try
             {
-                var response = await _apiService.PostAsync<ShelterRequestModel, BaseResponseModel<ShelterResponseModel>>(apiUrl, Shelter);
+                var response = await _apiService.PostAsync<ShelterRequestModel, BaseResponseModelFE<ShelterResponseModel>>(apiUrl, Shelter);
             }
             catch (Exception ex)
             {

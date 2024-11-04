@@ -1,11 +1,17 @@
 ﻿using AspNetCoreHero.ToastNotification;
 using PetRescueFE;
 using System.Net.Http.Headers;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddRazorPages();
+builder.Services.AddRazorPages()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+        options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
+    });
 builder.Services.AddNotyf(config =>
 {
     config.DurationInSeconds = 15;
@@ -24,6 +30,7 @@ builder.Services.AddHttpClient<ApiService>(client =>
     client.BaseAddress = new Uri("https://localhost:7297/api/"); // Thay bằng URL API gốc của bạn
     client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 });
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

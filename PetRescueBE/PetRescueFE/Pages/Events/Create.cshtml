@@ -16,7 +16,17 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Event.ShelterId" class="control-label"></label>
-                <select asp-for="Event.ShelterId" class ="form-control" asp-items="ViewBag.ShelterId"></select>
+                <select asp-for="Event.ShelterId" class="form-control">
+                    <option value="">-- Select Shelter --</option>
+                    @if (Model.Shelters != null && Model.Shelters.Any())
+                    {
+                        @foreach (var shelter in Model.Shelters)
+                        {
+                            <option value="@shelter.ShelterId">@shelter.ShelterName</option>
+                        }
+                    }
+                </select>
+                <span asp-validation-for="Event.ShelterId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Event.ImageUrl" class="control-label"></label>
@@ -33,14 +43,14 @@
                 <input asp-for="Event.Description" class="form-control" />
                 <span asp-validation-for="Event.Description" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group mb-3">
                 <label asp-for="Event.StartDateTime" class="control-label"></label>
-                <input asp-for="Event.StartDateTime" class="form-control" />
+                <input asp-for="Event.StartDateTime" class="form-control" type="datetime-local" />
                 <span asp-validation-for="Event.StartDateTime" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group mb-3">
                 <label asp-for="Event.EndDateTime" class="control-label"></label>
-                <input asp-for="Event.EndDateTime" class="form-control" />
+                <input asp-for="Event.EndDateTime" class="form-control" type="datetime-local" />
                 <span asp-validation-for="Event.EndDateTime" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -48,11 +58,11 @@
                 <input asp-for="Event.Location" class="form-control" />
                 <span asp-validation-for="Event.Location" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            @*<div class="form-group">
                 <label asp-for="Event.Status" class="control-label"></label>
                 <input asp-for="Event.Status" class="form-control" />
                 <span asp-validation-for="Event.Status" class="text-danger"></span>
-            </div>
+            </div>*@
             <div class="form-group">
                 <label asp-for="Event.EventType" class="control-label"></label>
                 <input asp-for="Event.EventType" class="form-control" />

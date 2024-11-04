@@ -4,8 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using BusinessLayer.Model.Response;
-using BusinessLayer.Models.Response;
+using Pages.Model;
+using PetRescueFE.Pages.Model.Shelters;
 
 namespace PetRescueFE.Pages.ShelterPage
 {
@@ -29,7 +29,7 @@ namespace PetRescueFE.Pages.ShelterPage
             }
 
             var apiUrl = $"https://localhost:7297/api/shelter/{id}";
-            var response = await _apiService.GetAsync<BaseResponseModel<ShelterResponseModel>>(apiUrl);
+            var response = await _apiService.GetAsync<BaseResponseModelFE<ShelterResponseModel>>(apiUrl);
 
             if (response.Data == null)
             {
