@@ -22,5 +22,6 @@ namespace DataAccessLayer.Repository.Interface
         IQueryable<T> GetAll();
         Task<int> SaveChangesAsync();
         int SaveChanges();
+        Task<T> FirstOrDefaultAsync(Expression<Func<T, bool>> predicate);
     }
 }
