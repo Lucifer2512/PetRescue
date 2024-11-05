@@ -45,9 +45,10 @@ namespace PetRescueFE.Pages
                     var role = tokenS.Claims.First(claim => claim.Type == "role")?.Value;
                     /*var id = tokenS.Claims.First(claim => claim.Type == "AccountId").Value;*/
                     HttpContext.Session.SetString("Role", role);
+                    var a = HttpContext.Session.GetString("Role");
                     //HttpContext.Session.SetString("AccountId", id);
-                   /* var username = tokenS.Claims.First(claim => claim.Type == ClaimTypes.UserData).Value;
-                    HttpContext.Session.SetString("Username", username);*/
+                    /* var username = tokenS.Claims.First(claim => claim.Type == ClaimTypes.UserData).Value;
+                     HttpContext.Session.SetString("Username", username);*/
                     switch (role)
                     {
                         case "d290f1ee-6c54-4b01-90e6-d701748f0851":      //Administrator
