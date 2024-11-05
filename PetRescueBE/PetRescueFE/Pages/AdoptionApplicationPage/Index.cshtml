@@ -1,0 +1,68 @@
+﻿@page
+@model PetRescueFE.Pages.AdoptionApplicationPage.IndexModel
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.AdoptionApplication[0].RequestDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AdoptionApplication[0].Status)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AdoptionApplication[0].Notes)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AdoptionApplication[0].Pet)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AdoptionApplication[0].User)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.AdoptionApplication) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.RequestDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Notes)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Pet.Species)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.User.Email)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.ApplicationId">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.ApplicationId">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.ApplicationId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+</body>
+</html>

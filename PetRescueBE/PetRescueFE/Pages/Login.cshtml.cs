@@ -43,8 +43,9 @@ namespace PetRescueFE.Pages
                     var handler = new JwtSecurityTokenHandler();
                     var tokenS = handler.ReadToken(userReponse.Token.Token.ToString()) as JwtSecurityToken;
                     var role = tokenS.Claims.First(claim => claim.Type == "role")?.Value;
-                    /*var id = tokenS.Claims.First(claim => claim.Type == "AccountId").Value;*/
+                    var id = tokenS.Claims.First(claim => claim.Type == "nameid")?.Value;
                     HttpContext.Session.SetString("Role", role);
+                    HttpContext.Session.SetString("UserId", id);
                     //HttpContext.Session.SetString("AccountId", id);
                    /* var username = tokenS.Claims.First(claim => claim.Type == ClaimTypes.UserData).Value;
                     HttpContext.Session.SetString("Username", username);*/
