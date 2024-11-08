@@ -1,16 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using DataAccessLayer.Context;
-using DataAccessLayer.Entity;
-using System.ComponentModel.DataAnnotations;
-using PetRescueFE.Pages.Model.Shelters;
 using PetRescueFE.Pages.Model;
+using PetRescueFE.Pages.Model.Shelters;
+using System.ComponentModel.DataAnnotations;
 
 namespace PetRescueFE.Pages.ShelterPage
 {
@@ -83,4 +75,4 @@ namespace PetRescueFE.Pages.ShelterPage
             return RedirectToPage("./Index");
         }
     }
- }
+}

@@ -1,16 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Text.Json;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using DataAccessLayer.Context;
-using DataAccessLayer.Entity;
 using PetRescueFE.Pages.Model;
-using Azure.Core;
-using System.Security.Claims;
 
 
 namespace PetRescueFE.Pages.AdoptionApplicationPage
@@ -38,12 +29,12 @@ namespace PetRescueFE.Pages.AdoptionApplicationPage
 
         [BindProperty]
         public AdoptionApplicationRequestModel AdoptionApplication { get; set; } = new AdoptionApplicationRequestModel();
-        
+
 
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
         {
-          if (!ModelState.IsValid || AdoptionApplication == null)
+            if (!ModelState.IsValid || AdoptionApplication == null)
             {
                 return Page();
             }
@@ -53,7 +44,8 @@ namespace PetRescueFE.Pages.AdoptionApplicationPage
             try
             {
                 var data = await _apiService.PostAsync<AdoptionApplicationRequestModel, BaseResponseModelFE<AdoptionApplicationResponseModel>>(apiUrl, AdoptionApplication);
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 ModelState.AddModelError(string.Empty, "Error creating application");
                 return Page();

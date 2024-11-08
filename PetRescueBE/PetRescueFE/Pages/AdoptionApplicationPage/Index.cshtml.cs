@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using DataAccessLayer.Context;
-using DataAccessLayer.Entity;
+﻿using Microsoft.AspNetCore.Mvc.RazorPages;
 using PetRescueFE.Pages.Model;
 
 namespace PetRescueFE.Pages.AdoptionApplicationPage
@@ -20,7 +12,7 @@ namespace PetRescueFE.Pages.AdoptionApplicationPage
             _apiService = apiService;
         }
 
-        public IList<AdoptionApplicationResponseModel> AdoptionApplication { get;set; } = default!;
+        public IList<AdoptionApplicationResponseModel> AdoptionApplication { get; set; } = default!;
 
         public async Task OnGetAsync()
         {

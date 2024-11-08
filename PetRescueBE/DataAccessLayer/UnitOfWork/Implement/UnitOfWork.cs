@@ -1,9 +1,9 @@
-﻿using DataAccessLayer.Repository.Interface;
-using Microsoft.EntityFrameworkCore.Storage;
-using Microsoft.EntityFrameworkCore;
+﻿using DataAccessLayer.Repository.Implement;
+using DataAccessLayer.Repository.Interface;
 using DataAccessLayer.UnitOfWork.Interface;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using System.Data;
-using DataAccessLayer.Repository.Implement;
 
 namespace DataAccessLayer.UnitOfWork.Implement
 {

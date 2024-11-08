@@ -1,7 +1,4 @@
-﻿using BusinessLayer.Model.Enums;
-using DataAccessLayer.Entity;
-
-namespace BusinessLayer.Model.Response;
+﻿namespace BusinessLayer.Model.Response;
 
 public class EventResponseModel
 {

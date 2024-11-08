@@ -1,13 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using DataAccessLayer.Context;
-using DataAccessLayer.Entity;
-using Microsoft.AspNetCore.Http.HttpResults;
 using PetRescueFE.Pages.Model;
 using System.IdentityModel.Tokens.Jwt;
 
@@ -56,12 +48,12 @@ namespace PetRescueFE.Pages.DonationPage
             Donation.ShelterId = ShelterId;
             Donation.UserId = Guid.Parse(userId);
 
-            var data = await _apiService.PostAsync<DonationRequestModel,DonationReponseModel>("donation/createdonation", Donation); //"`endpoint-url` cho phù hợp"
+            var data = await _apiService.PostAsync<DonationRequestModel, DonationReponseModel>("donation/createdonation", Donation); //"`endpoint-url` cho phù hợp"
 
             if (!ModelState.IsValid)
             {
                 return Page();
-            }          
+            }
             return RedirectToPage("./Index");
         }
     }

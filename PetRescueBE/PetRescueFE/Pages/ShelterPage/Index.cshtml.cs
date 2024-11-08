@@ -1,14 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using DataAccessLayer.Context;
-using DataAccessLayer.Entity;
-using PetRescueFE.Pages.Model.Shelters;
+﻿using Microsoft.AspNetCore.Mvc.RazorPages;
 using PetRescueFE.Pages.Model;
+using PetRescueFE.Pages.Model.Shelters;
 
 namespace PetRescueFE.Pages.ShelterPage
 {
@@ -21,7 +13,7 @@ namespace PetRescueFE.Pages.ShelterPage
             _apiService = apiService;
         }
 
-        public IList<ShelterResponseModel> Shelter { get;set; } = default!;
+        public IList<ShelterResponseModel> Shelter { get; set; } = default!;
 
         public async Task OnGetAsync()
         {

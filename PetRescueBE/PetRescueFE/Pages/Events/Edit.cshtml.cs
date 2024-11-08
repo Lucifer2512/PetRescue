@@ -14,10 +14,10 @@ namespace PetRescueFE.Pages.Events
         {
             _apiService = apiService;
         }
-        
-        [BindProperty] 
+
+        [BindProperty]
         public EventRequestModel4Update Event { get; set; } = default!;
-        
+
         [BindProperty(SupportsGet = true)]
         public Guid Id { get; set; }  // Add this to bind the ID from route
 
@@ -30,7 +30,7 @@ namespace PetRescueFE.Pages.Events
             {
                 return NotFound();
             }
-            
+
             Event = new EventRequestModel4Update
             {
                 ImageUrl = response.ImageUrl,
@@ -43,9 +43,9 @@ namespace PetRescueFE.Pages.Events
                 Goal = response.Goal,
                 Status = response.Status
             };
-            
+
             StatusList = new SelectList(Enum.GetNames(typeof(Status)));
-            
+
             return Page();
         }
 
@@ -56,22 +56,22 @@ namespace PetRescueFE.Pages.Events
                 StatusList = new SelectList(Enum.GetNames(typeof(Status)));
                 return Page();
             }
-            
-            try 
+
+            try
             {
                 var url = $"{EventUrlProfile.PUT_UPDATE}{Id}";
                 await _apiService.PutAsync<EventRequestModel4Update, BaseResponseModelFE<object>>(url, Event);
-                
+
                 TempData["SuccessMessage"] = "Event updated successfully";
-                
+
                 return RedirectToPage("/Events/Index");
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Error updating event: {ex.Message}");
-                
+
                 StatusList = new SelectList(Enum.GetNames(typeof(Status)));
-                
+
                 return Page();
             }
         }

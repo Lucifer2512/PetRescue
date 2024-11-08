@@ -1,12 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
-
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace PetRescueFE.Pages.Model
+﻿namespace PetRescueFE.Pages.Model
 {
     public class AdoptionApplicationResponseModel
     {

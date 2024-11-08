@@ -4,11 +4,6 @@ using BusinessLayer.Model.Response;
 using BusinessLayer.Service.Interface;
 using DataAccessLayer.Entity;
 using DataAccessLayer.UnitOfWork.Interface;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BusinessLayer.Service.Implement
 {
@@ -33,10 +28,10 @@ namespace BusinessLayer.Service.Implement
 
             try
             {
-                
+
                 await _unitOfWork.BeginTransaction();
-                await donationRepo.InsertAsync(newDonation);               
-                var isSaved = await _unitOfWork.SaveChangesAsync();               
+                await donationRepo.InsertAsync(newDonation);
+                var isSaved = await _unitOfWork.SaveChangesAsync();
                 await _unitOfWork.CommitTransaction();
                 return new BaseResponseModel<DonationReponseModel>
                 {
@@ -92,7 +87,7 @@ namespace BusinessLayer.Service.Implement
         {
             var DonationRepo = _unitOfWork.Repository<Donation>();
             var ExistedDonations = await DonationRepo.FindAsync(id);
-            
+
 
             if (ExistedDonations == null)
             {
@@ -111,7 +106,7 @@ namespace BusinessLayer.Service.Implement
                 Message = "Get Donation Detail Success",
                 Data = _mapper.Map<DonationReponseModel>(ExistedDonations)
             };
-        
+
         }
     }
 }
