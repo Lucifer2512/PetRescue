@@ -31,6 +31,13 @@ builder.Services.AddHttpClient<ApiService>(client =>
     client.BaseAddress = new Uri("https://localhost:7297/api/"); // Thay bằng URL API gốc của bạn
     client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 });
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", builder =>
+        builder.AllowAnyOrigin()
+               .AllowAnyMethod()
+               .AllowAnyHeader());
+});
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<EventGlobalUtility>();
 var app = builder.Build();

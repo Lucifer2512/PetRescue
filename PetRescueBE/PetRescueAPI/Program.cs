@@ -1,4 +1,4 @@
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 using PetRescueAPI.AppStarts;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,12 +18,10 @@ builder.Services.AddJwtAuthentication(builder.Configuration);
 // Add Cors
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("CorsPolicy",
-        builder => builder
-            .AllowAnyMethod()
-            .AllowAnyHeader()
-            .AllowAnyOrigin()
-    );
+    options.AddPolicy("AllowAll", builder =>
+        builder.AllowAnyOrigin()
+               .AllowAnyMethod()
+               .AllowAnyHeader());
 });
 
 var app = builder.Build();

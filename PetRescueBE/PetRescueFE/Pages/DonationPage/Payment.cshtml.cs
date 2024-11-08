@@ -1,7 +1,9 @@
+﻿using DataAccessLayer.Entity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using PetRescueFE.Pages.Model;
 using System.Net.Http;
 using System.Text;
 
@@ -13,12 +15,12 @@ namespace PetRescueFE.Pages.DonationPage
         [BindProperty]
         public decimal Amount { get; set; }
         public string AccountId { get; private set; }
-        private HttpClient _httpClient;
+        private readonly ApiService _apiService;
 
 
-        public PaymentModel()
+        public PaymentModel(ApiService apiService)
         {
-           
+            _apiService = apiService;
         }
 
         public void OnGet()
@@ -26,52 +28,38 @@ namespace PetRescueFE.Pages.DonationPage
 
         }
 
-       /* public async Task<IActionResult> OnPost()
+        public async Task<IActionResult> OnPost()
         {
 
-            IConfiguration config = new ConfigurationBuilder()
-                                          .SetBasePath(Directory.GetCurrentDirectory())
-                                          .AddJsonFile("appsettings.json", true, true)
-                                          .Build();
-            string apiUrl = config["API_URL"];
+
             if (!ModelState.IsValid)
             {
                 return Page();
             }
             AccountId = HttpContext.Session.GetString("AccountId");
-
-            var requestBody = new
+            DonationRequestModelQRCode donation = new DonationRequestModelQRCode();
+            donation.ShelterId = Guid.Parse("2f78ddb6-1b06-4730-a23b-f44fd1d3bfff");
+            donation.EventId = Guid.Parse("422916e7-3d1e-4664-a194-d33bdb8a19df");
+            donation.UserId = Guid.Parse("3f21226b-30c1-4274-81a6-2ed9d9e0c54c");
+            donation.Amount = Amount;
+            var response = await _apiService.PostAsync<DonationRequestModelQRCode, BaseResponseModelFE<String>>("donation/donationqrurl", donation); //"`endpoint-url` cho phù hợp"
+            if (response.Code == 200)
             {
-                amount = Amount,
-                fromId = AccountId
-            };
-            var jsonBody = JsonConvert.SerializeObject(requestBody);
-            var request = new HttpRequestMessage(HttpMethod.Post, $"{apiUrl}/GenerateQRBanking/CreateQRCodeandTransaction/accountId={AccountId}&amount={Amount}");
-            //request.Content = new StringContent(jsonBody, Encoding.UTF8, "application/json");
-            //http://localhost:5263/api/GenerateQRBanking/CreateTransaction/accountId=fea2ee07-06ac-44f8-b3bb-2d62be071cb2&amount=5000
-            var response = await _httpClient.SendAsync(request);
-            if (response.IsSuccessStatusCode)
-            {
-                var responseContent = await response.Content.ReadAsStringAsync();
-                var jwtToken = JsonConvert.DeserializeObject<SuccesResponse>(responseContent);
-                if (jwtToken.Data == null)
+                if (response.Data == null)
                 {
-                    TempData["ErrorMessage"] = jwtToken.Message;
+                    TempData["ErrorMessage"] = response.Message;
                     return Page();
-                }
-                JObject parsedData = JObject.Parse(jwtToken.Data.ToString());
-
-                // Access the 'url' property
-                string url = (string)parsedData["url"];
+                }            
+                string url = response.Data.ToString();
                 return Redirect(url);
             }
             else
             {
                 return Page();
             }
-             
 
-        }*/
+
+        }
 
     }
 }
