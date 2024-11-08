@@ -6,11 +6,6 @@ using DataAccessLayer.Entity;
 using DataAccessLayer.UnitOfWork.Interface;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BusinessLayer.Service.Implement
 {
@@ -21,6 +16,11 @@ namespace BusinessLayer.Service.Implement
             private readonly IConfiguration _configuration;
             private readonly IUnitOfWork _unitOfWork;
             private readonly IMapper _mapper;
+
+
+        private readonly IConfiguration _configuration;
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
             public AdoptionApplicationService(IConfiguration configuration, IUnitOfWork unitOfWork, IMapper mapper)
             {
@@ -119,14 +119,14 @@ namespace BusinessLayer.Service.Implement
                 response.PetName = petRepo.FindAsync(request.PetId).Result.Name;
                 response.UserName = userRepo.FindAsync(request.UserId).Result.FirstName;
 
-                return new BaseResponseModel<AdoptionApplicationResponseModel>
-                {
-                    Code = 201,
-                    Message = "Application Created Success",
-                    Data = response
+            return new BaseResponseModel<AdoptionApplicationResponseModel>
+            {
+                Code = 201,
+                Message = "Application Created Success",
+                Data = response
 
-                };
-            }
+            };
+        }
 
             public async Task<BaseResponseModel<AdoptionApplicationResponseModel>> UpdateAsync(AdoptionApplicationRequestModelForUpdate request, Guid id)
             {
@@ -221,6 +221,6 @@ namespace BusinessLayer.Service.Implement
                 };
             }
 
-        }
     }
+}
 

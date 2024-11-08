@@ -7,7 +7,7 @@ namespace DataAccessLayer.Repository.Interface
     {
         DbSet<T> Entities { get; }
         DbContext DbContext { get; }
-        
+
         Task<IList<T>> GetAllAsync();
         T Find(params object[] keyValues);
         Task<T> FindAsync(params object[] keyValues);

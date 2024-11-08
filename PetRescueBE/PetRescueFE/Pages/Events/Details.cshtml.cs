@@ -9,13 +9,13 @@ namespace PetRescueFE.Pages.Events
     {
         private readonly ApiService _apiService;
 
-        public DetailsModel( ApiService apiService)
+        public DetailsModel(ApiService apiService)
         {
             _apiService = apiService;
         }
 
 
-        public EventResponseModel Event { get; set; } = default!; 
+        public EventResponseModel Event { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(Guid? id)
         {
@@ -24,12 +24,12 @@ namespace PetRescueFE.Pages.Events
             {
                 return NotFound();
             }
-            
+
             Event = response;
-            
+
             return Page();
         }
-        
+
         private async Task<EventResponseModel> TryGetData(string url)
         {
             var data = await _apiService.GetAsync<BaseResponseModelFE<EventResponseModel>>(url);

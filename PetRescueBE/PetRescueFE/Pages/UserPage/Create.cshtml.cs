@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using DataAccessLayer.Entity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using DataAccessLayer.Context;
-using DataAccessLayer.Entity;
-using System.Linq.Expressions;
 using PetRescueFE.Pages.Model;
 
 namespace PetRescueFE.Pages.UserPage

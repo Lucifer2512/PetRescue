@@ -1,5 +1,5 @@
-﻿using System.Text.Json.Serialization;
-using PetRescueAPI.AppStarts;
+﻿using PetRescueAPI.AppStarts;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 

@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Newtonsoft.Json.Linq;
 using PetRescueFE.Pages.Model;
 using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
 
 namespace PetRescueFE.Pages
 {
@@ -17,7 +15,7 @@ namespace PetRescueFE.Pages
             _apiService = apiService;
 
         }
-        
+
 
         public void OnGet()
         {
@@ -36,16 +34,16 @@ namespace PetRescueFE.Pages
                 if (userReponse != null)
                 {
                     if (userReponse.Token == null)
-                    {                        
+                    {
                         return Page();
                     }
                     HttpContext.Session.SetString("JWTToken", userReponse.Token.Token.ToString());
                     var handler = new JwtSecurityTokenHandler();
                     var tokenS = handler.ReadToken(userReponse.Token.Token.ToString()) as JwtSecurityToken;
                     var role = tokenS.Claims.First(claim => claim.Type == "role")?.Value;
-                    /*var id = tokenS.Claims.First(claim => claim.Type == "AccountId").Value;*/
+                    var id = tokenS.Claims.First(claim => claim.Type == "nameid")?.Value;
                     HttpContext.Session.SetString("Role", role);
-                    var a = HttpContext.Session.GetString("Role");
+                    HttpContext.Session.SetString("UserId", id);
                     //HttpContext.Session.SetString("AccountId", id);
                     /* var username = tokenS.Claims.First(claim => claim.Type == ClaimTypes.UserData).Value;
                      HttpContext.Session.SetString("Username", username);*/
@@ -56,12 +54,12 @@ namespace PetRescueFE.Pages
                         case "f3c8d4e5-6b7a-4c9d-8e2f-0a1b2c3d4e5f":      //ShelterOwner
                             return RedirectToPage("/Index");
                         case "e7b8f3d2-4a2f-4c3b-8f4d-9c5d8a3e1b2c":     //User
-                            return RedirectToPage("/UserPage/Index");                      
+                            return RedirectToPage("/UserPage/Index");
                         default:
                             return Page();
                     }
                 }
-                
+
 
 
             }

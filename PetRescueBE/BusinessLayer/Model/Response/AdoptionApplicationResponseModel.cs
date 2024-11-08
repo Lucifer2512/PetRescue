@@ -1,12 +1,4 @@
-﻿using System;
-﻿using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
-
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace BusinessLayer.Model.Response
+﻿namespace BusinessLayer.Model.Response
 {
     public class AdoptionApplicationResponseModel
     {

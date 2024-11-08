@@ -4,7 +4,7 @@ namespace PetRescueFE.Pages.Model.Shelters;
 
 public class ShelterDTO
 {
-    
+
 }
 
 public class ShelterRequestModel

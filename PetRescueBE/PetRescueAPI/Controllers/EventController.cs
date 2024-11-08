@@ -1,8 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
 using BusinessLayer.Model.Request;
 using BusinessLayer.Model.Response;
 using BusinessLayer.Service.Interface;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace PetRescueAPI.Controllers;
 [ApiController]
@@ -30,7 +31,18 @@ public class EventController : ControllerBase
         var response = await _eventService.GetsAsync();
         return StatusCode((int)response.Code!, response);
     }
-    
+
+    /// <summary>
+    /// Get paginated list of events
+    /// </summary>
+    /// <param name="parameter">Pagination parameters: Index (page number, starts from 1) and Size (items per page)</param>
+    /// <returns>Paginated list of events</returns>
+    /// <remarks>
+    /// Sample request:
+    ///     GET /api/events/p/?Index=1 and(i mean the syntax) Size=3;
+    /// </remarks>
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     [HttpGet("p/")]
     public async Task<ActionResult<BaseResponseModel<PaginatedList<EventResponseModel>>>> GetsPagedAsync([FromQuery] EventParameter parameter)
     {
@@ -46,7 +58,7 @@ public class EventController : ControllerBase
         var response = await _eventService.GetAsync(id);
         return StatusCode((int)response.Code!, response);
     }
-    
+
     /// <summary>
     /// use many field to do, required shelter id, event name, event description, event date, event location
     /// </summary>
@@ -64,7 +76,7 @@ public class EventController : ControllerBase
         var response = await _eventService.CreateAsync(request);
         return StatusCode((int)response.Code!, response);
     }
-    
+
     [HttpPut("{id}")]
     public async Task<ActionResult> Update(Guid id, [FromBody] EventRequestModel4Update request)
     {
@@ -72,4 +84,6 @@ public class EventController : ControllerBase
         return StatusCode((int)response.Code!, response);
     }
 }
-public record EventParameter([Range(1, int.MaxValue)]int Index, int Size);
+public record EventParameter(
+    [Range(1, int.MaxValue), DefaultValue(1)] int Index, 
+    [Range(1, 50), DefaultValue(3)] int Size = 3);  // Default size of 3, max size of 50
