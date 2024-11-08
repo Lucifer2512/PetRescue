@@ -8,11 +8,6 @@ using DataAccessLayer.Entity;
 using DataAccessLayer.UnitOfWork.Interface;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BusinessLayer.Service.Implement
 {
@@ -28,7 +23,7 @@ namespace BusinessLayer.Service.Implement
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
-        
+
         public async Task<BaseResponseModel<ShelterResponseModel>> AddAsync(ShelterRequestModel request)
         {
             var shelterRepository = _unitOfWork.Repository<Shelter>();
@@ -73,7 +68,7 @@ namespace BusinessLayer.Service.Implement
                 };
             }
 
-            var createdShelter = await shelterRepository.GetAll().Include(s => s.Users).FirstOrDefaultAsync(s =>s.ShelterId == shelterId);
+            var createdShelter = await shelterRepository.GetAll().Include(s => s.Users).FirstOrDefaultAsync(s => s.ShelterId == shelterId);
 
             return new BaseResponseModel<ShelterResponseModel>
             {
@@ -87,7 +82,7 @@ namespace BusinessLayer.Service.Implement
         {
             var shelterRepository = _unitOfWork.Repository<Shelter>();
 
-            var existedShelter = await shelterRepository.GetAll().Include(s => s.Users).FirstOrDefaultAsync(s =>s.ShelterId == id);
+            var existedShelter = await shelterRepository.GetAll().Include(s => s.Users).FirstOrDefaultAsync(s => s.ShelterId == id);
 
             if (existedShelter == null)
             {
@@ -230,6 +225,54 @@ namespace BusinessLayer.Service.Implement
             {
                 Code = 200,
                 Message = "Shelter is Deleted Successfully",
+            };
+        }
+
+
+
+        public async Task<BaseResponseModel<ShelterResponseModel>> UpdateBalanceAsync( Guid id,decimal amount)
+        {
+            var shelterRepository = _unitOfWork.Repository<Shelter>();
+
+            var existedShelter = await shelterRepository.GetAll().Include(s => s.Users).FirstOrDefaultAsync(s => s.ShelterId == id);
+
+            if (existedShelter == null)
+            {
+                return new BaseResponseModel<ShelterResponseModel>
+                {
+                    Code = 404,
+                    Message = "Shelter not exists",
+                    Data = null
+                };
+            }
+
+            existedShelter.Balance += amount;
+
+            try
+            {
+                await _unitOfWork.BeginTransaction();
+
+                await shelterRepository.UpdateAsync(existedShelter);
+
+                await _unitOfWork.CommitTransaction();
+
+            }
+            catch (Exception ex)
+            {
+                await _unitOfWork.RollbackTransaction();
+                return new BaseResponseModel<ShelterResponseModel>
+                {
+                    Code = 500,
+                    Message = ex.Message,
+                    Data = null
+                };
+            }
+
+            return new BaseResponseModel<ShelterResponseModel>
+            {
+                Code = 200,
+                Message = "Shelter Updated Success",
+                Data = _mapper.Map<ShelterResponseModel>(existedShelter)
             };
         }
     }

@@ -16,7 +16,7 @@ public class EventGlobalUtility
         var token = _httpContextAccessor.HttpContext?.Session.GetString("JWTToken");
         if (string.IsNullOrEmpty(token))
             return null;
-            
+
         try
         {
             var handler = new JwtSecurityTokenHandler();
@@ -27,5 +27,5 @@ public class EventGlobalUtility
         {
             return null;
         }
-    } 
+    }
 }

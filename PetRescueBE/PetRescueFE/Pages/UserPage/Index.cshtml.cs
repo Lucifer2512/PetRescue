@@ -12,7 +12,7 @@ namespace PetRescueFE.Pages.UserPage
             _apiService = apiService;
         }
 
-        public IList<UserResponseModel> Users { get;set; } = default!;
+        public IList<UserResponseModel> Users { get; set; } = default!;
 
 
         public async Task OnGetAsync()

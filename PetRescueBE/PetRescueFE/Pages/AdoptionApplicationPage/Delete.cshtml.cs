@@ -1,60 +1,57 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using DataAccessLayer.Context;
-using DataAccessLayer.Entity;
+using PetRescueFE.Pages.Model;
 
 namespace PetRescueFE.Pages.AdoptionApplicationPage
 {
     public class DeleteModel : PageModel
     {
-        private readonly DataAccessLayer.Context.PetRescueDbContext _context;
+        private readonly ApiService _apiService;
 
-        public DeleteModel(DataAccessLayer.Context.PetRescueDbContext context)
+        public DeleteModel(ApiService apiService)
         {
-            _context = context;
+            _apiService = apiService;
         }
 
         [BindProperty]
-      public AdoptionApplication AdoptionApplication { get; set; } = default!;
+        public AdoptionApplicationResponseModel AdoptionApplication { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(Guid? id)
         {
-            if (id == null || _context.AdoptionApplications == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
-            var adoptionapplication = await _context.AdoptionApplications.FirstOrDefaultAsync(m => m.ApplicationId == id);
+            var apiUrl = $"https://localhost:7297/api/adoptionapplication/{id}";
+            var response = await _apiService.GetAsync<BaseResponseModelFE<AdoptionApplicationResponseModel>>(apiUrl);
 
-            if (adoptionapplication == null)
+            if (response.Data == null)
             {
                 return NotFound();
             }
-            else 
-            {
-                AdoptionApplication = adoptionapplication;
-            }
+
+            AdoptionApplication = response.Data;
             return Page();
         }
 
         public async Task<IActionResult> OnPostAsync(Guid? id)
         {
-            if (id == null || _context.AdoptionApplications == null)
+            if (id == null)
             {
                 return NotFound();
             }
-            var adoptionapplication = await _context.AdoptionApplications.FindAsync(id);
 
-            if (adoptionapplication != null)
+            var apiUrl = $"https://localhost:7297/api/adoptionapplication/{id}";
+
+            try
             {
-                AdoptionApplication = adoptionapplication;
-                _context.AdoptionApplications.Remove(AdoptionApplication);
-                await _context.SaveChangesAsync();
+                var response = await _apiService.DeleteAsync(apiUrl);
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "Failed to delete application.");
+                return Page();
             }
 
             return RedirectToPage("./Index");

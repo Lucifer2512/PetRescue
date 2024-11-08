@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
 using PetRescueFE.Pages.Model.Events;
 
 namespace PetRescueFE.Pages.Events
@@ -15,11 +14,11 @@ namespace PetRescueFE.Pages.Events
         }
 
         [BindProperty]
-      public EventResponseModel Event { get; set; } = default!;
+        public EventResponseModel Event { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(Guid? id)
         {
-            
+
             return Page();
         }
 

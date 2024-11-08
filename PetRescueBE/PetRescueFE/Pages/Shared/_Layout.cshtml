@@ -4,6 +4,8 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - PetRescueFE</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" asp-append-version="true">
+
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/PetRescueFE.styles.css" asp-append-version="true" />
@@ -81,7 +83,7 @@
             <h1>PetRescue</h1>
             <nav>
                 <ul>
-                    <li><a asp-page="/Index">PetRescueFE</a></li>
+                    <li><a asp-page="/Index">PetRescue</a></li>
 
                     </ul>
             </nav>
@@ -92,13 +94,12 @@
                         <i class="fa fa-user" onclick="toggleDropdown()"></i>
                         <div class="dropdown-content">
                             <a asp-page="/shelterpage/Index" asp-route-accId="@Context.Session.GetString("AccountId")"><i class="fa-solid fa-user-tie"></i>Shelter</a>
-                            <a asp-page="/Admin">Admin</a>
                             <a asp-page="/userpage/Index" asp-route-accId="@Context.Session.GetString("AccountId")"><i class="fa-solid fa-user"></i> User</a>
-                            <a asp-page="/Payment"><i class="fa-solid fa-credit-card"></i>Payment</a>
+                            <a asp-page="/donationpage/Payment"><i class="fa-solid fa-credit-card"></i>Payment</a>
                             <a asp-page="/donationpage/Create"><i class="fa-solid fa-money-check-dollar"></i>Donation</a>
                             <a asp-page="/Logout"><i class="fa-solid fa-right-from-bracket"></i>Log out</a>
-                </div>
-            </div>
+                        </div>
+                     </div>
                 }
                 else
                 {
@@ -115,11 +116,11 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    @*<footer class="border-top footer text-muted">
         <div class="container">
             &copy; 2024 - PetRescueFE - <a asp-area="" asp-page="/Privacy">Privacy</a>
         </div>
-    </footer>
+    </footer>*@
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
@@ -130,6 +131,26 @@
     
 </body>
 </html>
+<script>
+    function toggleDropdown() {
+        var dropdownContent = document.getElementById("userDropdown").querySelector(".dropdown-content");
+        dropdownContent.style.display === "none" ? dropdownContent.style.display = "block" : dropdownContent.style.display = "none";
+    }
+
+    // Close the dropdown if the user clicks outside of it
+    window.onclick = function (event) {
+        if (!event.target.matches('.fa-user')) {
+            var dropdowns = document.getElementsByClassName("dropdown-content");
+            for (var i = 0; i < dropdowns.length; i++) {
+                var openDropdown = dropdowns[i];
+                if (openDropdown.style.display === "block") {
+                    openDropdown.style.display = "none";
+                }
+            }
+        }
+    }
+
+</script>
 <style>
     body {
         font-family: Arial,Helvetica,sans-serif;

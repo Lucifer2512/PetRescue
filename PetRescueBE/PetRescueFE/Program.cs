@@ -1,8 +1,8 @@
 ﻿using AspNetCoreHero.ToastNotification;
 using PetRescueFE;
+using PetRescueFE.Pages.Events;
 using System.Net.Http.Headers;
 using System.Text.Json.Serialization;
-using PetRescueFE.Pages.Events;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,6 +30,13 @@ builder.Services.AddHttpClient<ApiService>(client =>
 {
     client.BaseAddress = new Uri("https://localhost:7297/api/"); // Thay bằng URL API gốc của bạn
     client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+});
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", builder =>
+        builder.AllowAnyOrigin()
+               .AllowAnyMethod()
+               .AllowAnyHeader());
 });
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<EventGlobalUtility>();

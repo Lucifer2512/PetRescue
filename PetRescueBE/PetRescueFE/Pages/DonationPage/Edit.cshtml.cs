@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using DataAccessLayer.Entity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using DataAccessLayer.Context;
-using DataAccessLayer.Entity;
 
 namespace PetRescueFE.Pages.DonationPage
 {
@@ -17,7 +10,7 @@ namespace PetRescueFE.Pages.DonationPage
 
         public EditModel()
         {
-            
+
         }
 
         [BindProperty]
@@ -44,37 +37,37 @@ namespace PetRescueFE.Pages.DonationPage
 
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see https://aka.ms/RazorPagesCRUD.
-       /* public async Task<IActionResult> OnPostAsync()
-        {
-            if (!ModelState.IsValid)
-            {
-                return Page();
-            }
+        /* public async Task<IActionResult> OnPostAsync()
+         {
+             if (!ModelState.IsValid)
+             {
+                 return Page();
+             }
 
-            _context.Attach(Donation).State = EntityState.Modified;
+             _context.Attach(Donation).State = EntityState.Modified;
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!DonationExists(Donation.DonationId))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+             try
+             {
+                 await _context.SaveChangesAsync();
+             }
+             catch (DbUpdateConcurrencyException)
+             {
+                 if (!DonationExists(Donation.DonationId))
+                 {
+                     return NotFound();
+                 }
+                 else
+                 {
+                     throw;
+                 }
+             }
 
-            return RedirectToPage("./Index");
-        }
+             return RedirectToPage("./Index");
+         }
 
-        private bool DonationExists(Guid id)
-        {
-          return (_context.Donations?.Any(e => e.DonationId == id)).GetValueOrDefault();
-        }*/
+         private bool DonationExists(Guid id)
+         {
+           return (_context.Donations?.Any(e => e.DonationId == id)).GetValueOrDefault();
+         }*/
     }
 }
