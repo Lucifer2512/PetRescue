@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AspNetCoreHero.ToastNotification.Abstractions;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Newtonsoft.Json.Linq;
 using PetRescueFE.Pages.Model;
 using System.IdentityModel.Tokens.Jwt;
 
@@ -10,9 +12,11 @@ namespace PetRescueFE.Pages
         [BindProperty]
         public AccountViewModel AccountViewModel { get; set; }
         private ApiService _apiService;
-        public LoginModel(ApiService apiService)
+        private readonly INotyfService _notyf;
+        public LoginModel(ApiService apiService, INotyfService notyfService)
         {
             _apiService = apiService;
+            _notyf = notyfService;
 
         }
 
@@ -28,6 +32,7 @@ namespace PetRescueFE.Pages
                 return Page();
             }
             var reponse = await _apiService.PostAsync<AccountViewModel, BaseResponseModelFE<LoginResponseModelFE>>("users/login", AccountViewModel); //"`endpoint-url` cho phù hợp"
+           
             if (reponse.Code == 200)
             {
                 var userReponse = reponse.Data;
@@ -65,7 +70,9 @@ namespace PetRescueFE.Pages
             }
             else
             {
-                TempData["Message"] = "Wrong email or password";
+                var messs = JObject.Parse(reponse.Message);
+                var message = messs["message"];
+                _notyf.Warning(message.ToString());
             }
             return Page();
 
