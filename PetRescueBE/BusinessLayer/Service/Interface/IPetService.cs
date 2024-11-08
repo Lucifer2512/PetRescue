@@ -15,5 +15,7 @@ namespace BusinessLayer.Service.Interface
         Task<BaseResponseModel<PetResponseModel>> UpdateASync(PetUpdateRequestModel requestModel);
         Task<BaseResponseModel<PetResponseModel>> AddAsync(PetAddRequestModel requestModel);
         Task<BaseResponseModel<PetResponseModel>> DeleteAsync(Guid id);
+     //   Task<BaseResponseModel<ICollection<PetResponseModel>>> GetAllByShelterIdAsync(Guid shelterId);
+
     }
 }

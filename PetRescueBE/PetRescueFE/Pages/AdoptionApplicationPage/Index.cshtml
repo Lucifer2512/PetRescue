@@ -28,12 +28,12 @@
             <th>
                 @Html.DisplayNameFor(model => model.AdoptionApplication[0].Notes)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AdoptionApplication[0].Pet)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AdoptionApplication[0].User)
-            </th>
+       @*        <th>
+                  @Html.DisplayNameFor(model => model.AdoptionApplication[0].Pet)
+              </th>
+              <th>
+                  @Html.DisplayNameFor(model => model.AdoptionApplication[0].User)
+              </th> *@
             <th></th>
         </tr>
     </thead>
@@ -49,7 +49,7 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Notes)
             </td>
-            <td>
+         @*    <td>
                 @Html.DisplayFor(modelItem => item.Pet.Species)
             </td>
             <td>
@@ -59,7 +59,7 @@
                 <a asp-page="./Edit" asp-route-id="@item.ApplicationId">Edit</a> |
                 <a asp-page="./Details" asp-route-id="@item.ApplicationId">Details</a> |
                 <a asp-page="./Delete" asp-route-id="@item.ApplicationId">Delete</a>
-            </td>
+            </td> *@
         </tr>
 }
     </tbody>
