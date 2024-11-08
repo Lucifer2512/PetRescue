@@ -18,7 +18,7 @@ namespace PetRescueFE.Pages.UserPage
         public List<SelectListItem> RoleList { get; set; }
 
         [BindProperty]
-        public UserRequestModelFE User { get; set; } = new UserRequestModelFE();
+        public UserRequestModelv2FE User { get; set; } = new UserRequestModelv2FE();
 
         public async Task<IActionResult> OnGetAsync()
         {
@@ -48,7 +48,7 @@ namespace PetRescueFE.Pages.UserPage
 
             try
             {
-                var response = await _apiService.PostAsync<UserRequestModelFE, BaseResponseModelFE<UserResponseModel>>(apiUrl, User);
+                var response = await _apiService.PostAsync<UserRequestModelv2FE, BaseResponseModelFE<UserResponseModel>>(apiUrl, User);
             }
             catch (Exception ex)
             {
