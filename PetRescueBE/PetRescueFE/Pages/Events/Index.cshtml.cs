@@ -20,7 +20,12 @@ namespace PetRescueFE.Pages.Events
         public bool CanEdit { get; private set; }
         public bool CanDonate { get; private set; }
 
-        public async Task<ActionResult> OnGetAsync()
+        public int CurrentPage { get; set; } = 1;
+        public int TotalPages { get; set; }
+        public bool HasPreviousPage { get; set; }
+        public bool HasNextPage { get; set; }
+
+        public async Task<ActionResult> OnGetAsync(int? pageIndex)
         {
             // Check user role from session
             var role = HttpContext.Session.GetString("Role");
@@ -30,20 +35,24 @@ namespace PetRescueFE.Pages.Events
 
             CanDonate = role == "e7b8f3d2-4a2f-4c3b-8f4d-9c5d8a3e1b2c"; // User
 
-            var data = await TryGetData(EventUrlProfile.BASE_URL_S + EventUrlProfile.GETS);
+            CurrentPage = pageIndex ?? 1;
+            var data = await TryGetData(EventUrlProfile.BASE_URL_S + $"events/p/?Index={CurrentPage}&Size=3");
             if (data is null)
             {
                 return NotFound();
             }
 
-            Event = data;
+            Event = data.Items;
+            TotalPages = data.TotalPages;
+            HasPreviousPage = data.HasPreviousPage;
+            HasNextPage = data.HasNextPage;
 
             return Page();
         }
 
-        private async Task<List<EventResponseModel>> TryGetData(string url)
+        private async Task<PaginatedList<EventResponseModel>> TryGetData(string url)
         {
-            var data = await _apiService.GetAsync<BaseResponseModelFE<List<EventResponseModel>>>(url);
+            var data = await _apiService.GetAsync<BaseResponseModelFE<PaginatedList<EventResponseModel>>>(url);
             if (data is null)
             {
                 return null;

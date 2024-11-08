@@ -20,24 +20,37 @@ public class EventService : IEventService
     }
 
 
-    public async Task<BaseResponseModel<PaginatedList<EventResponseModel>>> GetsPagedAsync(int index, int size)
+    public async Task<BaseResponseModel<PaginatedList<EventResponseModel>>> GetsPagedAsync(int index, int size = 3)
     {
         var eventRepo = _unitOfWork.Repository<Event>();
-        var events = await eventRepo.DbContext.Set<Event>().OrderBy(e => e.StartDateTime).Skip((index - 1) * size)
-            .Take(size).ToListAsync();
-        var count = await eventRepo.DbContext.Set<Event>().CountAsync();
-        var total = (int)Math.Ceiling(count / (double)size);
-
+        var query = eventRepo.GetAll()
+            .Include(e => e.Shelter)
+            .Include(e => e.Donations)
+            .ThenInclude(donation => donation.User)
+            .OrderBy(e => e.StartDateTime)
+            .AsQueryable();
+        
+        var count = await query.CountAsync();
+        var events = await query
+            .Skip((index - 1) * size)
+            .Take(size)
+            .ToListAsync();
+        
+        var totalPages = (int)Math.Ceiling(count / (double)size);
         var eventResponse = _mapper.Map<List<EventResponseModel>>(events);
+        
         return new BaseResponseModel<PaginatedList<EventResponseModel>>
         {
-            Code = 200,
-            Message = "Success",
+            Code = events.Any() ? 200 : 404,
+            Message = events.Any() ? "Success" : "No events found for this page",
             Data = new PaginatedList<EventResponseModel>
             {
                 Items = eventResponse,
                 PageIndex = index,
-                TotalPages = total
+                TotalPages = totalPages,
+                TotalCount = count,
+                HasPreviousPage = index > 1,
+                HasNextPage = index < totalPages
             }
         };
     }

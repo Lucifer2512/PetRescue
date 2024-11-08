@@ -1,4 +1,5 @@
-﻿using BusinessLayer.Model.Request;
+﻿using System.ComponentModel;
+using BusinessLayer.Model.Request;
 using BusinessLayer.Model.Response;
 using BusinessLayer.Service.Interface;
 using Microsoft.AspNetCore.Mvc;
@@ -31,6 +32,17 @@ public class EventController : ControllerBase
         return StatusCode((int)response.Code!, response);
     }
 
+    /// <summary>
+    /// Get paginated list of events
+    /// </summary>
+    /// <param name="parameter">Pagination parameters: Index (page number, starts from 1) and Size (items per page)</param>
+    /// <returns>Paginated list of events</returns>
+    /// <remarks>
+    /// Sample request:
+    ///     GET /api/events/p/?Index=1 and(i mean the syntax) Size=3;
+    /// </remarks>
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     [HttpGet("p/")]
     public async Task<ActionResult<BaseResponseModel<PaginatedList<EventResponseModel>>>> GetsPagedAsync([FromQuery] EventParameter parameter)
     {
@@ -72,4 +84,6 @@ public class EventController : ControllerBase
         return StatusCode((int)response.Code!, response);
     }
 }
-public record EventParameter([Range(1, int.MaxValue)] int Index, int Size);
+public record EventParameter(
+    [Range(1, int.MaxValue), DefaultValue(1)] int Index, 
+    [Range(1, 50), DefaultValue(3)] int Size = 3);  // Default size of 3, max size of 50
