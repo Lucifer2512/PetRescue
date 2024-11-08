@@ -17,11 +17,6 @@ namespace BusinessLayer.Service.Implement
             private readonly IUnitOfWork _unitOfWork;
             private readonly IMapper _mapper;
 
-
-        private readonly IConfiguration _configuration;
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
-
             public AdoptionApplicationService(IConfiguration configuration, IUnitOfWork unitOfWork, IMapper mapper)
             {
                 _configuration = configuration;

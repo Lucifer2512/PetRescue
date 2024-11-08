@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using PetRescueFE.Pages.Model;
+using System.Text;
 using System.Text.Json;
 
 namespace PetRescueFE
@@ -13,47 +14,123 @@ namespace PetRescueFE
         }
 
         // GET request
-        public async Task<T?> GetAsync<T>(string url)
+        public async Task<TResponse?> GetAsync<TResponse>(string url)
         {
-            var response = await _httpClient.GetAsync(url);
-            response.EnsureSuccessStatusCode();
+            try
+            {
+                var response = await _httpClient.GetAsync(url);
 
-            var responseData = await response.Content.ReadAsStringAsync();
-            var a = JsonSerializer.Deserialize<T>(responseData,
-                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-            return JsonSerializer.Deserialize<T>(responseData,
-                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                if (!response.IsSuccessStatusCode)
+                {
+                    var errorMessage = await response.Content.ReadAsStringAsync();
+                    return JsonSerializer.Deserialize<TResponse>(JsonSerializer.Serialize(new ErrorResponseModel
+                    {
+                        Code = (int)response.StatusCode,
+                        Message = errorMessage
+                    }));
+                }
+
+                var responseData = await response.Content.ReadAsStringAsync();
+                return JsonSerializer.Deserialize<TResponse>(responseData,
+                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            }
+            catch (Exception ex)
+            {
+                return JsonSerializer.Deserialize<TResponse>(JsonSerializer.Serialize(new ErrorResponseModel
+                {
+                    Code = 500, // Internal Server Error
+                    Message = ex.Message
+                }));
+            }
         }
 
         // POST request
         public async Task<TResponse?> PostAsync<TRequest, TResponse>(string url, TRequest data)
         {
-            var content = new StringContent(JsonSerializer.Serialize(data), Encoding.UTF8, "application/json");
-            var response = await _httpClient.PostAsync(url, content);
-            response.EnsureSuccessStatusCode();
+            try
+            {
+                var content = new StringContent(JsonSerializer.Serialize(data), Encoding.UTF8, "application/json");
+                var response = await _httpClient.PostAsync(url, content);
 
-            var responseData = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<TResponse>(responseData,
-                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                if (!response.IsSuccessStatusCode)
+                {
+                    var errorMessage = await response.Content.ReadAsStringAsync();
+                    return JsonSerializer.Deserialize<TResponse>(JsonSerializer.Serialize(new ErrorResponseModel
+                    {
+                        Code = (int)response.StatusCode,
+                        Message = errorMessage
+                    }));
+                }
+
+                var responseData = await response.Content.ReadAsStringAsync();
+                return JsonSerializer.Deserialize<TResponse>(responseData,
+                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            }
+            catch (Exception ex)
+            {
+                return JsonSerializer.Deserialize<TResponse>(JsonSerializer.Serialize(new ErrorResponseModel
+                {
+                    Code = 500, // Internal Server Error
+                    Message = ex.Message
+                }));
+            }
         }
 
         // PUT request
         public async Task<TResponse?> PutAsync<TRequest, TResponse>(string url, TRequest data)
         {
-            var content = new StringContent(JsonSerializer.Serialize(data), Encoding.UTF8, "application/json");
-            var response = await _httpClient.PutAsync(url, content);
-            response.EnsureSuccessStatusCode();
+            try
+            {
+                var content = new StringContent(JsonSerializer.Serialize(data), Encoding.UTF8, "application/json");
+                var response = await _httpClient.PutAsync(url, content);
 
-            var responseData = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<TResponse>(responseData,
-                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                if (!response.IsSuccessStatusCode)
+                {
+                    var errorMessage = await response.Content.ReadAsStringAsync();
+                    return JsonSerializer.Deserialize<TResponse>(JsonSerializer.Serialize(new ErrorResponseModel
+                    {
+                        Code = (int)response.StatusCode,
+                        Message = errorMessage
+                    }));
+                }
+
+                var responseData = await response.Content.ReadAsStringAsync();
+                return JsonSerializer.Deserialize<TResponse>(responseData,
+                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            }
+            catch (Exception ex)
+            {
+                return JsonSerializer.Deserialize<TResponse>(JsonSerializer.Serialize(new ErrorResponseModel
+                {
+                    Code = 500, // Internal Server Error
+                    Message = ex.Message
+                }));
+            }
         }
 
-        // DELETE request
+        // DELETE request (returns bool)
         public async Task<bool> DeleteAsync(string url)
         {
-            var response = await _httpClient.DeleteAsync(url);
-            return response.IsSuccessStatusCode;
+            try
+            {
+                var response = await _httpClient.DeleteAsync(url);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    // Log error message if needed
+                    var errorMessage = await response.Content.ReadAsStringAsync();
+                    Console.WriteLine($"DELETE failed: {errorMessage}");
+                    return false; // Return false if deletion failed
+                }
+
+                return true; // Return true if deletion was successful
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Exception during DELETE: {ex.Message}");
+                return false; // Return false if an exception occurred
+            }
         }
     }
+
 }
