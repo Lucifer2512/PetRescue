@@ -1,7 +1,5 @@
-﻿using BusinessLayer.Model.Enums;
-using BusinessLayer.Model.Request;
+﻿using BusinessLayer.Model.Request;
 using BusinessLayer.Model.Response;
-using DataAccessLayer.Entity;
 
 namespace BusinessLayer.Service.Interface
 {

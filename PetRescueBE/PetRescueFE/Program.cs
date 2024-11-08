@@ -1,8 +1,8 @@
 ﻿using AspNetCoreHero.ToastNotification;
 using PetRescueFE;
+using PetRescueFE.Pages.Events;
 using System.Net.Http.Headers;
 using System.Text.Json.Serialization;
-using PetRescueFE.Pages.Events;
 
 var builder = WebApplication.CreateBuilder(args);
 

@@ -9,7 +9,7 @@ public class EventUrlProfile
     public static readonly string POST_CREATE = "events/";
     public static readonly string PUT_UPDATE = "events/";
     public static readonly string DELETE = "events/";
-    
+
     public static readonly string GET_SHELTER = "shelter";
-    
+
 }

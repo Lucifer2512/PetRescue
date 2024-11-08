@@ -19,7 +19,7 @@ public class EventService : IEventService
         _mapper = mapper;
     }
 
-    
+
     public async Task<BaseResponseModel<PaginatedList<EventResponseModel>>> GetsPagedAsync(int index, int size)
     {
         var eventRepo = _unitOfWork.Repository<Event>();
@@ -42,16 +42,16 @@ public class EventService : IEventService
         };
     }
 
-    
+
     public async Task<BaseResponseModel<IEnumerable<EventResponseModel>>> GetsAsync()
     {
         var eventRepo = _unitOfWork.Repository<Event>();
-        
+
         var events = await eventRepo.DbContext.Set<Event>()
             .Include(e => e.Shelter)
             .Include(e => e.Donations)
             .ToListAsync();
-        
+
         var eventResponse = _mapper.Map<List<EventResponseModel>>(events);
 
         if (events.Count() == 0)
@@ -72,7 +72,7 @@ public class EventService : IEventService
         };
     }
 
-    
+
     public async Task<BaseResponseModel<EventResponseModel>> GetAsync(Guid id)
     {
         var eventRepo = _unitOfWork.Repository<Event>();
@@ -95,7 +95,7 @@ public class EventService : IEventService
         };
     }
 
-    
+
     public async Task<BaseResponseModel<string>> CreateAsync(EventRequestModel4Create request)
     {
         var eventRepo = _unitOfWork.Repository<Event>();

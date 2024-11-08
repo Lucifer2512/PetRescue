@@ -9,9 +9,9 @@ namespace PetRescueAPI.Controllers
     public class DonationController : Controller
     {
         private readonly IDonationService _donationService;
-        public DonationController( IDonationService donationService)
+        public DonationController(IDonationService donationService)
         {
-           _donationService = donationService;
+            _donationService = donationService;
         }
         [HttpPost("CreateDonation")]
         public async Task<IActionResult> CreateDonation([FromBody] DonationRequestModel request)

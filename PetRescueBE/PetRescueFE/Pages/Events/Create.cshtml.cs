@@ -16,19 +16,19 @@ namespace PetRescueFE.Pages.Events
             _apiService = apiService;
             _eventGlobalUtility = eventGlobalUtility;
         }
-        
+
         [BindProperty]
         public IEnumerable<Shelter4EventResponse> Shelters { get; set; } = new List<Shelter4EventResponse>();
 
         public async Task<IActionResult> OnGetAsync()
         {
-            try 
+            try
             {
                 string shelterUrl = EventUrlProfile.BASE_URL_S + EventUrlProfile.GET_SHELTER;
-                
+
                 // Initialize empty Shelters to avoid case of fire
                 Shelters = new List<Shelter4EventResponse>();
-                
+
                 var response = await GetShelterList(shelterUrl);
                 if (response == null || !response.Any())
                 {
@@ -36,17 +36,17 @@ namespace PetRescueFE.Pages.Events
                     ModelState.AddModelError(string.Empty, "No shelters available");
                     return Page();
                 }
-                
+
                 // Replace User.Identity?.Name with GetUserMail()
                 var userMail = _eventGlobalUtility.GetUserMail() ?? string.Empty;
                 var filteredShelters = FilteredShelterWithUserMail(response, userMail);
-                
+
                 if (!filteredShelters.Any())
                 {
                     ModelState.AddModelError(string.Empty, "No shelters found for current user");
                     return Page();
                 }
-                
+
                 Shelters = filteredShelters;
                 return Page();
             }
@@ -59,12 +59,12 @@ namespace PetRescueFE.Pages.Events
 
         [BindProperty]
         public EventRequestModel4Create Event { get; set; } = new();
-        
+
 
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
         {
-            try 
+            try
             {
                 if (!ModelState.IsValid)
                 {
@@ -78,7 +78,7 @@ namespace PetRescueFE.Pages.Events
                 // Ensure dates are in UTC
                 Event.StartDateTime = DateTime.SpecifyKind(Event.StartDateTime, DateTimeKind.Utc);
                 Event.EndDateTime = DateTime.SpecifyKind(Event.EndDateTime, DateTimeKind.Utc);
-                
+
                 // Set default status if not provided
                 if (string.IsNullOrEmpty(Event.Status))
                 {
@@ -86,21 +86,21 @@ namespace PetRescueFE.Pages.Events
                 }
 
                 await _apiService.PostAsync<EventRequestModel4Create, BaseResponseModelFE<EventResponseModel>>(
-                    EventUrlProfile.POST_CREATE, 
+                    EventUrlProfile.POST_CREATE,
                     Event
                 );
-                
+
                 return RedirectToPage("./Index");
             }
             catch (Exception ex)
             {
                 ModelState.AddModelError(string.Empty, "Error creating event: " + ex.Message);
-                
+
                 // Repopulate shelter list on error
                 string shelterUrl = EventUrlProfile.BASE_URL_S + EventUrlProfile.GET_SHELTER;
                 var shelters = await GetShelterList(shelterUrl);
                 Shelters = FilteredShelterWithUserMail(shelters, User.Identity?.Name ?? string.Empty);
-                
+
                 return Page();
             }
         }
@@ -121,7 +121,7 @@ namespace PetRescueFE.Pages.Events
             var filted = shelters.Where(shelter => shelter.UserEmail == userMail).ToList();
             return filted;
         }
-        
+
         /// <summary>
         /// try to get the shelter list from api https://localhost:7297/api/shelter
         /// remember to change the url to the correct one.

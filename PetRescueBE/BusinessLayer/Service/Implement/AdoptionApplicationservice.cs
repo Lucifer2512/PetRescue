@@ -1,22 +1,18 @@
 ﻿using AutoMapper;
 using BusinessLayer.Model.Request;
 using BusinessLayer.Model.Response;
-using BusinessLayer.Models.Response;
 using BusinessLayer.Service.Interface;
 using DataAccessLayer.Entity;
 using DataAccessLayer.UnitOfWork.Interface;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BusinessLayer.Service.Implement
 {
     public class AdoptionApplicationService : IAdoptionApplicationService
     {
+
+
         private readonly IConfiguration _configuration;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -123,7 +119,7 @@ namespace BusinessLayer.Service.Implement
                 Code = 201,
                 Message = "Application Created Success",
                 Data = response
-                
+
             };
         }
 
@@ -222,3 +218,4 @@ namespace BusinessLayer.Service.Implement
 
     }
 }
+

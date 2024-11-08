@@ -2,8 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using PetRescueFE.Pages.Model;
-using System.IdentityModel.Tokens.Jwt;
-using System.Net;
 
 namespace PetRescueFE.Pages
 {
@@ -23,7 +21,7 @@ namespace PetRescueFE.Pages
             {
                 return Page();
             }
-            
+
             var requestBody = new UserRequestModelv2FE
             {
                 FirstName = AccountRegister.FirstName,

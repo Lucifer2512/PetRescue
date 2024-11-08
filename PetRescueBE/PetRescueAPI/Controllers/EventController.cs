@@ -1,8 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
-using BusinessLayer.Model.Request;
+﻿using BusinessLayer.Model.Request;
 using BusinessLayer.Model.Response;
 using BusinessLayer.Service.Interface;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace PetRescueAPI.Controllers;
 [ApiController]
@@ -30,7 +30,7 @@ public class EventController : ControllerBase
         var response = await _eventService.GetsAsync();
         return StatusCode((int)response.Code!, response);
     }
-    
+
     [HttpGet("p/")]
     public async Task<ActionResult<BaseResponseModel<PaginatedList<EventResponseModel>>>> GetsPagedAsync([FromQuery] EventParameter parameter)
     {
@@ -46,7 +46,7 @@ public class EventController : ControllerBase
         var response = await _eventService.GetAsync(id);
         return StatusCode((int)response.Code!, response);
     }
-    
+
     /// <summary>
     /// use many field to do, required shelter id, event name, event description, event date, event location
     /// </summary>
@@ -64,7 +64,7 @@ public class EventController : ControllerBase
         var response = await _eventService.CreateAsync(request);
         return StatusCode((int)response.Code!, response);
     }
-    
+
     [HttpPut("{id}")]
     public async Task<ActionResult> Update(Guid id, [FromBody] EventRequestModel4Update request)
     {
@@ -72,4 +72,4 @@ public class EventController : ControllerBase
         return StatusCode((int)response.Code!, response);
     }
 }
-public record EventParameter([Range(1, int.MaxValue)]int Index, int Size);
+public record EventParameter([Range(1, int.MaxValue)] int Index, int Size);
