@@ -75,8 +75,12 @@ public class EventService : IEventService
 
     public async Task<BaseResponseModel<EventResponseModel>> GetAsync(Guid id)
     {
-        var eventRepo = _unitOfWork.Repository<Event>();
-        var isEvent = await eventRepo.FindAsync(id);
+        var eventRepo = _unitOfWork.Repository<Event>().GetAll()
+            .Include(ev => ev.Shelter)
+            .Include(ev => ev.Donations)
+            .ThenInclude(donation => donation.User)
+            .AsQueryable();
+        var isEvent = await eventRepo.SingleOrDefaultAsync(ev => ev.EventId == id);
         if (isEvent is null)
         {
             return new BaseResponseModel<EventResponseModel>
