@@ -42,6 +42,7 @@ namespace PetRescueAPI.AppStarts
             services.AddScoped<IPetService, PetSercice>();
             services.AddScoped<IDonationService, DonationService>();
             services.AddScoped<IAdoptionApplicationService, AdoptionApplicationService>();
+            
 
         }
     }
