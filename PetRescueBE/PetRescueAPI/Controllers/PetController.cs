@@ -43,7 +43,7 @@ namespace PetRescueAPI.Controllers
         [HttpDelete("id")]
         public async Task<IActionResult> DeletePet(Guid id)
         {
-            var response =await _petService.DeleteAsync(id);
+            var response = await _petService.DeleteAsync(id);
             return StatusCode((int)response.Code, response);
         }
 

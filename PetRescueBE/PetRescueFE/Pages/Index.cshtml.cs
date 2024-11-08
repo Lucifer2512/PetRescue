@@ -12,9 +12,9 @@ namespace PetRescueFE.Pages
             _logger = logger;
         }
 
-        public IActionResult  OnGet()
+        public IActionResult OnGet()
         {
-          return RedirectToPage("/Login");
+            return RedirectToPage("/Login");
         }
     }
 }

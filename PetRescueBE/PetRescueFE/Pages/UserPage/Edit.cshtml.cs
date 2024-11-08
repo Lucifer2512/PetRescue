@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using DataAccessLayer.Entity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using DataAccessLayer.Entity;
-using System.ComponentModel.DataAnnotations;
 using PetRescueFE.Pages.Model;
+using System.ComponentModel.DataAnnotations;
 
 namespace PetRescueFE.Pages.UserPage
 {
@@ -75,7 +72,7 @@ namespace PetRescueFE.Pages.UserPage
                 {
                     ModelState.AddModelError(string.Empty, validationResult.ErrorMessage);
                 }
-                return Page(); 
+                return Page();
             }
 
             try

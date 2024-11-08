@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using DataAccessLayer.Entity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using DataAccessLayer.Context;
-using DataAccessLayer.Entity;
 
 namespace PetRescueFE.Pages.DonationPage
 {
@@ -20,7 +15,7 @@ namespace PetRescueFE.Pages.DonationPage
         }
 
         [BindProperty]
-      public Donation Donation { get; set; } = default!;
+        public Donation Donation { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(Guid? id)
         {
@@ -35,7 +30,7 @@ namespace PetRescueFE.Pages.DonationPage
             {
                 return NotFound();
             }
-            else 
+            else
             {
                 Donation = donation;
             }

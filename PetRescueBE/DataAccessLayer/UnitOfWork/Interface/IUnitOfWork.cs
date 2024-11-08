@@ -1,5 +1,4 @@
-﻿using System.Linq.Expressions;
-using DataAccessLayer.Repository.Interface;
+﻿using DataAccessLayer.Repository.Interface;
 
 namespace DataAccessLayer.UnitOfWork.Interface
 {
@@ -10,7 +9,7 @@ namespace DataAccessLayer.UnitOfWork.Interface
         Task BeginTransaction();
         Task CommitTransaction();
         Task RollbackTransaction();
-       
+
 
     }
 }

@@ -1,6 +1,5 @@
 ﻿using DataAccessLayer.Repository.Interface;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.Linq.Expressions;
 
 namespace DataAccessLayer.Repository.Implement

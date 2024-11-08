@@ -1,11 +1,11 @@
-﻿using System.ComponentModel;
-using BusinessLayer.Model.Enums;
+﻿using BusinessLayer.Model.Enums;
+using System.ComponentModel;
 
 namespace BusinessLayer.Model.Request;
 
 public class EventRequestModel
 {
-    
+
 }
 
 public class EventRequestModel4Create
@@ -21,7 +21,7 @@ public class EventRequestModel4Create
     [DefaultValue("ACTIVE")]
     public Status? Status { get; set; }
     public Guid? ShelterId { get; set; }
-    
+
     /*
     public virtual ICollection<Donation>? Donations { get; set; } = null;*/
 }
