@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BusinessLayer.Model.Request;
 using BusinessLayer.Model.Response;
+using BusinessLayer.Models.Response;
 using BusinessLayer.Service.Interface;
 using DataAccessLayer.Entity;
 using DataAccessLayer.UnitOfWork.Interface;
@@ -16,211 +17,208 @@ namespace BusinessLayer.Service.Implement
 {
     public class AdoptionApplicationService : IAdoptionApplicationService
     {
+        private readonly IConfiguration _configuration;
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-       
-            private readonly IConfiguration _configuration;
-            private readonly IUnitOfWork _unitOfWork;
-            private readonly IMapper _mapper;
+        public AdoptionApplicationService(IConfiguration configuration, IUnitOfWork unitOfWork, IMapper mapper)
+        {
+            _configuration = configuration;
+            _unitOfWork = unitOfWork;
+            _mapper = mapper;
+        }
 
-            public AdoptionApplicationService(IConfiguration configuration, IUnitOfWork unitOfWork, IMapper mapper)
+        public async Task<BaseResponseModel<AdoptionApplicationResponseModel>> GetDetailAsync(Guid id)
+        {
+            var applicationRepo = _unitOfWork.Repository<AdoptionApplication>();
+            var petRepo = _unitOfWork.Repository<Pet>();
+            var userRepo = _unitOfWork.Repository<User>();
+
+            var existedApplication = await applicationRepo.FindAsync(id);
+
+            var response = _mapper.Map<AdoptionApplicationResponseModel>(existedApplication);
+            response.PetName = petRepo.FindAsync(existedApplication.PetId).Result.Name;
+            response.UserName = userRepo.FindAsync(existedApplication.UserId).Result.FirstName;
+
+            if (existedApplication == null)
             {
-                _configuration = configuration;
-                _unitOfWork = unitOfWork;
-                _mapper = mapper;
-            }
-
-            public async Task<BaseResponseModel<AdoptionApplicationResponseModel>> GetDetailAsync(Guid id)
-            {
-                var applicationRepo = _unitOfWork.Repository<AdoptionApplication>();
-                var petRepo = _unitOfWork.Repository<Pet>();
-                var userRepo = _unitOfWork.Repository<User>();
-
-                var existedApplication = await applicationRepo.FindAsync(id);
-
-                var response = _mapper.Map<AdoptionApplicationResponseModel>(existedApplication);
-                response.PetName = petRepo.FindAsync(existedApplication.PetId).Result.Name;
-                response.UserName = userRepo.FindAsync(existedApplication.UserId).Result.FirstName;
-
-                if (existedApplication == null)
-                {
-                    return new BaseResponseModel<AdoptionApplicationResponseModel>
-                    {
-                        Code = 404,
-                        Message = "Application not exists",
-                        Data = null
-                    };
-                }
-
                 return new BaseResponseModel<AdoptionApplicationResponseModel>
                 {
-                    Code = 200,
-                    Message = "Get Application Detail Success",
-                    Data = response
+                    Code = 404,
+                    Message = "Application not exists",
+                    Data = null
                 };
             }
 
-            public async Task<BaseResponseModel<IEnumerable<AdoptionApplicationResponseModel>>> GetAllAsync()
+            return new BaseResponseModel<AdoptionApplicationResponseModel>
             {
-                var repo = _unitOfWork.Repository<AdoptionApplication>();
+                Code = 200,
+                Message = "Get Application Detail Success",
+                Data = response
+            };
+        }
 
-                var applications = await repo.GetAll()
-                    .Include(u => u.User)
-                    .Include(p => p.Pet)
-                    .ToListAsync();
-                var responseModels = _mapper.Map<IEnumerable<AdoptionApplicationResponseModel>>(applications);
+        public async Task<BaseResponseModel<IEnumerable<AdoptionApplicationResponseModel>>> GetAllAsync()
+        {
+            var repo = _unitOfWork.Repository<AdoptionApplication>();
 
-                if (applications.Count() == 0)
-                {
-                    return new BaseResponseModel<IEnumerable<AdoptionApplicationResponseModel>>
-                    {
-                        Code = 200,
-                        Message = "No Shelters in the list",
-                        Data = responseModels
-                    };
-                }
+            var applications = await repo.GetAll()
+                .Include(u => u.User)
+                .Include(p => p.Pet)
+                .ToListAsync();
+            var responseModels = _mapper.Map<IEnumerable<AdoptionApplicationResponseModel>>(applications);
 
+            if (applications.Count() == 0)
+            {
                 return new BaseResponseModel<IEnumerable<AdoptionApplicationResponseModel>>
                 {
                     Code = 200,
-                    Message = "Shelters retrieved successfully",
+                    Message = "No Shelters in the list",
                     Data = responseModels
                 };
             }
 
-            public async Task<BaseResponseModel<AdoptionApplicationResponseModel>> AddAsync(AdoptionApplicationRequestModel request)
+            return new BaseResponseModel<IEnumerable<AdoptionApplicationResponseModel>>
             {
-                var applicationRepo = _unitOfWork.Repository<AdoptionApplication>();
-                var petRepo = _unitOfWork.Repository<Pet>();
-                var userRepo = _unitOfWork.Repository<User>();
+                Code = 200,
+                Message = "Shelters retrieved successfully",
+                Data = responseModels
+            };
+        }
 
-                var newApplication = _mapper.Map<AdoptionApplication>(request);
-                newApplication.ApplicationId = Guid.NewGuid();
-                newApplication.Status = "PENDING";
-                try
-                {
-                    await _unitOfWork.BeginTransaction();
+        public async Task<BaseResponseModel<AdoptionApplicationResponseModel>> AddAsync(AdoptionApplicationRequestModel request)
+        {
+            var applicationRepo = _unitOfWork.Repository<AdoptionApplication>();
+            var petRepo = _unitOfWork.Repository<Pet>();
+            var userRepo = _unitOfWork.Repository<User>();
 
-                    await applicationRepo.InsertAsync(newApplication);
+            var newApplication = _mapper.Map<AdoptionApplication>(request);
+            newApplication.ApplicationId = Guid.NewGuid();
+            newApplication.Status = "PENDING";
+            try
+            {
+                await _unitOfWork.BeginTransaction();
 
-                    await _unitOfWork.CommitTransaction();
-                }
-                catch (Exception ex)
-                {
-                    await _unitOfWork.RollbackTransaction();
-                    return new BaseResponseModel<AdoptionApplicationResponseModel>
-                    {
-                        Code = 500,
-                        Message = ex.Message,
-                        Data = null
-                    };
-                }
+                await applicationRepo.InsertAsync(newApplication);
 
-                var response = _mapper.Map<AdoptionApplicationResponseModel>(newApplication);
-                response.PetName = petRepo.FindAsync(request.PetId).Result.Name;
-                response.UserName = userRepo.FindAsync(request.UserId).Result.FirstName;
-
+                await _unitOfWork.CommitTransaction();
+            }
+            catch (Exception ex)
+            {
+                await _unitOfWork.RollbackTransaction();
                 return new BaseResponseModel<AdoptionApplicationResponseModel>
                 {
-                    Code = 201,
-                    Message = "Application Created Success",
-                    Data = response
-
+                    Code = 500,
+                    Message = ex.Message,
+                    Data = null
                 };
             }
 
-            public async Task<BaseResponseModel<AdoptionApplicationResponseModel>> UpdateAsync(AdoptionApplicationRequestModelForUpdate request, Guid id)
+            var response = _mapper.Map<AdoptionApplicationResponseModel>(newApplication);
+            response.PetName = petRepo.FindAsync(request.PetId).Result.Name;
+            response.UserName = userRepo.FindAsync(request.UserId).Result.FirstName;
+
+            return new BaseResponseModel<AdoptionApplicationResponseModel>
             {
-                var applicationRepo = _unitOfWork.Repository<AdoptionApplication>();
-                var petRepo = _unitOfWork.Repository<Pet>();
-                var userRepo = _unitOfWork.Repository<User>();
+                Code = 201,
+                Message = "Application Created Success",
+                Data = response
+                
+            };
+        }
 
-                var existedApplication = await applicationRepo.FindAsync(id);
+        public async Task<BaseResponseModel<AdoptionApplicationResponseModel>> UpdateAsync(AdoptionApplicationRequestModelForUpdate request, Guid id)
+        {
+            var applicationRepo = _unitOfWork.Repository<AdoptionApplication>();
+            var petRepo = _unitOfWork.Repository<Pet>();
+            var userRepo = _unitOfWork.Repository<User>();
 
-                if (existedApplication == null)
-                {
-                    return new BaseResponseModel<AdoptionApplicationResponseModel>
-                    {
-                        Code = 404,
-                        Message = "Application not exists",
-                        Data = null
-                    };
-                }
+            var existedApplication = await applicationRepo.FindAsync(id);
 
-                _mapper.Map(request, existedApplication);
-
-                try
-                {
-                    await _unitOfWork.BeginTransaction();
-
-                    await applicationRepo.UpdateAsync(existedApplication);
-
-                    await _unitOfWork.CommitTransaction();
-
-                }
-                catch (Exception ex)
-                {
-                    await _unitOfWork.RollbackTransaction();
-                    return new BaseResponseModel<AdoptionApplicationResponseModel>
-                    {
-                        Code = 500,
-                        Message = ex.Message,
-                        Data = null
-                    };
-                }
-
-                var response = _mapper.Map<AdoptionApplicationResponseModel>(existedApplication);
-                response.PetName = petRepo.FindAsync(existedApplication.PetId).Result.Name;
-                response.UserName = userRepo.FindAsync(existedApplication.UserId).Result.FirstName;
-
+            if (existedApplication == null)
+            {
                 return new BaseResponseModel<AdoptionApplicationResponseModel>
                 {
-                    Code = 200,
-                    Message = "Application Updated Success",
-                    Data = response
+                    Code = 404,
+                    Message = "Application not exists",
+                    Data = null
                 };
             }
 
-            public async Task<BaseResponseModel> DeleteAsync(Guid id)
+            _mapper.Map(request, existedApplication);
+
+            try
             {
-                var repo = _unitOfWork.Repository<AdoptionApplication>();
+                await _unitOfWork.BeginTransaction();
 
-                var exitedApplication = await repo.FindAsync(id);
+                await applicationRepo.UpdateAsync(existedApplication);
 
-                if (exitedApplication == null)
+                await _unitOfWork.CommitTransaction();
+
+            }
+            catch (Exception ex)
+            {
+                await _unitOfWork.RollbackTransaction();
+                return new BaseResponseModel<AdoptionApplicationResponseModel>
                 {
-                    return new BaseResponseModel
-                    {
-                        Code = 404,
-                        Message = "Application not found",
-                    };
-                }
+                    Code = 500,
+                    Message = ex.Message,
+                    Data = null
+                };
+            }
 
-                try
-                {
-                    await _unitOfWork.BeginTransaction();
+            var response = _mapper.Map<AdoptionApplicationResponseModel>(existedApplication);
+            response.PetName = petRepo.FindAsync(existedApplication.PetId).Result.Name;
+            response.UserName = userRepo.FindAsync(existedApplication.UserId).Result.FirstName;
 
-                    await repo.DeleteAsync(exitedApplication);
+            return new BaseResponseModel<AdoptionApplicationResponseModel>
+            {
+                Code = 200,
+                Message = "Application Updated Success",
+                Data = response
+            };
+        }
 
-                    await _unitOfWork.CommitTransaction();
+        public async Task<BaseResponseModel> DeleteAsync(Guid id)
+        {
+            var repo = _unitOfWork.Repository<AdoptionApplication>();
 
-                }
-                catch (Exception ex)
-                {
-                    await _unitOfWork.RollbackTransaction();
-                    return new BaseResponseModel
-                    {
-                        Code = 500,
-                        Message = ex.Message,
-                    };
-                }
+            var exitedApplication = await repo.FindAsync(id);
 
+            if (exitedApplication == null)
+            {
                 return new BaseResponseModel
                 {
-                    Code = 200,
-                    Message = "Application is Deleted Successfully",
+                    Code = 404,
+                    Message = "Application not found",
                 };
             }
 
-        }
-    }
+            try
+            {
+                await _unitOfWork.BeginTransaction();
 
+                await repo.DeleteAsync(exitedApplication);
+
+                await _unitOfWork.CommitTransaction();
+
+            }
+            catch (Exception ex)
+            {
+                await _unitOfWork.RollbackTransaction();
+                return new BaseResponseModel
+                {
+                    Code = 500,
+                    Message = ex.Message,
+                };
+            }
+
+            return new BaseResponseModel
+            {
+                Code = 200,
+                Message = "Application is Deleted Successfully",
+            };
+        }
+
+    }
+}
