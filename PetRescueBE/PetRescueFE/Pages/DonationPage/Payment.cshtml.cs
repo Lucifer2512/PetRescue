@@ -14,7 +14,11 @@ namespace PetRescueFE.Pages.DonationPage
     {
         [BindProperty]
         public decimal Amount { get; set; }
-        public string AccountId { get; private set; }
+        public string UserId { get; private set; }
+        [BindProperty]
+        public Guid EventId { get; set; }
+        [BindProperty]
+        public Guid ShelterId { get; set; }
         private readonly ApiService _apiService;
 
 
@@ -23,9 +27,10 @@ namespace PetRescueFE.Pages.DonationPage
             _apiService = apiService;
         }
 
-        public void OnGet()
+        public void OnGet(Guid eventId, Guid shelterId)
         {
-
+            EventId = eventId;
+            ShelterId = shelterId;
         }
 
         public async Task<IActionResult> OnPost()
@@ -36,11 +41,12 @@ namespace PetRescueFE.Pages.DonationPage
             {
                 return Page();
             }
-            AccountId = HttpContext.Session.GetString("AccountId");
+            UserId = HttpContext.Session.GetString("UserId");
+            
             DonationRequestModelQRCode donation = new DonationRequestModelQRCode();
-            donation.ShelterId = Guid.Parse("2f78ddb6-1b06-4730-a23b-f44fd1d3bfff");
-            donation.EventId = Guid.Parse("422916e7-3d1e-4664-a194-d33bdb8a19df");
-            donation.UserId = Guid.Parse("3f21226b-30c1-4274-81a6-2ed9d9e0c54c");
+            donation.ShelterId = ShelterId;
+            donation.EventId = EventId;
+            donation.UserId = Guid.Parse(UserId);
             donation.Amount = Amount;
             var response = await _apiService.PostAsync<DonationRequestModelQRCode, BaseResponseModelFE<String>>("donation/donationqrurl", donation); //"`endpoint-url` cho phù hợp"
             if (response.Code == 200)

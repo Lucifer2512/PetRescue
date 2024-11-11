@@ -40,7 +40,10 @@ namespace BusinessLayer.Ultility
             CreateMap<PetUpdateRequestModel, Pet>();
             #region Event families
 
-            CreateMap<Event, EventResponseModel>().ReverseMap();
+            CreateMap<Event, EventResponseModel>()
+                .ForMember(dest => dest.ShelterId,
+                    opt => opt.MapFrom(src => src.Shelter!.ShelterId))
+                .ReverseMap();
             CreateMap<EventRequestModel4Create, Event>().ReverseMap();
             CreateMap<EventRequestModel4Update, Event>().ReverseMap();
             CreateMap<Event, EventResponseModel>().ReverseMap();
