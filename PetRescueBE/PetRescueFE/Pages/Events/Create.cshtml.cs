@@ -9,12 +9,12 @@ namespace PetRescueFE.Pages.Events
     public class CreateModel : PageModel
     {
         private readonly ApiService _apiService;
-        private readonly EventGlobalUtility _eventGlobalUtility;
+        private readonly EventGlobalUtility _utility;
 
-        public CreateModel(ApiService apiService, EventGlobalUtility eventGlobalUtility)
+        public CreateModel(ApiService apiService, EventGlobalUtility utility)
         {
             _apiService = apiService;
-            _eventGlobalUtility = eventGlobalUtility;
+            _utility = utility;
         }
 
         [BindProperty]
@@ -24,7 +24,13 @@ namespace PetRescueFE.Pages.Events
         {
             try
             {
-                string shelterUrl = EventUrlProfile.BASE_URL_S + EventUrlProfile.GET_SHELTER;
+                string? userId = _utility.GetUserId();
+                if (userId == null) // do when session is out
+                {
+                    return RedirectToPage("/Login");
+                }
+                
+                string shelterUrl = EventUrlProfile.BASE_URL_S + EventUrlProfile.GET_SHELTER_BY_USER_ID + userId;
 
                 // Initialize empty Shelters to avoid case of fire
                 Shelters = new List<Shelter4EventResponse>();
@@ -37,17 +43,7 @@ namespace PetRescueFE.Pages.Events
                     return Page();
                 }
 
-                // Replace User.Identity?.Name with GetUserMail()
-                var userMail = _eventGlobalUtility.GetUserMail() ?? string.Empty;
-                var filteredShelters = FilteredShelterWithUserMail(response, userMail);
-
-                if (!filteredShelters.Any())
-                {
-                    ModelState.AddModelError(string.Empty, "No shelters found for current user");
-                    return Page();
-                }
-
-                Shelters = filteredShelters;
+                Shelters = response;
                 return Page();
             }
             catch (Exception ex)
@@ -66,12 +62,17 @@ namespace PetRescueFE.Pages.Events
         {
             try
             {
+                string? userId = _utility.GetUserId();
+                if (userId == null) // do when session is out
+                {
+                    return RedirectToPage("/Login");
+                }
                 if (!ModelState.IsValid)
                 {
                     // Repopulate shelter list on validation failure
-                    string shelterUrl = EventUrlProfile.BASE_URL_S + EventUrlProfile.GET_SHELTER;
+                    string shelterUrl = EventUrlProfile.BASE_URL_S + EventUrlProfile.GET_SHELTER_BY_USER_ID + userId;
                     var shelters = await GetShelterList(shelterUrl);
-                    Shelters = FilteredShelterWithUserMail(shelters, User.Identity?.Name ?? string.Empty);
+                    Shelters = shelters;
                     return Page();
                 }
 
@@ -97,9 +98,9 @@ namespace PetRescueFE.Pages.Events
                 ModelState.AddModelError(string.Empty, "Error creating event: " + ex.Message);
 
                 // Repopulate shelter list on error
-                string shelterUrl = EventUrlProfile.BASE_URL_S + EventUrlProfile.GET_SHELTER;
+                string shelterUrl = EventUrlProfile.BASE_URL_S + EventUrlProfile.GET_SHELTER_BY_USER_ID + _utility.GetUserId();
                 var shelters = await GetShelterList(shelterUrl);
-                Shelters = FilteredShelterWithUserMail(shelters, User.Identity?.Name ?? string.Empty);
+                Shelters = shelters;
 
                 return Page();
             }

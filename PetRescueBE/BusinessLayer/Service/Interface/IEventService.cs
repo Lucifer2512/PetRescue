@@ -11,7 +11,7 @@ public interface IEventService
     /// <param name="index">int</param>
     /// <param name="size">int</param>
     /// <returns>BaseResponseModel contain PaginatedList contain EventResponseModel</returns>
-    public Task<BaseResponseModel<PaginatedList<EventResponseModel>>> GetsPagedAsync(int index, int size);
+    public Task<BaseResponseModel<PaginatedList<EventResponseModel>>> GetsPagedAsync(int index, int size, string? userId = null);
 
     /// <summary>
     /// get all events, no validate like is shelter or not

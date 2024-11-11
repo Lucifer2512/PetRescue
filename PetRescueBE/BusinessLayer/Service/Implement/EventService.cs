@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BusinessLayer.Model.Enums;
 using BusinessLayer.Model.Request;
 using BusinessLayer.Model.Response;
 using BusinessLayer.Service.Interface;
@@ -20,7 +21,7 @@ public class EventService : IEventService
     }
 
 
-    public async Task<BaseResponseModel<PaginatedList<EventResponseModel>>> GetsPagedAsync(int index, int size = 3)
+    public async Task<BaseResponseModel<PaginatedList<EventResponseModel>>> GetsPagedAsync(int index, int size = 3, string? userId = null)
     {
         var eventRepo = _unitOfWork.Repository<Event>();
         var query = eventRepo.GetAll()
@@ -29,6 +30,21 @@ public class EventService : IEventService
             .ThenInclude(donation => donation.User)*/
             .OrderBy(e => e.StartDateTime)
             .AsQueryable();
+        
+        Guid? userIdRaw = null;
+        if (userId != null)
+        {
+            userIdRaw = Guid.Parse(userId);
+        }
+
+        if (userIdRaw != null)
+        {
+            query = query.Where(e => e.Shelter.Users.UserId == userIdRaw);
+        }
+        else
+        {
+            query = query.Where(e => e.Status.ToLower() == Status.ACTIVE.ToString().ToLower());
+        }
         
         var count = await query.CountAsync();
         var events = await query

@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using PetRescueFE.Pages.Events;
 
 namespace PetRescueFE.Pages.Model.Events;
 
@@ -64,12 +65,13 @@ public class EventRequestModel4Create
     public string? Description { get; set; }
 
     [Required]
-    [DataType(DataType.DateTime)]
+    [DataType(DataType.DateTime), DateRange("01/01/1980", "12/31/2070")]
     [DisplayFormat(DataFormatString = "{0:yyyy-MM-ddTHH:mm}", ApplyFormatInEditMode = true)]
     public DateTime StartDateTime { get; set; }
 
     [Required]
-    [DataType(DataType.DateTime)]
+    [DataType(DataType.DateTime), DateRange("01/01/1980", "12/31/2070")]
+    [EndDateAfterStartDate("StartDateTime")]
     [DisplayFormat(DataFormatString = "{0:yyyy-MM-ddTHH:mm}", ApplyFormatInEditMode = true)]
     public DateTime EndDateTime { get; set; }
 

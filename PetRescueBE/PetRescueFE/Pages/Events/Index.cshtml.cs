@@ -7,15 +7,17 @@ namespace PetRescueFE.Pages.Events
 {
     public class IndexModel : PageModel
     {
-
         private readonly ApiService _apiService;
+        private readonly EventGlobalUtility _utility;
 
-        public IndexModel(ApiService apiService)
+        public IndexModel(ApiService apiService, EventGlobalUtility utility)
         {
             _apiService = apiService;
+            _utility = utility;
         }
 
         public IList<EventResponseModel> Event { get; set; } = default!;
+        public string NoEventsMessage { get; set; } = string.Empty;
 
         public bool CanEdit { get; private set; }
         public bool CanDonate { get; private set; }
@@ -28,24 +30,41 @@ namespace PetRescueFE.Pages.Events
         public async Task<ActionResult> OnGetAsync(int? pageIndex)
         {
             // Check user role from session
-            var role = HttpContext.Session.GetString("Role");
+            var role = _utility.GetUserRole();
+            string? userId = null;
+            var url = EventUrlProfile.BASE_URL_S + EventUrlProfile.GETS_P;
+            
+            CanEdit = role == Role4Event.ADMIN || // Admin
+                      role == Role4Event.SHELTER_OWNER;    // ShelterOwner
 
-            CanEdit = role == "d290f1ee-6c54-4b01-90e6-d701748f0851" || // Admin
-                     role == "f3c8d4e5-6b7a-4c9d-8e2f-0a1b2c3d4e5f";    // ShelterOwner
+            CanDonate = role == Role4Event.USER; // User
 
-            CanDonate = role == "e7b8f3d2-4a2f-4c3b-8f4d-9c5d8a3e1b2c"; // User
-
+            userId = CanEdit ? _utility.GetUserId() : null;
+            
             CurrentPage = pageIndex ?? 1;
-            var data = await TryGetData(EventUrlProfile.BASE_URL_S + $"events/p/?Index={CurrentPage}&Size=3");
-            if (data is null)
+            url += $"?Index={CurrentPage}&Size=3";
+            
+            if (userId is not null)
             {
-                return NotFound();
+                url += $"&usr={userId}";
             }
-
-            Event = data.Items;
-            TotalPages = data.TotalPages;
-            HasPreviousPage = data.HasPreviousPage;
-            HasNextPage = data.HasNextPage;
+            
+            var data = await TryGetData(url);
+            if (data is null || !data.Items.Any())
+            {
+                NoEventsMessage = "No event here, try later";
+                Event = new List<EventResponseModel>();
+                TotalPages = 1;
+                HasPreviousPage = false;
+                HasNextPage = false;
+            }
+            else
+            {
+                Event = data.Items;
+                TotalPages = data.TotalPages;
+                HasPreviousPage = data.HasPreviousPage;
+                HasNextPage = data.HasNextPage;
+            }
 
             return Page();
         }
