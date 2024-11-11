@@ -12,7 +12,8 @@ public class EventResponseModel
     public string? EventType { get; set; }
     public string? Goal { get; set; }
     public string? Status { get; set; }
-
+    public Guid? ShelterId { get; set; }
+    
     public virtual ShelterResponseModel? Shelter { get; set; }
     public virtual List<Donation4EventResponse>? Donations { get; set; } = null;
 }
