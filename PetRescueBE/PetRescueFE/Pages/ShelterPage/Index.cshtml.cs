@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using DataAccessLayer.Entity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using PetRescueFE.Pages.Model;
 using PetRescueFE.Pages.Model.Shelters;
@@ -19,18 +20,32 @@ namespace PetRescueFE.Pages.ShelterPage
         public async Task<IActionResult> OnGetAsync()
         {
             var role = HttpContext.Session.GetString("Role");
-
-            if (role != "d290f1ee-6c54-4b01-90e6-d701748f0851")
+            var userId = HttpContext.Session.GetString("UserId");
+            
+            if (role != "d290f1ee-6c54-4b01-90e6-d701748f0851" && role != "f3c8d4e5-6b7a-4c9d-8e2f-0a1b2c3d4e5f")
             {
                 return RedirectToPage("/AuthorizationError");
             }
 
-            var apiUrl = "https://localhost:7297/api/shelter";
-            var response = await _apiService.GetAsync<BaseResponseModelFE<IList<ShelterResponseModel>>>(apiUrl);
-
-            if (response.Data != null)
+            if (role == "f3c8d4e5-6b7a-4c9d-8e2f-0a1b2c3d4e5f")
             {
-                Shelter = response.Data;
+                var apiUrlForShelterOwner = $"https://localhost:7297/api/shelter/userId/{userId}";
+                var responseForShelterOwner = await _apiService.GetAsync<BaseResponseModelFE<IList<ShelterResponseModel>>>(apiUrlForShelterOwner);
+
+                if (responseForShelterOwner.Data != null)
+                {
+                    Shelter = responseForShelterOwner.Data;
+                }
+
+                return Page();
+            }
+
+            var apiUrlForAdmin = "https://localhost:7297/api/shelter";
+            var responseForAdmin = await _apiService.GetAsync<BaseResponseModelFE<IList<ShelterResponseModel>>>(apiUrlForAdmin);
+
+            if (responseForAdmin.Data != null)
+            {
+                Shelter = responseForAdmin.Data;
             }
 
             return Page();

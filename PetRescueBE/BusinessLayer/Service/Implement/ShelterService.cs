@@ -195,6 +195,31 @@ namespace BusinessLayer.Service.Implement
             };
         }
 
+        public async Task<BaseResponseModel<IEnumerable<ShelterResponseModel>>> GetAllByUserIdAsync(Guid userId)
+        {
+            var shelterRepository = _unitOfWork.Repository<Shelter>();
+
+            var shelters = await shelterRepository.GetAll().Where(s => s.UsersId == userId).Include(s => s.Users).ToListAsync();
+            var shelterResponseModels = _mapper.Map<IEnumerable<ShelterResponseModel>>(shelters);
+
+            if (shelters.Count() == 0)
+            {
+                return new BaseResponseModel<IEnumerable<ShelterResponseModel>>
+                {
+                    Code = 200,
+                    Message = "No Shelters in the list",
+                    Data = shelterResponseModels
+                };
+            }
+
+            return new BaseResponseModel<IEnumerable<ShelterResponseModel>>
+            {
+                Code = 200,
+                Message = "Shelters retrieved successfully",
+                Data = shelterResponseModels
+            };
+        }
+
         public async Task<BaseResponseModel> DeleteAsync(Guid id)
         {
             var shelterRepository = _unitOfWork.Repository<Shelter>();

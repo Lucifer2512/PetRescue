@@ -43,6 +43,13 @@ namespace PetRescueAPI.Controllers
             return StatusCode((int)response.Code, response);
         }
 
+        [HttpGet("userId/{id}")]
+        public async Task<IActionResult> GetAllShelters(Guid id)
+        {
+            var response = await _shelterService.GetAllByUserIdAsync(id);
+            return StatusCode((int)response.Code, response);
+        }
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteShelter(Guid id)
         {
