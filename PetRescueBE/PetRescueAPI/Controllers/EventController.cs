@@ -46,7 +46,7 @@ public class EventController : ControllerBase
     [HttpGet("p/")]
     public async Task<ActionResult<BaseResponseModel<PaginatedList<EventResponseModel>>>> GetsPagedAsync([FromQuery] EventParameter parameter)
     {
-        var response = await _eventService.GetsPagedAsync(parameter.Index, parameter.Size);
+        var response = await _eventService.GetsPagedAsync(parameter.index, parameter.size, parameter.usr);
         return StatusCode((int)response.Code!, response);
     }
 
@@ -85,5 +85,6 @@ public class EventController : ControllerBase
     }
 }
 public record EventParameter(
-    [Range(1, int.MaxValue), DefaultValue(1)] int Index, 
-    [Range(1, 50), DefaultValue(3)] int Size = 3);  // Default size of 3, max size of 50
+    string? usr,
+    [Range(1, int.MaxValue), DefaultValue(1)] int index, 
+    [Range(1, 50), DefaultValue(3)] int size = 3);  // Default size of 3, max size of 50

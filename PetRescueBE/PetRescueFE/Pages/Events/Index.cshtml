@@ -86,66 +86,72 @@
 </div>
 
 <div class="container">
+    @if (!string.IsNullOrEmpty(Model.NoEventsMessage))
+    {
+    <div class="alert alert-info" role="alert">
+        @Model.NoEventsMessage
+    </div>
+    }
+    else
+    {
     <div class="row">
         @foreach (var item in Model.Event)
         {
-            <div class="col-md-6 col-lg-4">
-                <div class="card shadow event-card">
-                    @if (!string.IsNullOrEmpty(item.ImageUrl))
-                    {
-                        <img src="@item.ImageUrl" class="card-img-top event-image" alt="@item.Name">
-                    }
-                    else
-                    {
-                        <img src="https://placehold.co/600x400?text=No+Image" class="card-img-top event-image" alt="Default Event Image">
-                    }
-                    
-                    <div class="card-body">
-                        <h5 class="card-title">@item.Name</h5>
-                        <p class="card-text text-muted">
-                            <i class="bi bi-geo-alt"></i> @item.Location
-                        </p>
-                        <p class="card-text event-description">@item.Description</p>
-                        
-                        <div class="d-flex justify-content-between align-items-center">
-                            <small class="text-muted">
-                                <i class="bi bi-calendar"></i> @item.StartDateTime?.ToString("MMM dd, yyyy")
-                            </small>
-                            <span class="badge @(item.Status?.ToLower() == "active" ? "bg-success" : "bg-secondary")">
-                                @item.Status
-                            </span>
-                        </div>
-                    </div>
+        <div class="col-md-6 col-lg-4">
+            <div class="card shadow event-card">
+                @if (!string.IsNullOrEmpty(item.ImageUrl))
+                {
+                <img src="@item.ImageUrl" class="card-img-top event-image" alt="@item.Name">
+                }
+                else
+                {
+                <img src="https://placehold.co/600x400?text=No+Image" class="card-img-top event-image" alt="Default Event Image">
+                }
 
-                    <div class="card-footer bg-transparent">
-                        <div class="d-flex gap-2">
-                            <a asp-page="./Details" asp-route-id="@item.EventId" class="btn btn-outline-primary btn-sm">
-                                <i class="bi bi-info-circle"></i> Details
-                            </a>
-                            @if (Model.CanEdit)
-                            {
-                                <a asp-page="./Edit" asp-route-id="@item.EventId" class="btn btn-outline-secondary btn-sm">
-                                    <i class="bi bi-pencil"></i> Edit
-                                </a>
-                                <a asp-page="./Delete" asp-route-id="@item.EventId" class="btn btn-outline-danger btn-sm">
-                                    <i class="bi bi-trash"></i> Delete
-                                </a>
-                            }
-                            @if (Model.CanDonate)
-                            {
-                                <a asp-page="/DonationPage/Payment" 
-                                   asp-route-eventId="@item.EventId" 
-                                   asp-route-shelterId="@item.ShelterId" 
-                                   class="btn btn-outline-success btn-sm">
-                                    <i class="bi bi-heart"></i> Donate
-                                </a>
-                            }
-                        </div>
+                <div class="card-body">
+                    <h5 class="card-title">@item.Name</h5>
+                    <p class="card-text text-muted">
+                        <i class="bi bi-geo-alt"></i> @item.Location
+                    </p>
+                    <p class="card-text event-description">@item.Description</p>
+
+                    <div class="d-flex justify-content-between align-items-center">
+                        <small class="text-muted">
+                            <i class="bi bi-calendar"></i> @item.StartDateTime?.ToString("MMM dd, yyyy")
+                        </small>
+                        <span class="badge @(item.Status?.ToLower() == "active" ? "bg-success" : "bg-secondary")">
+                                    @item.Status
+                                </span>
+                    </div>
+                </div>
+
+                <div class="card-footer bg-transparent">
+                    <div class="d-flex gap-2">
+                        <a asp-page="./Details" asp-route-id="@item.EventId" class="btn btn-outline-primary btn-sm">
+                            <i class="bi bi-info-circle"></i> Details
+                        </a>
+                        @if (Model.CanEdit)
+                        {
+                        <a asp-page="./Edit" asp-route-id="@item.EventId" class="btn btn-outline-secondary btn-sm">
+                            <i class="bi bi-pencil"></i> Edit
+                        </a>
+                        }
+                        @if (Model.CanDonate)
+                        {
+                        <a asp-page="/DonationPage/Payment"
+                           asp-route-eventId="@item.EventId"
+                           asp-route-shelterId="@item.ShelterId"
+                           class="btn btn-outline-success btn-sm">
+                            <i class="bi bi-heart"></i> Donate
+                        </a>
+                        }
                     </div>
                 </div>
             </div>
+        </div>
         }
     </div>
+    }
 </div>
 
 <div class="container mt-4">
