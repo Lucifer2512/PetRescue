@@ -14,7 +14,7 @@ public class EventResponseModel
     public string? Status { get; set; }
 
     public virtual ShelterResponseModel? Shelter { get; set; }
-    public virtual ICollection<Donation4EventResponse>? Donations { get; set; } = null;
+    public virtual List<Donation4EventResponse>? Donations { get; set; } = null;
 }
 
 public class Donation4EventResponse

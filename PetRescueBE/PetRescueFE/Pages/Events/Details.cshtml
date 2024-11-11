@@ -75,7 +75,7 @@
 
     </dl>
 </div>
-<div class="mt-4">
+@*<div class="mt-4">
     <h4>Donations</h4>
     <hr/>
     @if (Model.Event.Donations != null && Model.Event.Donations.Any())
@@ -106,7 +106,7 @@
     {
         <p>No donations have been made for this event yet.</p>
     }
-</div>
+</div>*@
 <div>
     <a asp-page="./Edit" asp-route-id="@Model.Event?.EventId">Edit</a> |
     <a asp-page="./Index">Back to List</a>

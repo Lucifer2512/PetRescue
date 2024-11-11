@@ -25,8 +25,8 @@ public class EventService : IEventService
         var eventRepo = _unitOfWork.Repository<Event>();
         var query = eventRepo.GetAll()
             .Include(e => e.Shelter)
-            .Include(e => e.Donations)
-            .ThenInclude(donation => donation.User)
+            /*.Include(e => e.Donations)
+            .ThenInclude(donation => donation.User)*/
             .OrderBy(e => e.StartDateTime)
             .AsQueryable();
         
@@ -62,7 +62,7 @@ public class EventService : IEventService
 
         var events = await eventRepo.DbContext.Set<Event>()
             .Include(e => e.Shelter)
-            .Include(e => e.Donations)
+            /*.Include(e => e.Donations)*/
             .ToListAsync();
 
         var eventResponse = _mapper.Map<List<EventResponseModel>>(events);
@@ -90,8 +90,8 @@ public class EventService : IEventService
     {
         var eventRepo = _unitOfWork.Repository<Event>().GetAll()
             .Include(ev => ev.Shelter)
-            .Include(ev => ev.Donations)
-            .ThenInclude(donation => donation.User)
+            /*.Include(ev => ev.Donations)
+            .ThenInclude(donation => donation.User)*/
             .AsQueryable();
         var isEvent = await eventRepo.SingleOrDefaultAsync(ev => ev.EventId == id);
         if (isEvent is null)
