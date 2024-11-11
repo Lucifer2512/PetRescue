@@ -1,0 +1,100 @@
+﻿
+    @page
+    @model PetRescueFE.Pages.DonationPage.PaymentModel
+@{
+    ViewData["Title"] = "Payment Page";
+}
+
+<div class="container">
+    <main role="main" class="pb-3">
+        <div class="main-content">
+            <h2>Payment</h2>
+            <form method="post" class="payment-form">
+                <img src="/pic/OnlinePay.jpg" alt="Visa Card" class="visa-image">
+                <div class="form-group">
+                    <label for="amount">Amount:</label>
+                    <input type="number" id="amount" name="amount" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">Confirm Payment</button>
+                </div>
+            </form>
+        </div>
+    </main>
+</div>
+<style>
+    .container {
+        position: relative;
+        top: 0;
+        margin-top: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: calc(100vh - 40px);
+    }
+
+    .payment-form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        max-width: 600px; /* Reduced max-width */
+        padding: 20px; /* Reduced padding */
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        background-color: #fff;
+    }
+
+    .form-group {
+        width: 100%;
+        margin-bottom: 15px;
+    }
+
+    .form-control {
+        width: 100%;
+        font-size: 1em; /* Reduced font-size */
+        padding: 10px; /* Reduced padding */
+        background-color: #f0f8ff;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+        margin-bottom: 10px; /* Reduced margin-bottom */
+    }
+
+    input[type=number]::-webkit-outer-spin-button,
+    input[type=number]::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    input[type=number] {
+        -moz-appearance: textfield;
+    }
+
+    .btn-primary {
+        width: 100%;
+        font-size: 1em; /* Reduced font-size */
+        padding: 10px; /* Reduced padding */
+        background-color: #3572EF;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        box-sizing: border-box;
+        margin-top: 10px; /* Reduced margin-top */
+    }
+
+    label {
+        font-size: 1em; /* Reduced font-size */
+        margin-bottom: 5px; /* Reduced margin-bottom */
+    }
+
+    .text-danger {
+        font-size: 1em; /* Reduced font-size */
+        margin-top: 5px; /* Reduced margin-top */
+    }
+
+    .visa-image {
+        width: 500px; /* Adjust size as needed */
+        margin-bottom: 10px; /* Space between image and label */
+    }
+</style>

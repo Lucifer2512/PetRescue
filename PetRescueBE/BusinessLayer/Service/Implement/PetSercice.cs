@@ -25,40 +25,58 @@ namespace BusinessLayer.Service.Implement
                 return new BaseResponseModel<PetResponseModel>
                 {
                     Code = 400,
-                    Message = "request is null",
+                    Message = "Request is null",
                     Data = null
                 };
             }
-            var newpet = _mapper.Map<Pet>(requestModel);
-            newpet.ArrivalDate = DateTime.Now;
-            newpet.Status = "ACTIVE";
-            newpet.PetId = Guid.NewGuid();
+
+            // Kiểm tra sự tồn tại của Shelter
+             var checkShelter = await _unitOfWork.Repository<Shelter>().FindAsync(requestModel.ShelterId);
+            if (checkShelter == null)
+            {
+                return new BaseResponseModel<PetResponseModel>
+                {
+                    Code = 404,
+                    Message = "Shelter not found"                   
+                };
+            }
+
+            // Tạo Pet mới từ requestModel
+            var newPet = _mapper.Map<Pet>(requestModel);
+            newPet.ArrivalDate = DateTime.Now;
+            newPet.Status = "ACTIVE";
+            newPet.PetId = Guid.NewGuid();
+
             try
             {
                 await _unitOfWork.BeginTransaction();
-                var PetRepos = _unitOfWork.Repository<Pet>().InsertAsync(newpet);
+                var PetRepos = _unitOfWork.Repository<Pet>().InsertAsync(newPet, false);
                 await _unitOfWork.CommitTransaction();
             }
             catch (Exception ex)
             {
+                // Rollback nếu có lỗi
+                await _unitOfWork.RollbackTransaction();
+
                 return new BaseResponseModel<PetResponseModel>
                 {
                     Code = 500,
-                    Message = ex.Message,
+                    Message = $"An error occurred: {ex.Message}",
+                    Data = null
                 };
             }
 
-            var response = _mapper.Map<PetResponseModel>(newpet);
-            response.PetId = newpet.PetId;
-            response.ShelterId = newpet.ShelterId;
+            // Map đối tượng Pet mới tạo sang PetResponseModel
+            var response = _mapper.Map<PetResponseModel>(newPet);
 
             return new BaseResponseModel<PetResponseModel>
             {
                 Code = 201,
-                Message = "Pet Created Success",
+                Message = "Pet created successfully",
                 Data = response
             };
         }
+
 
         public async Task<BaseResponseModel<PetResponseModel>> DeleteAsync(Guid id)
         {
@@ -96,7 +114,7 @@ namespace BusinessLayer.Service.Implement
 
         public async Task<BaseResponseModel<PetResponseModel>> GetDetailAsync(Guid id)
         {
-            var pet = _unitOfWork.Repository<Pet>().FindAsync(id);
+            var pet = await _unitOfWork.Repository<Pet>().FindAsync(id);
             if (pet == null)
             {
                 return new BaseResponseModel<PetResponseModel>
@@ -108,6 +126,7 @@ namespace BusinessLayer.Service.Implement
                 };
             }
             var response = _mapper.Map<PetResponseModel>(pet);
+
             return new BaseResponseModel<PetResponseModel>
             {
 
@@ -119,7 +138,7 @@ namespace BusinessLayer.Service.Implement
 
         public async Task<BaseResponseModel<PetResponseModel>> UpdateASync(PetUpdateRequestModel requestModel)
         {
-            var petRepos = _unitOfWork.Repository<Pet>();
+            var petRepos =  _unitOfWork.Repository<Pet>();
             var pet = await petRepos.FindAsync(requestModel.PetId);
 
             if (pet == null)
@@ -134,7 +153,7 @@ namespace BusinessLayer.Service.Implement
             try
             {
                 await _unitOfWork.BeginTransaction();
-                await petRepos.UpdateAsync(pet);
+                await petRepos.UpdateAsync(pet,false);
                 await _unitOfWork.CommitTransaction();
             }
             catch (Exception ex)

@@ -20,10 +20,17 @@ public class EventResponseModel
 public class Donation4EventResponse
 {
     public Guid DonationId { get; set; }
-    public Guid UserId { get; set; }
     public string? Amount { get; set; }
     public DateTime DonationDate { get; set; }
     public string? PaymentMethod { get; set; }
     public string? Notes { get; set; }
     public string Status { get; set; } = null!;
+    public User4Donation4EventResponse User { get; set; } = null!;
+}
+
+public class User4Donation4EventResponse
+{
+    public Guid UserId { get; set; }
+    public string UserName { get; set; } = null!;
+    public string UserEmail { get; set; } = null!;
 }
