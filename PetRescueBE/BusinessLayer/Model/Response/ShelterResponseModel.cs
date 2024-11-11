@@ -8,5 +8,6 @@
         public string ShelterPhoneNumber { get; set; } = null!;
         public decimal Balance { get; set; }
         public string UserEmail { get; set; }
+        public string? ImageData { get; set; }
     }
 }

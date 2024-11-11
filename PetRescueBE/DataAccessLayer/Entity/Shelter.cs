@@ -1,4 +1,7 @@
-﻿namespace DataAccessLayer.Entity
+﻿using System;
+using System.Collections.Generic;
+
+namespace DataAccessLayer.Entity
 {
     public partial class Shelter
     {
@@ -15,6 +18,7 @@
         public string ShelterPhoneNumber { get; set; } = null!;
         public decimal Balance { get; set; }
         public Guid UsersId { get; set; }
+        public byte[]? Image { get; set; }
 
         public virtual User Users { get; set; } = null!;
         public virtual ICollection<Donation> Donations { get; set; }

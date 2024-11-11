@@ -15,9 +15,12 @@ namespace PetRescueFE.Pages.ShelterPage
         }
 
         public ShelterResponseModel Shelter { get; set; } = default!;
+        public string UserRole { get; private set; }
 
         public async Task<IActionResult> OnGetAsync(Guid? id)
         {
+            UserRole = HttpContext.Session.GetString("Role");
+
             if (id == null)
             {
                 return NotFound();

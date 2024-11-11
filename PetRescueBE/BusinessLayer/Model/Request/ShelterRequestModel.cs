@@ -22,6 +22,8 @@ namespace BusinessLayer.Model.Request
         [Required(ErrorMessage = "User Email is required")]
         [EmailAddress(ErrorMessage = "Invalid email format")]
         public string UserEmail { get; set; }
+
+        public byte[]? Image { get; set; }
     }
 
     public class ShelterRequestModelForUpdate
@@ -44,5 +46,7 @@ namespace BusinessLayer.Model.Request
         [Required(ErrorMessage = "User Email is required")]
         [EmailAddress(ErrorMessage = "Invalid email format")]
         public string UserEmail { get; set; }
+
+        public byte[]? Image { get; set; }
     }
 }

@@ -154,11 +154,19 @@ namespace BusinessLayer.Service.Implement
                 };
             }
 
+            var responseModel = _mapper.Map<ShelterResponseModel>(existedShelter);
+
+            // Convert image to base64 string if it exists
+            if (existedShelter.Image != null)
+            {
+                responseModel.ImageData = Convert.ToBase64String(existedShelter.Image);
+            }
+
             return new BaseResponseModel<ShelterResponseModel>
             {
                 Code = 200,
                 Message = "Get Shelter Detail Success",
-                Data = _mapper.Map<ShelterResponseModel>(existedShelter)
+                Data = responseModel
             };
         }
 
@@ -227,8 +235,6 @@ namespace BusinessLayer.Service.Implement
                 Message = "Shelter is Deleted Successfully",
             };
         }
-
-
 
         public async Task<BaseResponseModel<ShelterResponseModel>> UpdateBalanceAsync( Guid id,decimal amount)
         {

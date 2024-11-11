@@ -27,6 +27,7 @@ public class ShelterRequestModel
     [Required(ErrorMessage = "User Email is required")]
     [EmailAddress(ErrorMessage = "Invalid email format")]
     public string UserEmail { get; set; }
+    public byte[]? Image { get; set; }
 }
 
 public class ShelterRequestModelForUpdate
@@ -49,6 +50,7 @@ public class ShelterRequestModelForUpdate
     [Required(ErrorMessage = "User Email is required")]
     [EmailAddress(ErrorMessage = "Invalid email format")]
     public string UserEmail { get; set; }
+    public byte[]? Image { get; set; }
 }
 
 public class ShelterResponseModel
@@ -59,4 +61,5 @@ public class ShelterResponseModel
     public string ShelterPhoneNumber { get; set; } = null!;
     public decimal Balance { get; set; }
     public string UserEmail { get; set; }
+    public string? ImageData { get; set; }
 }

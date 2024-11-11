@@ -17,9 +17,17 @@ namespace PetRescueFE.Pages.ShelterPage
 
         [BindProperty]
         public ShelterResponseModel Shelter { get; set; } = default!;
+        public IFormFile? ImageFile { get; set; }
 
         public async Task<IActionResult> OnGetAsync(Guid? id)
         {
+            var role = HttpContext.Session.GetString("Role");
+
+            if (role != "d290f1ee-6c54-4b01-90e6-d701748f0851")
+            {
+                return RedirectToPage("/AuthorizationError");
+            }
+
             if (id == null)
             {
                 return NotFound();
@@ -46,7 +54,8 @@ namespace PetRescueFE.Pages.ShelterPage
                 ShelterAddress = Shelter.ShelterAddress,
                 Balance = Shelter.Balance,
                 ShelterPhoneNumber = Shelter.ShelterPhoneNumber,
-                UserEmail = Shelter.UserEmail
+                UserEmail = Shelter.UserEmail,
+                Image = ImageFile != null ? await _apiService.ConvertToByteArrayAsync(ImageFile) : null,
             };
 
             var validationContext = new ValidationContext(shelterRequest);

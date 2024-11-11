@@ -49,9 +49,17 @@ namespace PetRescueFE.Pages
                     var id = tokenS.Claims.First(claim => claim.Type == "nameid")?.Value;
                     HttpContext.Session.SetString("Role", role);
                     HttpContext.Session.SetString("UserId", id);
-                    //HttpContext.Session.SetString("AccountId", id);
-                    /* var username = tokenS.Claims.First(claim => claim.Type == ClaimTypes.UserData).Value;
-                     HttpContext.Session.SetString("Username", username);*/
+
+                    var userId = HttpContext.Session.GetString("UserId");
+
+                    var apiUrl = $"https://localhost:7297/api/users/{userId}";
+                    var response = await _apiService.GetAsync<BaseResponseModelFE<UserResponseModelFE>>(apiUrl);
+
+                    if (response.Data != null && response.Data.ImageData != null)
+                    {
+                        HttpContext.Session.SetString("UserImageBase64", response.Data.ImageData);
+                    }
+
                     switch (role)
                     {
                         case "d290f1ee-6c54-4b01-90e6-d701748f0851":      //Administrator

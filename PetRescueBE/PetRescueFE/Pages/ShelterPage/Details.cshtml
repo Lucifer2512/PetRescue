@@ -41,6 +41,12 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Shelter.UserEmail)
         </dd>
+        <dt class="col-sm-2">
+            Image
+        </dt>
+        <dd class="col-sm-10">
+            <img src="data:image/png;base64,@Model.Shelter.ImageData" alt="Shelter Image" />
+        </dd>
     </dl>
 </div>
 <div>
