@@ -17,6 +17,20 @@ namespace PetRescueFE.Pages.ShelterPage
         [BindProperty]
         public ShelterResponseModel Shelter { get; set; } = default!;
 
+        private async Task<bool> LoadShelterAsync(Guid id)
+        {
+            var apiUrl = $"https://localhost:7297/api/shelter/{id}";
+            var response = await _apiService.GetAsync<BaseResponseModelFE<ShelterResponseModel>>(apiUrl);
+
+            if (response.Data != null)
+            {
+                Shelter = response.Data;
+                return true;
+            }
+
+            return false;
+        }
+
         public async Task<IActionResult> OnGetAsync(Guid? id)
         {
             var role = HttpContext.Session.GetString("Role");
@@ -26,20 +40,13 @@ namespace PetRescueFE.Pages.ShelterPage
                 return RedirectToPage("/AuthorizationError");
             }
 
-            if (id == null)
+            if (id == null || !await LoadShelterAsync(id.Value))
             {
                 return NotFound();
             }
 
-            var apiUrl = $"https://localhost:7297/api/shelter/{id}";
-            var response = await _apiService.GetAsync<BaseResponseModelFE<ShelterResponseModel>>(apiUrl);
 
-            if (response.Data == null)
-            {
-                return NotFound();
-            }
 
-            Shelter = response.Data;
             return Page();
         }
 
@@ -55,10 +62,18 @@ namespace PetRescueFE.Pages.ShelterPage
             try
             {
                 var response = await _apiService.DeleteAsync(apiUrl);
+
+                if (response == false)
+                {
+                    ModelState.AddModelError(string.Empty, "Failed to delete shelter.");
+                    await LoadShelterAsync(id.Value);
+                    return Page();
+                }
             }
             catch (Exception ex)
             {
                 ModelState.AddModelError(string.Empty, "Failed to delete shelter.");
+                await LoadShelterAsync(id.Value);
                 return Page();
             }
 

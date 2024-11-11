@@ -41,7 +41,6 @@ namespace PetRescueFE.Pages.ShelterPage
             {
                 ShelterName = Shelter.ShelterName,
                 ShelterAddress = Shelter.ShelterAddress,
-                Balance = Shelter.Balance,
                 ShelterPhoneNumber = Shelter.ShelterPhoneNumber,
                 UserEmail = Shelter.UserEmail,
                 Image = ImageFile != null ? await _apiService.ConvertToByteArrayAsync(ImageFile) : null,
@@ -51,6 +50,11 @@ namespace PetRescueFE.Pages.ShelterPage
             try
             {
                 var response = await _apiService.PostAsync<ShelterRequestModel, BaseResponseModelFE<ShelterResponseModel>>(apiUrl, shelterRequest);
+                if (response.Code != 201)
+                {
+                    ModelState.AddModelError(string.Empty, "User Email not exists.");
+                    return Page();
+                }
             }
             catch (Exception ex)
             {

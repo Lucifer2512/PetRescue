@@ -21,9 +21,6 @@ public class ShelterRequestModel
     [Phone(ErrorMessage = "Invalid phone number format")]
     public string ShelterPhoneNumber { get; set; } = null!;
 
-    [Range(0, double.MaxValue, ErrorMessage = "Balance cannot be negative")]
-    public decimal Balance { get; set; }
-
     [Required(ErrorMessage = "User Email is required")]
     [EmailAddress(ErrorMessage = "Invalid email format")]
     public string UserEmail { get; set; }
@@ -43,9 +40,6 @@ public class ShelterRequestModelForUpdate
     [Required(ErrorMessage = "Shelter Phone Number is required")]
     [Phone(ErrorMessage = "Invalid phone number format")]
     public string ShelterPhoneNumber { get; set; } = null!;
-
-    [Range(0, double.MaxValue, ErrorMessage = "Balance cannot be negative")]
-    public decimal Balance { get; set; }
 
     [Required(ErrorMessage = "User Email is required")]
     [EmailAddress(ErrorMessage = "Invalid email format")]

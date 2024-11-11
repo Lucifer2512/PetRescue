@@ -16,9 +16,6 @@ namespace BusinessLayer.Model.Request
         [Phone(ErrorMessage = "Invalid phone number format")]
         public string ShelterPhoneNumber { get; set; } = null!;
 
-        [Range(0, double.MaxValue, ErrorMessage = "Balance cannot be negative")]
-        public decimal Balance { get; set; }
-
         [Required(ErrorMessage = "User Email is required")]
         [EmailAddress(ErrorMessage = "Invalid email format")]
         public string UserEmail { get; set; }
@@ -39,9 +36,6 @@ namespace BusinessLayer.Model.Request
         [Required(ErrorMessage = "Shelter Phone Number is required")]
         [Phone(ErrorMessage = "Invalid phone number format")]
         public string ShelterPhoneNumber { get; set; } = null!;
-
-        [Range(0, double.MaxValue, ErrorMessage = "Balance cannot be negative")]
-        public decimal Balance { get; set; }
 
         [Required(ErrorMessage = "User Email is required")]
         [EmailAddress(ErrorMessage = "Invalid email format")]

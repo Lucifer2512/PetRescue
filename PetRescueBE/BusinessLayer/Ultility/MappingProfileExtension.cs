@@ -13,11 +13,21 @@ namespace BusinessLayer.Ultility
                 .ForMember(dest => dest.RoleName, opt => opt.MapFrom(src => src.Role.RoleName));
             CreateMap<UserRequestModel, User>()
                 .ForMember(dest => dest.PasswordHash, opt => opt.MapFrom(src => Helper.HashPassword(src.Password)));
-            CreateMap<UserRequestModelForUpdate, User>();
+            CreateMap<UserRequestModelForUpdate, User>()
+                .ForMember(dest => dest.Image, opt =>
+                {
+                    opt.MapFrom(src => src.Image);
+                    opt.Condition((src, dest) => src.Image != null);
+                });
             CreateMap<Shelter, ShelterResponseModel>()
                 .ForMember(dest => dest.UserEmail, opt => opt.MapFrom(src => src.Users.Email));
             CreateMap<ShelterRequestModel, Shelter>();
-            CreateMap<ShelterRequestModelForUpdate, Shelter>();
+            CreateMap<ShelterRequestModelForUpdate, Shelter>()
+                .ForMember(dest => dest.Image, opt =>
+                {
+                    opt.MapFrom(src => src.Image);
+                    opt.Condition((src, dest) => src.Image != null);
+                });
             CreateMap<DonationRequestModel, Donation>();
             CreateMap<Donation, DonationReponseModel>();
             CreateMap<AdoptionApplicationRequestModel, AdoptionApplication>();

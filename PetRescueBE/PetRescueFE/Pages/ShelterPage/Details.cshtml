@@ -2,54 +2,111 @@
 @model PetRescueFE.Pages.ShelterPage.DetailsModel
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Shelter Details";
 }
 
-<h1>Details</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewData["Title"] - PetRescueFE</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <style>
+        .profile-container {
+            max-width: 900px;
+            margin: auto;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            font-family: Arial, Helvetica, sans-serif;
+        }
 
-<div>
-    <h4>Shelter</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Shelter.ShelterName)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Shelter.ShelterName)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Shelter.ShelterAddress)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Shelter.ShelterAddress)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Shelter.ShelterPhoneNumber)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Shelter.ShelterPhoneNumber)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Shelter.Balance)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Shelter.Balance)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Shelter.UserEmail)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Shelter.UserEmail)
-        </dd>
-        <dt class="col-sm-2">
-            Image
-        </dt>
-        <dd class="col-sm-10">
+        .profile-header {
+            background-color: #e6f7e6;
+            border-radius: 10px 10px 0 0;
+            padding: 20px;
+            text-align: center;
+            color: #2c8a2c;
+        }
+
+            .profile-header img {
+                width: 100%; /* Fill the width of the container */
+                height: auto; /* Maintain aspect ratio */
+                border-radius: 10px; /* Round the corners */
+                margin-bottom: 10px;
+                padding: 10px; /* Add padding around the image */
+            }
+
+        .form-section {
+            padding: 20px;
+        }
+
+            .form-section h5 {
+                border-bottom: 1px solid #ddd;
+                padding-bottom: 5px;
+                margin-bottom: 15px;
+                color: #3572EF;
+            }
+
+            .form-section dt, .form-section dd {
+                margin: 0;
+                padding: 10px 0;
+            }
+
+            .form-section dd {
+                color: #333;
+            }
+
+        .btn-save {
+            background-color: #2c8a2c;
+            color: white;
+            border-radius: 20px;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+        }
+
+            .btn-save:hover {
+                background-color: #247524;
+            }
+    </style>
+</head>
+<body>
+    <div class="profile-container">
+        <div class="profile-header">
             <img src="data:image/png;base64,@Model.Shelter.ImageData" alt="Shelter Image" />
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-page="./Edit" asp-route-id="@Model.Shelter?.ShelterId">Edit</a> |
-    <a asp-page="./Index">Back to List</a>
-</div>
+            <h2>@Model.Shelter.ShelterName</h2>
+        </div>
+
+        <div class="form-section">
+            <h5>Shelter Profile</h5>
+            <dl class="row">
+                <dt class="col-sm-3">Shelter Name</dt>
+                <dd class="col-sm-3">@Model.Shelter.ShelterName</dd>
+
+                <dt class="col-sm-3">Address</dt>
+                <dd class="col-sm-3">@Model.Shelter.ShelterAddress</dd>
+
+                <dt class="col-sm-3">Phone Number</dt>
+                <dd class="col-sm-3">@Model.Shelter.ShelterPhoneNumber</dd>
+
+                <dt class="col-sm-3">Balance</dt>
+                <dd class="col-sm-3">@Model.Shelter.Balance</dd>
+
+                <dt class="col-sm-3">User Email</dt>
+                <dd class="col-sm-3">@Model.Shelter.UserEmail</dd>
+
+            </dl>
+        </div>
+
+        <div class="text-center mt-4">
+            <a class="btn btn-primary" asp-page="./Edit" asp-route-id="@Model.Shelter?.ShelterId">Edit</a>
+            <a class="btn btn-secondary" asp-page="/ShelterPage/Index">Back to List</a>
+        </div>
+    </div>
+
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

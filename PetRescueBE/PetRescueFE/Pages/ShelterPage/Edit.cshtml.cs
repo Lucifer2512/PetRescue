@@ -48,15 +48,16 @@ namespace PetRescueFE.Pages.ShelterPage
         public async Task<IActionResult> OnPostAsync()
         {
             var apiUrl = $"https://localhost:7297/api/shelter/{Shelter.ShelterId}";
+
             var shelterRequest = new ShelterRequestModelForUpdate
             {
                 ShelterName = Shelter.ShelterName,
                 ShelterAddress = Shelter.ShelterAddress,
-                Balance = Shelter.Balance,
                 ShelterPhoneNumber = Shelter.ShelterPhoneNumber,
                 UserEmail = Shelter.UserEmail,
-                Image = ImageFile != null ? await _apiService.ConvertToByteArrayAsync(ImageFile) : null,
+                Image = ImageFile != null ? await _apiService.ConvertToByteArrayAsync(ImageFile) : null
             };
+
 
             var validationContext = new ValidationContext(shelterRequest);
             var validationResults = new List<ValidationResult>();
@@ -74,6 +75,11 @@ namespace PetRescueFE.Pages.ShelterPage
             try
             {
                 var response = await _apiService.PutAsync<ShelterRequestModelForUpdate, BaseResponseModelFE<ShelterResponseModel>>(apiUrl, shelterRequest);
+                if (response.Code != 200)
+                {
+                    ModelState.AddModelError(string.Empty, "User Email not exists.");
+                    return Page();
+                }
             }
             catch (Exception ex)
             {

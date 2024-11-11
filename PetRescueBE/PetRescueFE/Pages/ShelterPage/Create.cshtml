@@ -2,53 +2,122 @@
 @model PetRescueFE.Pages.ShelterPage.CreateModel
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Create Shelter";
 }
 
-<h1>Create</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewData["Title"] - PetRescueFE</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <style>
+        .profile-container {
+            max-width: 900px;
+            margin: auto;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            font-family: Arial, Helvetica, sans-serif;
+        }
 
-<h4>Shelter</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form method="post" enctype="multipart/form-data">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Shelter.ShelterName" class="control-label"></label>
-                <input asp-for="Shelter.ShelterName" class="form-control" />
-                <span asp-validation-for="Shelter.ShelterName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Shelter.ShelterAddress" class="control-label"></label>
-                <input asp-for="Shelter.ShelterAddress" class="form-control" />
-                <span asp-validation-for="Shelter.ShelterAddress" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Shelter.ShelterPhoneNumber" class="control-label"></label>
-                <input asp-for="Shelter.ShelterPhoneNumber" class="form-control" />
-                <span asp-validation-for="Shelter.ShelterPhoneNumber" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Shelter.UserEmail" class="control-label"></label>
-                <input asp-for="Shelter.UserEmail" class="form-control" />
-                <span asp-validation-for="Shelter.UserEmail" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ImageFile" class="control-label">Shelter Image</label>
-                <input asp-for="ImageFile" type="file" class="form-control" />
-                <span asp-validation-for="ImageFile" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+        .form-section {
+            padding: 20px;
+        }
+
+        .form-section h5 {
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 5px;
+            margin-bottom: 15px;
+            color: #3572EF;
+        }
+
+        .form-group {
+            margin-bottom: 1.5em;
+        }
+
+        .form-control {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 0.5em;
+        }
+
+        .control-label {
+            font-weight: bold;
+            color: #555;
+        }
+
+        .btn-primary {
+            background-color: #2c8a2c;
+            color: white;
+            border-radius: 20px;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+
+        .btn-primary:hover {
+            background-color: #247524;
+        }
+
+        .btn-secondary {
+            color: #333;
+            border-radius: 20px;
+            padding: 10px 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="profile-container">
+        <div class="form-section">
+            <h5>Create New Shelter</h5>
+            <form method="post" enctype="multipart/form-data">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <div class="form-group">
+                    <label asp-for="Shelter.ShelterName" class="control-label"></label>
+                    <input asp-for="Shelter.ShelterName" class="form-control" />
+                    <span asp-validation-for="Shelter.ShelterName" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Shelter.ShelterAddress" class="control-label"></label>
+                    <input asp-for="Shelter.ShelterAddress" class="form-control" />
+                    <span asp-validation-for="Shelter.ShelterAddress" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Shelter.ShelterPhoneNumber" class="control-label"></label>
+                    <input asp-for="Shelter.ShelterPhoneNumber" class="form-control" />
+                    <span asp-validation-for="Shelter.ShelterPhoneNumber" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Shelter.UserEmail" class="control-label"></label>
+                    <input asp-for="Shelter.UserEmail" class="form-control" />
+                    <span asp-validation-for="Shelter.UserEmail" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="ImageFile" class="control-label">Shelter Image</label>
+                    <input asp-for="ImageFile" type="file" class="form-control" />
+                    <span asp-validation-for="ImageFile" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
     </div>
-</div>
 
-<div>
-    <a asp-page="Index">Back to List</a>
-</div>
+    <div class="text-center mt-4">
+        <a asp-page="Index" class="btn btn-secondary">Back to List</a>
+    </div>
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

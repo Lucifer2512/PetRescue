@@ -2,59 +2,180 @@
 @model PetRescueFE.Pages.ShelterPage.IndexModel
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Shelter List";
 }
 
-<h1>Index</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewData["Title"] - PetRescueFE</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <style>
+        .page-container {
+            max-width: 900px;
+            margin: auto;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            font-family: Arial, Helvetica, sans-serif;
+        }
 
-<p>
-    <a asp-page="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Shelter[0].ShelterName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Shelter[0].ShelterAddress)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Shelter[0].ShelterPhoneNumber)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Shelter[0].Balance)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Shelter[0].UserEmail)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model.Shelter) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.ShelterName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ShelterAddress)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ShelterPhoneNumber)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Balance)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UserEmail)
-            </td>
-            <td>
-                <a asp-page="./Edit" asp-route-id="@item.ShelterId">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.ShelterId">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.ShelterId">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            color: #3572EF;
+        }
+
+        .btn-create {
+            background-color: #2c8a2c;
+            color: white;
+            border-radius: 20px;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+            .btn-create:hover {
+                background-color: #247524;
+            }
+
+        .table-container {
+            display: flex;
+            justify-content: center;
+        }
+
+        .table {
+            background-color: #ffffff;
+            border-radius: 10px;
+            overflow: hidden;
+            border-collapse: collapse;
+            margin: 0 auto;
+        }
+
+            .table th {
+                background-color: #3572EF;
+                color: white;
+                text-align: center;
+            }
+
+            .table td, .table th {
+                padding: 10px;
+                text-align: center;
+                border: 1px solid #ddd;
+            }
+
+        .btn-action {
+            display: inline-flex;
+            align-items: center;
+            color: white;
+            border-radius: 5px;
+            padding: 5px 10px;
+            font-size: 0.9em;
+            margin: 0 2px;
+        }
+
+        .btn-edit {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .btn-details {
+            color: #ffc107;
+            text-decoration: none;
+        }
+
+        .btn-delete {
+            color: #dc3545;
+            text-decoration: none;
+        }
+
+            .btn-details .fa, .btn-delete .fa {
+                margin-right: 5px;
+            }
+
+        .status-active {
+            background-color: #28a745;
+            color: white;
+            border-radius: 5px;
+            padding: 5px 10px;
+            font-weight: bold;
+        }
+
+        .status-inactive {
+            background-color: #dc3545;
+            color: white;
+            border-radius: 5px;
+            padding: 5px 10px;
+            font-weight: bold;
+        }
+
+        .action-links {
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="page-container">
+        <div class="page-header">
+            <h1>@ViewData["Title"]</h1>
+            <a asp-page="Create" class="btn-create">Create</a>
+        </div>
+
+
+        <div class="table-container">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>@Html.DisplayNameFor(model => model.Shelter[0].ShelterName)</th>
+                        <th>@Html.DisplayNameFor(model => model.Shelter[0].ShelterAddress)</th>
+                        <th>@Html.DisplayNameFor(model => model.Shelter[0].ShelterPhoneNumber)</th>
+                        <th>@Html.DisplayNameFor(model => model.Shelter[0].Balance)</th>
+                        <th>@Html.DisplayNameFor(model => model.Shelter[0].UserEmail)</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        var index = 1;
+                    }
+                    @foreach (var item in Model.Shelter)
+                    {
+                        <tr>
+                            <td>@index</td>
+                            <td>@Html.DisplayFor(modelItem => item.ShelterName)</td>
+                            <td>@Html.DisplayFor(modelItem => item.ShelterAddress)</td>
+                            <td>@Html.DisplayFor(modelItem => item.ShelterPhoneNumber)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Balance)</td>
+                            <td>@Html.DisplayFor(modelItem => item.UserEmail)</td>
+                            <td class="action-links">
+                                <a asp-page="./Edit" asp-route-id="@item.ShelterId" class="btn-action btn-edit">
+                                    <i class="fa fa-edit"></i> Edit
+                                </a>
+                                <a asp-page="./Details" asp-route-id="@item.ShelterId" class="btn-action btn-details">
+                                    <i class="fa-solid fa-circle-info"></i> Detail
+                                </a>
+                                <a asp-page="./Delete" asp-route-id="@item.ShelterId" class="btn-action btn-delete">
+                                    <i class="fa fa-trash"></i> Delete
+                                </a>
+                            </td>
+                        </tr>
+                        index++;
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
