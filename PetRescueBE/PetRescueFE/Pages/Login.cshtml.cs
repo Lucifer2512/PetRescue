@@ -59,7 +59,7 @@ namespace PetRescueFE.Pages
                         case "f3c8d4e5-6b7a-4c9d-8e2f-0a1b2c3d4e5f":      //ShelterOwner
                             return RedirectToPage("/Index");
                         case "e7b8f3d2-4a2f-4c3b-8f4d-9c5d8a3e1b2c":     //User
-                            return RedirectToPage("/PetPage/Index");
+                            return RedirectToPage("/Index");
                         default:
                             return Page();
                     }

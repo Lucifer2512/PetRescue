@@ -47,7 +47,6 @@ namespace PetRescueFE.Pages.UserPage
                 Email = User.Email,
                 PhoneNumber = User.PhoneNumber,
                 Address = User.Address,
-                Status = User.Status
                 Status = User.Status,
             };
 
