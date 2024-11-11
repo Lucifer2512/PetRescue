@@ -22,7 +22,7 @@ namespace PetRescueFE.Pages
             var apiUrl = $"https://localhost:7297/api/users/{userId}";
             var response = await _apiService.GetAsync<BaseResponseModelFE<UserResponseModelFE>>(apiUrl);
 
-            if (response.Data != null)
+            if (response.Data != null && response.Data.ImageData !=null)
             {
                 HttpContext.Session.SetString("UserImageBase64", response.Data.ImageData);
             }

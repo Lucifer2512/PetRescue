@@ -11,6 +11,7 @@ namespace PetRescueFE.Pages.UserPage
         private readonly ApiService _apiService;
         [BindProperty]
         public IFormFile? ImageFile { get; set; }
+        public string UserRole { get; private set; }
 
         public EditModel(ApiService apiService)
         {
@@ -26,6 +27,7 @@ namespace PetRescueFE.Pages.UserPage
             {
                 return NotFound();
             }
+            UserRole = HttpContext.Session.GetString("Role");
 
             // Fetch user details
             var apiUrlUser = $"https://localhost:7297/api/users/{id}";
@@ -35,6 +37,13 @@ namespace PetRescueFE.Pages.UserPage
                 return NotFound();
             }
             User = userResponse.Data;
+
+            var loggedInUserId = HttpContext.Session.GetString("UserId");
+
+            if (loggedInUserId != null && loggedInUserId != User.UserId.ToString() && UserRole != "d290f1ee-6c54-4b01-90e6-d701748f0851")
+            {
+                return RedirectToPage("/AuthorizationError");
+            }
 
             return Page();
         }

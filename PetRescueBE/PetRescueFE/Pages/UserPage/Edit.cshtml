@@ -5,66 +5,185 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewData["Title"] - PetRescueFE</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <style>
+        /* CSS from previous answer */
+        .profile-container {
+            max-width: 900px;
+            margin: auto;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            font-family: Arial, Helvetica, sans-serif;
+        }
 
-<h4>User</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form method="post" enctype="multipart/form-data">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="User.UserId" />
-            <div class="form-group">
-                <label asp-for="User.FirstName" class="control-label"></label>
-                <input asp-for="User.FirstName" class="form-control" />
-                <span asp-validation-for="User.FirstName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="User.LastName" class="control-label"></label>
-                <input asp-for="User.LastName" class="form-control" />
-                <span asp-validation-for="User.LastName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="User.Email" class="control-label"></label>
-                <input asp-for="User.Email" class="form-control" />
-                <span asp-validation-for="User.Email" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="User.PhoneNumber" class="control-label"></label>
-                <input asp-for="User.PhoneNumber" class="form-control" />
-                <span asp-validation-for="User.PhoneNumber" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="User.Address" class="control-label"></label>
-                <input asp-for="User.Address" class="form-control" />
-                <span asp-validation-for="User.Address" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="User.Status" class="control-label"></label>
-                <select asp-for="User.Status" class="form-control">
-                    <option value="ACTIVE">Active</option>
-                    <option value="INACTIVE">Inactive</option>
-                </select>
-                <span asp-validation-for="User.Status" class="text-danger"></span>
-            </div>
+        .profile-header {
+            background-color: #e6f7e6;
+            border-radius: 10px 10px 0 0;
+            padding: 20px;
+            text-align: center;
+            color: #2c8a2c;
+        }
 
-            <div class="form-group">
-                <label asp-for="ImageFile" class="control-label">Profile Image</label>
-                <input asp-for="ImageFile" type="file" class="form-control" />
-                <span asp-validation-for="ImageFile" class="text-danger"></span>
-            </div>
+        .profile-header img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin-bottom: 10px;
+        }
 
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+        .form-section {
+            padding: 20px;
+        }
+
+        .form-section h5 {
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 5px;
+            margin-bottom: 15px;
+            color: #3572EF;
+        }
+
+        .form-group {
+            margin-bottom: 1.5em;
+        }
+
+        .form-control {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 0.5em;
+        }
+
+        .control-label {
+            font-weight: bold;
+            color: #555;
+        }
+
+        .btn-primary, .btn-save {
+            background-color: #2c8a2c;
+            color: white;
+            border-radius: 20px;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+
+        .btn-primary:hover, .btn-save:hover {
+            background-color: #247524;
+        }
+
+        .btn-secondary {
+            color: #333;
+            border-radius: 20px;
+            padding: 10px 20px;
+        }
+
+        .status-badge-active {
+            background-color: #2c8a2c;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+
+        .status-badge-inactive {
+            background-color: #d9534f;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+
+        .image-preview {
+            display: flex;
+            justify-content: center;
+            margin-top: 1em;
+        }
+
+        .image-preview img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 2px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+    <div class="profile-container">
+        <div class="profile-header">
+            <img src="data:image/png;base64,@Model.User.ImageData" alt="User Image" />
+            <h2>@Model.User.FirstName @Model.User.LastName</h2>
+            <p>It takes nothing away from a human to be kind to an animal.</p>
+        </div>
+
+        <div class="form-section">
+            <h5>Edit User Profile</h5>
+            <form method="post" enctype="multipart/form-data">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="User.UserId" />
+                <div class="form-group">
+                    <label asp-for="User.FirstName" class="control-label"></label>
+                    <input asp-for="User.FirstName" class="form-control" />
+                    <span asp-validation-for="User.FirstName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="User.LastName" class="control-label"></label>
+                    <input asp-for="User.LastName" class="form-control" />
+                    <span asp-validation-for="User.LastName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="User.Email" class="control-label"></label>
+                    <input asp-for="User.Email" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="User.PhoneNumber" class="control-label"></label>
+                    <input asp-for="User.PhoneNumber" class="form-control" />
+                    <span asp-validation-for="User.PhoneNumber" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="User.Address" class="control-label"></label>
+                    <input asp-for="User.Address" class="form-control" />
+                    <span asp-validation-for="User.Address" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="User.Status" class="control-label"></label>
+                    <select asp-for="User.Status" class="form-control">
+                        <option value="ACTIVE">Active</option>
+                        <option value="INACTIVE">Inactive</option>
+                    </select>
+                    <span asp-validation-for="User.Status" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ImageFile" class="control-label">Profile Image</label>
+                    <input asp-for="ImageFile" type="file" class="form-control" />
+                    <span asp-validation-for="ImageFile" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                </div>
+                <div class="text-center mt-4">
+                    @if (Model.UserRole == "d290f1ee-6c54-4b01-90e6-d701748f0851")
+                    {
+                            <a class="btn btn-secondary" asp-page="/UserPage/Index">Back to List</a>
+                    }
+                    else
+                    {
+                            <a class="btn btn-secondary" asp-page="/Index">Back</a>
+                    }
+                </div>
+            </form>
+        </div>
+        
     </div>
-</div>
 
-<div>
-    <a asp-page="./Index">Back to List</a>
-</div>
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+

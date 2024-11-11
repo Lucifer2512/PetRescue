@@ -44,8 +44,16 @@ namespace PetRescueFE.Pages.UserPage
 
         public async Task<IActionResult> OnPostAsync()
         {
+            var role = HttpContext.Session.GetString("Role");
+
+            if (role != "d290f1ee-6c54-4b01-90e6-d701748f0851")
+            {
+                return RedirectToPage("/AuthorizationError");
+            }
+
             if (!ModelState.IsValid)
             {
+                await LoadRolesAsync();
                 return Page();
             }
 

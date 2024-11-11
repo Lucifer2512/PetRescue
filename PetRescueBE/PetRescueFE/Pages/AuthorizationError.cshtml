@@ -4,7 +4,40 @@
     ViewData["Title"] = "Authorization Error";
 }
 
-<h1>Authorization Error</h1>
-<p>You do not have permission to access this page.</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewData["Title"] - PetRescueFE</title>
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+        }
 
-<a asp-page="/Index">Return to Index</a>
+        .content {
+            background-color: rgba(255, 0, 0, 0.7); /* Semi-transparent overlay */
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .return-link {
+            color: black;
+            text-decoration: underline;
+            font-weight: bold;
+        }
+
+        .return-link:hover {
+            color: #ccc;
+        }
+    </style>
+</head>
+<body>
+        <div class="content">
+            <h1>Authorization Error</h1>
+            <p>You do not have permission to access this page.</p>
+            <a asp-page="/Index" class="return-link">Return</a>
+        </div>
+</body>
+</html>
