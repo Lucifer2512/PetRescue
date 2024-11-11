@@ -19,8 +19,6 @@ namespace PetRescueFE.Pages.UserPage
         [BindProperty]
         public UserResponseModel User { get; set; } = default!;
 
-        public List<SelectListItem> RoleList { get; set; } = new List<SelectListItem>();
-
         public async Task<IActionResult> OnGetAsync(Guid? id)
         {
             if (id == null)
@@ -36,15 +34,6 @@ namespace PetRescueFE.Pages.UserPage
                 return NotFound();
             }
             User = userResponse.Data;
-
-            // Fetch roles for the dropdown
-            var apiUrlRoles = "https://localhost:7297/api/users/roles";
-            var rolesResponse = await _apiService.GetAsync<BaseResponseModelFE<List<Role>>>(apiUrlRoles);
-            if (rolesResponse.Data != null)
-            {
-                RoleList = rolesResponse.Data.ConvertAll(role =>
-                    new SelectListItem { Value = role.RoleId.ToString(), Text = role.RoleName });
-            }
 
             return Page();
         }
@@ -78,6 +67,11 @@ namespace PetRescueFE.Pages.UserPage
             try
             {
                 var response = await _apiService.PutAsync<UserRequestModelForUpdate, BaseResponseModelFE<UserResponseModel>>(apiUrl, userRequest);
+                if (response.Code != 200)
+                {
+                    ModelState.AddModelError(string.Empty, "User Email already exists.");
+                    return Page();
+                }
             }
             catch (Exception ex)
             {

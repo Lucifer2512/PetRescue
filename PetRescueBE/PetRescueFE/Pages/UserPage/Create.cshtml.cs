@@ -20,7 +20,7 @@ namespace PetRescueFE.Pages.UserPage
         [BindProperty]
         public UserRequestModelv2FE User { get; set; } = new UserRequestModelv2FE();
 
-        public async Task<IActionResult> OnGetAsync()
+        private async Task LoadRolesAsync()
         {
             var apiUrl = "https://localhost:7297/api/users/roles";
             var response = await _apiService.GetAsync<BaseResponseModelFE<IEnumerable<Role>>>(apiUrl);
@@ -33,6 +33,11 @@ namespace PetRescueFE.Pages.UserPage
                     Text = role.RoleName
                 }).ToList();
             }
+        }
+
+        public async Task<IActionResult> OnGetAsync()
+        {
+            await LoadRolesAsync();
 
             return Page();
         }
@@ -49,12 +54,20 @@ namespace PetRescueFE.Pages.UserPage
             try
             {
                 var response = await _apiService.PostAsync<UserRequestModelv2FE, BaseResponseModelFE<UserResponseModel>>(apiUrl, User);
+                if (response.Code != 201)
+                {
+                    ModelState.AddModelError(string.Empty, "User Email already exists.");
+                    await LoadRolesAsync();
+                    return Page();
+                }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 ModelState.AddModelError(string.Empty, "Error creating user.");
+                await LoadRolesAsync();
                 return Page();
             }
+
 
             return RedirectToPage("./Index");
         }
