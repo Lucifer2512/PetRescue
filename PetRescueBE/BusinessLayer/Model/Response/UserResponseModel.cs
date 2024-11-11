@@ -11,5 +11,6 @@
         public string PasswordHash { get; set; } = null!;
         public string RoleName { get; set; }
         public string Status { get; set; } = null!;
+        public string? ImageData { get; set; }
     }
 }

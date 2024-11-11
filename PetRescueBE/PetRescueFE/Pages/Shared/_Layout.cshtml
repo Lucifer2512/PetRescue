@@ -165,24 +165,33 @@
                 <li><a asp-page="/petpage/Index"><i class="fa-solid fa-hippo"></i> Pet</a></li>
             </ul>
         </nav>
-        <div class="user-section">
+       <div class="user-section">
             @if (!string.IsNullOrEmpty(Context.Session.GetString("JWTToken")))
             {
-                <div class="dropdown">
-                    <div class="user-avatar" data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src="https://png.pngtree.com/png-clipart/20210915/ourmid/pngtree-user-avatar-login-interface-abstract-blue-icon-png-image_3917504.jpg" alt="User Avatar">
-                    </div>
-                    <ul class="dropdown-menu dropdown-menu-bottom-center" aria-labelledby="userDropdown">
-                        <li><a asp-page="/userpage/Details" asp-route-Id="@Context.Session.GetString("UserId")"><i class="fa-solid fa-user"></i> Profile</a></li>
-                        <li><a asp-page="/Logout"><i class="fa-solid fa-right-from-bracket"></i> Logout</a></li>
-                    </ul>
+                var imageBase64 = Context.Session.GetString("UserImageBase64");
+
+            <div class="dropdown">
+                <div class="user-avatar" data-bs-toggle="dropdown" aria-expanded="false">
+                        @if (!string.IsNullOrEmpty(imageBase64))
+                        {
+                            <img src="data:image/png;base64,@imageBase64" alt="User Avatar" />
+                        }
+                        else
+                        {
+                            <img src="https://png.pngtree.com/png-clipart/20210915/ourmid/pngtree-user-avatar-login-interface-abstract-blue-icon-png-image_3917504.jpg" alt="User Avatar">
+                        }
                 </div>
+                <ul class="dropdown-menu dropdown-menu-bottom-center" aria-labelledby="userDropdown">
+                    <li><a asp-page="/userpage/Details" asp-route-Id="@Context.Session.GetString("UserId")"><i class="fa-solid fa-user"></i> Profile</a></li>
+                    <li><a asp-page="/Logout"><i class="fa-solid fa-right-from-bracket"></i> Logout</a></li>
+                </ul>
+            </div>
             }
             else
             {
-                <button class="login-btn" onclick="location.href='@Url.Page("/Login")'">Login/Sign Up</button>
+            <button class="login-btn" onclick="location.href='@Url.Page("/Login")'">Login / Sign Up</button>
             }
-        </div>
+</div>
     </header>
 
     <div class="container">

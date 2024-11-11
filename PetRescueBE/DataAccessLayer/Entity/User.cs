@@ -1,4 +1,7 @@
-﻿namespace DataAccessLayer.Entity
+﻿using System;
+using System.Collections.Generic;
+
+namespace DataAccessLayer.Entity
 {
     public partial class User
     {
@@ -18,6 +21,7 @@
         public string PasswordHash { get; set; } = null!;
         public Guid RoleId { get; set; }
         public string Status { get; set; } = null!;
+        public byte[]? Image { get; set; }
 
         public virtual Role Role { get; set; } = null!;
         public virtual ICollection<AdoptionApplication> AdoptionApplications { get; set; }

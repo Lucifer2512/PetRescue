@@ -9,6 +9,8 @@ namespace PetRescueFE.Pages.UserPage
     public class EditModel : PageModel
     {
         private readonly ApiService _apiService;
+        [BindProperty]
+        public IFormFile? ImageFile { get; set; }
 
         public EditModel(ApiService apiService)
         {
@@ -48,7 +50,9 @@ namespace PetRescueFE.Pages.UserPage
                 PhoneNumber = User.PhoneNumber,
                 Address = User.Address,
                 Status = User.Status,
+                Image = ImageFile != null ? await _apiService.ConvertToByteArrayAsync(ImageFile) : null,
             };
+
 
             var validationContext = new ValidationContext(userRequest);
             var validationResults = new List<ValidationResult>();
@@ -80,5 +84,7 @@ namespace PetRescueFE.Pages.UserPage
 
             return RedirectToPage("./Index");
         }
+
+       
     }
 }

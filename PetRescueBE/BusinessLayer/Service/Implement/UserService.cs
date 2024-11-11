@@ -164,12 +164,19 @@ namespace BusinessLayer.Service.Implement
                     Data = null
                 };
             }
+            var responseModel = _mapper.Map<UserResponseModel>(existedUser);
+
+            // Convert image to base64 string if it exists
+            if (existedUser.Image != null)
+            {
+                responseModel.ImageData = Convert.ToBase64String(existedUser.Image);
+            }
 
             return new BaseResponseModel<UserResponseModel>
             {
                 Code = 200,
                 Message = "Get User Detail Success",
-                Data = _mapper.Map<UserResponseModel>(existedUser)
+                Data = responseModel
             };
         }
 

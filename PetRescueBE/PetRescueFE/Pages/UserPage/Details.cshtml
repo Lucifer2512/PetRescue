@@ -53,6 +53,20 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.User.RoleName)
         </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.User.ImageData)
+        </dt>
+        <dd class="col-sm-10">
+            @if (Model.User.ImageData != null)
+            {
+                <img src="data:image/png;base64,@Model.User.ImageData" alt="User Image" class="img-thumbnail" width="150" height="150" />
+            }
+            else
+            {
+                <span>No Image Available</span>
+            }
+        </dd>
+
     </dl>
 </div>
 <div>

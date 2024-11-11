@@ -131,6 +131,13 @@ namespace PetRescueFE
                 return false; // Return false if an exception occurred
             }
         }
+
+        public async Task<byte[]> ConvertToByteArrayAsync(IFormFile file)
+        {
+            using var memoryStream = new MemoryStream();
+            await file.CopyToAsync(memoryStream);
+            return memoryStream.ToArray();
+        }
     }
 
 }
