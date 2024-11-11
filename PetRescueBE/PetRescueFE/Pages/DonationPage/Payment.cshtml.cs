@@ -15,6 +15,8 @@ namespace PetRescueFE.Pages.DonationPage
         [BindProperty]
         public decimal Amount { get; set; }
         public string AccountId { get; private set; }
+        public Guid EventId { get; set; }
+        public Guid ShelterId { get; set; }
         private readonly ApiService _apiService;
 
 
@@ -23,9 +25,10 @@ namespace PetRescueFE.Pages.DonationPage
             _apiService = apiService;
         }
 
-        public void OnGet()
+        public void OnGet(Guid eventId, Guid shelterId)
         {
-
+            EventId = eventId;
+            ShelterId = shelterId;
         }
 
         public async Task<IActionResult> OnPost()
@@ -37,6 +40,8 @@ namespace PetRescueFE.Pages.DonationPage
                 return Page();
             }
             AccountId = HttpContext.Session.GetString("AccountId");
+            var a = EventId;
+            var b = ShelterId;
             DonationRequestModelQRCode donation = new DonationRequestModelQRCode();
             donation.ShelterId = Guid.Parse("2f78ddb6-1b06-4730-a23b-f44fd1d3bfff");
             donation.EventId = Guid.Parse("422916e7-3d1e-4664-a194-d33bdb8a19df");
