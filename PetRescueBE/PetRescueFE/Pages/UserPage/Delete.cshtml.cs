@@ -15,12 +15,12 @@ namespace PetRescueFE.Pages.UserPage
         }
 
         [BindProperty]
-        public UserResponseModel User { get; set; } = default!;
+        public UserResponseModelFE User { get; set; } = default!;
 
         private async Task<bool> LoadUserAsync(Guid id)
         {
             var apiUrl = $"https://localhost:7297/api/users/{id}";
-            var response = await _apiService.GetAsync<BaseResponseModelFE<UserResponseModel>>(apiUrl);
+            var response = await _apiService.GetAsync<BaseResponseModelFE<UserResponseModelFE>>(apiUrl);
 
             if (response.Data != null)
             {

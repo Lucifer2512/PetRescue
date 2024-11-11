@@ -5,11 +5,11 @@ namespace PetRescueFE.Pages
 {
     public class LogoutModel : PageModel
     {
-        public void OnGet()
+        public IActionResult OnGet()
         {
             HttpContext.Session.Clear();
 
-            RedirectToPage("/Index");
+            return RedirectToPage("/Index");
         }
     }
 }

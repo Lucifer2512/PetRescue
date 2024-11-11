@@ -1,8 +1,7 @@
-﻿using DataAccessLayer.Entity;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using PetRescueFE.Pages.Model;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace PetRescueFE.Pages.UserPage
@@ -17,7 +16,7 @@ namespace PetRescueFE.Pages.UserPage
         }
 
         [BindProperty]
-        public UserResponseModel User { get; set; } = default!;
+        public UserResponseModelFE User { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(Guid? id)
         {
@@ -28,7 +27,7 @@ namespace PetRescueFE.Pages.UserPage
 
             // Fetch user details
             var apiUrlUser = $"https://localhost:7297/api/users/{id}";
-            var userResponse = await _apiService.GetAsync<BaseResponseModelFE<UserResponseModel>>(apiUrlUser);
+            var userResponse = await _apiService.GetAsync<BaseResponseModelFE<UserResponseModelFE>>(apiUrlUser);
             if (userResponse.Data == null)
             {
                 return NotFound();
@@ -49,6 +48,7 @@ namespace PetRescueFE.Pages.UserPage
                 PhoneNumber = User.PhoneNumber,
                 Address = User.Address,
                 Status = User.Status
+                Status = User.Status,
             };
 
             var validationContext = new ValidationContext(userRequest);
@@ -66,7 +66,7 @@ namespace PetRescueFE.Pages.UserPage
 
             try
             {
-                var response = await _apiService.PutAsync<UserRequestModelForUpdate, BaseResponseModelFE<UserResponseModel>>(apiUrl, userRequest);
+                var response = await _apiService.PutAsync<UserRequestModelForUpdate, BaseResponseModelFE<UserResponseModelFE>>(apiUrl, userRequest);
                 if (response.Code != 200)
                 {
                     ModelState.AddModelError(string.Empty, "User Email already exists.");

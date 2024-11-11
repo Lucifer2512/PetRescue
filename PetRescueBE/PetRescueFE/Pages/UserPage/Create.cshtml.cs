@@ -53,7 +53,7 @@ namespace PetRescueFE.Pages.UserPage
 
             try
             {
-                var response = await _apiService.PostAsync<UserRequestModelv2FE, BaseResponseModelFE<UserResponseModel>>(apiUrl, User);
+                var response = await _apiService.PostAsync<UserRequestModelv2FE, BaseResponseModelFE<UserResponseModelFE>>(apiUrl, User);
                 if (response.Code != 201)
                 {
                     ModelState.AddModelError(string.Empty, "User Email already exists.");

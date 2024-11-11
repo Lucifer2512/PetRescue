@@ -3,6 +3,6 @@
     public class LoginResponseModelFE
     {
         public TokenModel Token { get; set; }
-        public UserResponseModel User { get; set; }
+        public UserResponseModelFE User { get; set; }
     }
 }

@@ -57,5 +57,12 @@
 </div>
 <div>
     <a asp-page="./Edit" asp-route-id="@Model.User?.UserId">Edit</a> |
-    <a asp-page="./Index">Back to List</a>
+    @if (Model.UserRole == "Administrator")
+    {
+        <a asp-page="./Index">Back to List</a>
+    }
+    else
+    {
+        <a asp-page="/Index">Back</a>
+    }
 </div>

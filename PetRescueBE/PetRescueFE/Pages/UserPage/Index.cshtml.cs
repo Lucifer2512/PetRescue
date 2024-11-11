@@ -12,13 +12,13 @@ namespace PetRescueFE.Pages.UserPage
             _apiService = apiService;
         }
 
-        public IList<UserResponseModel> Users { get; set; } = default!;
+        public IList<UserResponseModelFE> Users { get; set; } = default!;
 
 
         public async Task OnGetAsync()
         {
             var apiUrl = "https://localhost:7297/api/users";
-            var response = await _apiService.GetAsync<BaseResponseModelFE<IList<UserResponseModel>>>(apiUrl);
+            var response = await _apiService.GetAsync<BaseResponseModelFE<IList<UserResponseModelFE>>>(apiUrl);
 
             if (response.Data != null)
             {
