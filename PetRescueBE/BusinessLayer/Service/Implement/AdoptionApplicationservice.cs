@@ -91,7 +91,7 @@ namespace BusinessLayer.Service.Implement
             var applications = await applicationRepo.GetAll()
                 .Include(u => u.User)
                 .Include(p => p.Pet)
-                .Where(s => s.Pet.ShelterId == id)
+                .Where(s => s.Pet.Shelter.UsersId == id)
                 .ToListAsync();
             var responseModels = _mapper.Map<IEnumerable<AdoptionApplicationResponseModel>>(applications);
 
