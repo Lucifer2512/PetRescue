@@ -95,7 +95,6 @@
 
 
 <style>
-    /* Style consistent with Shelter details page */
     .profile-container {
         max-width: 900px;
         margin: auto;
@@ -114,35 +113,36 @@
         color: #2c8a2c; /* Darker green text */
     }
 
-        .profile-header img {
-            width: 100%; /* Image takes full width */
-            height: auto; /* Maintain aspect ratio */
-            border-radius: 10px;
-            margin-bottom: 10px;
-            max-height: 300px;
-        }
+    .profile-header img {
+        width: auto; /* Maintain aspect ratio */
+        max-width: 100%; /* Image takes full width */
+        height: auto; /* Maintain aspect ratio */
+        max-height: 300px; /* Adjust max height as needed */
+        border-radius: 10px;
+        margin-bottom: 10px;
+    }
 
     .form-section {
         padding: 20px;
     }
 
-        .form-section h5 {
-            border-bottom: 1px solid #ddd;
-            padding-bottom: 5px;
-            margin-bottom: 15px;
-            color: #3572EF; /* Blue color for headings */
-        }
+    .form-section h5 {
+        border-bottom: 1px solid #ddd;
+        padding-bottom: 5px;
+        margin-bottom: 15px;
+        color: #3572EF; /* Blue color for headings */
+    }
 
-        .form-section dt, .form-section dd {
-            margin: 0;
-            padding: 10px 0; /* Add some vertical spacing */
-        }
+    .form-section dt, .form-section dd {
+        margin: 0;
+        padding: 10px 0; /* Add some vertical spacing */
+    }
 
-            .form-section dt {
-                font-weight: bold; /* Make labels bold */
+    .form-section dt {
+        font-weight: bold; /* Make labels bold */
+    }
 
-            }
-            .form-section dd {
-                color: #333; /* Dark gray text for values */
-            }
+    .form-section dd {
+        color: #333; /* Dark gray text for values */
+    }
 </style>
