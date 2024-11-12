@@ -10,6 +10,6 @@
         public string? Description { get; set; }
         public string Species { get; set; } = null!;
         public string? Status { get; set; }
-        public string? PhotoUrl { get; set; }
+        public byte[]? Image { get; set; }
     }
 }

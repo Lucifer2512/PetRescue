@@ -54,12 +54,10 @@
             @Html.DisplayFor(model => model.Pet.ArrivalDate)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Pet.PhotoUrl)
+            Image
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Pet.PhotoUrl)
-        </dd>
-  
+            <img src="data:image/png;base64,@Model.Pet.ImageData" alt="Pet Image" />
         </dd>
     </dl>
 </div>

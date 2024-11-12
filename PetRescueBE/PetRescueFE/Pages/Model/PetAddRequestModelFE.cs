@@ -8,6 +8,6 @@
         public string? Gender { get; set; }
         public string? Description { get; set; }
         public string Species { get; set; } = null!;
-        public string? PhotoUrl { get; set; }
+        public byte[]? Image { get; set; }
     }
 }

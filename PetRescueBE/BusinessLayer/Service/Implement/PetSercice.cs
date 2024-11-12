@@ -4,6 +4,8 @@ using BusinessLayer.Model.Response;
 using BusinessLayer.Service.Interface;
 using DataAccessLayer.Entity;
 using DataAccessLayer.UnitOfWork.Interface;
+using Microsoft.Extensions.Logging;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace BusinessLayer.Service.Implement
 {
@@ -104,6 +106,17 @@ namespace BusinessLayer.Service.Implement
         {
             var listPet = await _unitOfWork.Repository<Pet>().GetAllAsync();
             var response = _mapper.Map<ICollection<PetResponseModel>>(listPet);
+
+            foreach (var item in response)
+            {
+                var originalPet = listPet.FirstOrDefault(p => p.PetId == item.PetId);
+                if (originalPet.Image != null)
+                {
+                    item.ImageData = Convert.ToBase64String(originalPet.Image);
+                }
+            }
+
+
             return new BaseResponseModel<ICollection<PetResponseModel>>
             {
                 Code = 200,
@@ -126,6 +139,12 @@ namespace BusinessLayer.Service.Implement
                 };
             }
             var response = _mapper.Map<PetResponseModel>(pet);
+
+            // Convert image to base64 string if it exists
+            if (pet.Image != null)
+            {
+                response.ImageData = Convert.ToBase64String(pet.Image);
+            }
 
             return new BaseResponseModel<PetResponseModel>
             {

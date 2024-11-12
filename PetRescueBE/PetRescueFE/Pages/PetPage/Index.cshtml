@@ -38,7 +38,7 @@
                     @Html.DisplayNameFor(model => model.Pets.FirstOrDefault().ArrivalDate)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Pets.FirstOrDefault().PhotoUrl)
+                    Image
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.Pets.FirstOrDefault().ShelterId)
@@ -72,7 +72,7 @@
                         @Html.DisplayFor(modelItem => item.ArrivalDate)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.PhotoUrl)
+                        <img src="data:image/png;base64,@item.ImageData" alt="Pet Image" />
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.ShelterId)
