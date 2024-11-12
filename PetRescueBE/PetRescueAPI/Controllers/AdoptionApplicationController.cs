@@ -29,6 +29,20 @@ namespace PetRescueAPI.Controllers
             return StatusCode((int)response.Code, response);
         }
 
+        [HttpGet("/Shelter/{id}")]
+        public async Task<IActionResult> GetAllApplicationsForShelter(Guid id)
+        {
+            var response = await _adoptionApplicationService.GetAllForShelterAsync(id);
+            return StatusCode((int)response.Code, response);
+        }
+
+        [HttpGet("/User/{id}")]
+        public async Task<IActionResult> GetAllApplicationsForUser(Guid id)
+        {
+            var response = await _adoptionApplicationService.GetAllForUserAsync(id);
+            return StatusCode((int)response.Code, response);
+        }
+
         [HttpPost]
         public async Task<IActionResult> AddApplication([FromBody] AdoptionApplicationRequestModel request)
         {
