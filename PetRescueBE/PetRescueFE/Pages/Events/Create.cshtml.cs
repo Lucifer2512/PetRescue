@@ -26,7 +26,8 @@ namespace PetRescueFE.Pages.Events
             try
             {
                 string? userId = _utility.GetUserId();
-                if (userId == null) // do when session is out
+                string? role = _utility.GetUserRole();
+                if (userId == null || _utility.IsEditable(role)) // do when session is out
                 {
                     return RedirectToPage("/Login");
                 }
