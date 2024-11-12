@@ -13,7 +13,7 @@ public class EventResponseModel
 {
     public Guid? EventId { get; set; }
     public Guid? ShelterId { get; set; }
-    public string? ImageUrl { get; set; }
+    public string? ImageData { get; set; }
     public string? Name { get; set; }
     public string? Description { get; set; }
     public DateTime? StartDateTime { get; set; }
@@ -60,7 +60,7 @@ public class EventRequestModel4Create
     [Required]
     public string? Name { get; set; }
 
-    public string? ImageUrl { get; set; }
+    public byte[]? Image { get; set; }
 
     public string? Description { get; set; }
 
@@ -95,7 +95,7 @@ public class EventRequestModel4Update
     [Required]
     public string? Name { get; set; }
 
-    public string? ImageUrl { get; set; }
+    public byte[]? Image { get; set; }
 
     public string? Description { get; set; }
 

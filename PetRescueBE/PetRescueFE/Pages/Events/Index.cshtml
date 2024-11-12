@@ -99,9 +99,9 @@
         {
         <div class="col-md-6 col-lg-4">
             <div class="card shadow event-card">
-                @if (!string.IsNullOrEmpty(item.ImageUrl))
+                @if (!string.IsNullOrEmpty(item.ImageData))
                 {
-                <img src="@item.ImageUrl" class="card-img-top event-image" alt="@item.Name">
+                    <img src="data:image/jpeg;base64,@item.ImageData" class="card-img-top event-image" alt="@item.Name">
                 }
                 else
                 {

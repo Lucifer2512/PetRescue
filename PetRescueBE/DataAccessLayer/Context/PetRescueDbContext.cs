@@ -136,10 +136,6 @@ namespace DataAccessLayer.Context
 
                 entity.Property(e => e.Goal).HasMaxLength(255);
 
-                entity.Property(e => e.ImageUrl)
-                    .HasMaxLength(255)
-                    .HasColumnName("ImageURL");
-
                 entity.Property(e => e.Location).HasMaxLength(255);
 
                 entity.Property(e => e.Name).HasMaxLength(255);
@@ -171,10 +167,6 @@ namespace DataAccessLayer.Context
                 entity.Property(e => e.Gender).HasMaxLength(10);
 
                 entity.Property(e => e.Name).HasMaxLength(50);
-
-                entity.Property(e => e.PhotoUrl)
-                    .HasMaxLength(200)
-                    .HasColumnName("PhotoURL");
 
                 entity.Property(e => e.ShelterId).HasColumnName("ShelterID");
 

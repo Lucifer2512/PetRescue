@@ -14,12 +14,6 @@
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Event.ImageUrl)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Event.ImageUrl)
-        </dd>
-        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Event.Name)
         </dt>
         <dd class="col-sm-10">
@@ -72,6 +66,12 @@
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Event.Shelter.ShelterAddress)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Event.ImageData)
+        </dt>
+        <dd class="col-sm-10">
+            <img src="data:image/png;base64,@Model.Event.ImageData" alt="Shelter Image" />
         </dd>
     </dl>
     

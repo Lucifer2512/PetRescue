@@ -1,4 +1,7 @@
-﻿namespace DataAccessLayer.Entity
+﻿using System;
+using System.Collections.Generic;
+
+namespace DataAccessLayer.Entity
 {
     public partial class Pet
     {
@@ -16,7 +19,7 @@
         public string Species { get; set; } = null!;
         public string? Status { get; set; }
         public DateTime? ArrivalDate { get; set; }
-        public string? PhotoUrl { get; set; }
+        public byte[]? Image { get; set; }
 
         public virtual Shelter Shelter { get; set; } = null!;
         public virtual ICollection<AdoptionApplication> AdoptionApplications { get; set; }

@@ -3,7 +3,6 @@
 public class EventResponseModel
 {
     public Guid? EventId { get; set; }
-    public string? ImageUrl { get; set; }
     public string? Name { get; set; }
     public string? Description { get; set; }
     public DateTime? StartDateTime { get; set; }
@@ -13,7 +12,8 @@ public class EventResponseModel
     public string? Goal { get; set; }
     public string? Status { get; set; }
     public Guid? ShelterId { get; set; }
-    
+    public string? ImageData { get; set; }
+
     public virtual ShelterResponseModel? Shelter { get; set; }
     public virtual List<Donation4EventResponse>? Donations { get; set; } = null;
 }

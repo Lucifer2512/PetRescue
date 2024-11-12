@@ -1,4 +1,7 @@
-﻿namespace DataAccessLayer.Entity
+﻿using System;
+using System.Collections.Generic;
+
+namespace DataAccessLayer.Entity
 {
     public partial class Event
     {
@@ -9,7 +12,6 @@
 
         public Guid EventId { get; set; }
         public Guid? ShelterId { get; set; }
-        public string ImageUrl { get; set; } = null!;
         public string Name { get; set; } = null!;
         public string? Description { get; set; }
         public DateTime StartDateTime { get; set; }
@@ -18,6 +20,7 @@
         public string Status { get; set; } = null!;
         public string EventType { get; set; } = null!;
         public string? Goal { get; set; }
+        public byte[]? Image { get; set; }
 
         public virtual Shelter? Shelter { get; set; }
         public virtual ICollection<Donation> Donations { get; set; }

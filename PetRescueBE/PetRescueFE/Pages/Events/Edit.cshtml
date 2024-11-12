@@ -12,7 +12,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form method="post">
+        <form method="post" enctype="multipart/form-data">
             @* Remove or comment out this line to hide the error message *@
             @* <div asp-validation-summary="ModelOnly" class="text-danger"></div> *@
             
@@ -21,10 +21,10 @@
                 <input asp-for="Event.Name" class="form-control" />
                 <span asp-validation-for="Event.Name" class="text-danger"></span>
             </div>
-            <div class="form-group mb-3">
-                <label asp-for="Event.ImageUrl" class="control-label"></label>
-                <input asp-for="Event.ImageUrl" class="form-control" />
-                <span asp-validation-for="Event.ImageUrl" class="text-danger"></span>
+            <div class="form-group">
+                <label asp-for="ImageFile" class="control-label">Event Image</label>
+                <input asp-for="ImageFile" type="file" class="form-control" />
+                <span asp-validation-for="ImageFile" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Event.Description" class="control-label"></label>

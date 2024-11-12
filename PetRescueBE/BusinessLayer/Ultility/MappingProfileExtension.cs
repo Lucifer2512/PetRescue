@@ -45,7 +45,13 @@ namespace BusinessLayer.Ultility
                     opt => opt.MapFrom(src => src.Shelter!.ShelterId))
                 .ReverseMap();
             CreateMap<EventRequestModel4Create, Event>().ReverseMap();
-            CreateMap<EventRequestModel4Update, Event>().ReverseMap();
+            CreateMap<EventRequestModel4Update, Event>()
+                .ForMember(dest => dest.Image, opt =>
+                {
+                    opt.MapFrom(src => src.Image);
+                    opt.Condition((src, dest) => src.Image != null);
+                })
+                .ReverseMap();
             CreateMap<Event, EventResponseModel>().ReverseMap();
 
             #endregion

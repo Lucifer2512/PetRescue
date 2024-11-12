@@ -54,7 +54,16 @@ public class EventService : IEventService
         
         var totalPages = (int)Math.Ceiling(count / (double)size);
         var eventResponse = _mapper.Map<List<EventResponseModel>>(events);
-        
+
+        foreach (var eventItem in eventResponse)
+        {
+            var originalEvent = events.FirstOrDefault(e => e.EventId == eventItem.EventId);
+            if (originalEvent.Image != null)
+            {
+                eventItem.ImageData = Convert.ToBase64String(originalEvent.Image);
+            }
+        }
+
         return new BaseResponseModel<PaginatedList<EventResponseModel>>
         {
             Code = events.Any() ? 200 : 404,
@@ -93,6 +102,15 @@ public class EventService : IEventService
             };
         }
 
+        foreach (var eventItem in eventResponse)
+        {
+            var originalEvent = events.FirstOrDefault(e => e.EventId == eventItem.EventId);
+            if (originalEvent?.Image != null)
+            {
+                eventItem.ImageData = Convert.ToBase64String(originalEvent.Image);
+            }
+        }
+
         return new BaseResponseModel<IEnumerable<EventResponseModel>>
         {
             Code = 200,
@@ -120,11 +138,19 @@ public class EventService : IEventService
             };
         }
 
+        var responseModel = _mapper.Map<EventResponseModel>(isEvent);
+
+        // Convert image to base64 string if it exists
+        if (isEvent.Image != null)
+        {
+            responseModel.ImageData = Convert.ToBase64String(isEvent.Image);
+        }
+
         return new BaseResponseModel<EventResponseModel>
         {
             Code = 200,
             Message = "Success",
-            Data = _mapper.Map<EventResponseModel>(isEvent)
+            Data = responseModel
         };
     }
 

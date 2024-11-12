@@ -23,6 +23,8 @@ namespace PetRescueFE.Pages.Events
 
         public SelectList StatusList { get; set; }
 
+        public IFormFile? ImageFile { get; set; }
+
         public async Task<IActionResult> OnGetAsync()
         {
             var response = await TryGetEvent(EventUrlProfile.GET_DETAIL, Id);
@@ -33,7 +35,7 @@ namespace PetRescueFE.Pages.Events
 
             Event = new EventRequestModel4Update
             {
-                ImageUrl = response.ImageUrl,
+                Image = ImageFile != null ? await _apiService.ConvertToByteArrayAsync(ImageFile) : null,
                 Name = response.Name,
                 Description = response.Description,
                 StartDateTime = response.StartDateTime,
@@ -56,6 +58,8 @@ namespace PetRescueFE.Pages.Events
                 StatusList = new SelectList(Enum.GetNames(typeof(Status)));
                 return Page();
             }
+
+            Event.Image = ImageFile != null ? await _apiService.ConvertToByteArrayAsync(ImageFile) : null;
 
             try
             {

@@ -19,6 +19,7 @@ namespace PetRescueFE.Pages.Events
 
         [BindProperty]
         public IEnumerable<Shelter4EventResponse> Shelters { get; set; } = new List<Shelter4EventResponse>();
+        public IFormFile? ImageFile { get; set; }
 
         public async Task<IActionResult> OnGetAsync()
         {
@@ -85,6 +86,8 @@ namespace PetRescueFE.Pages.Events
                 {
                     Event.Status = "ACTIVE";
                 }
+
+                Event.Image = ImageFile != null ? await _apiService.ConvertToByteArrayAsync(ImageFile) : null;
 
                 await _apiService.PostAsync<EventRequestModel4Create, BaseResponseModelFE<EventResponseModel>>(
                     EventUrlProfile.POST_CREATE,
