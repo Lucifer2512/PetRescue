@@ -90,6 +90,31 @@ namespace BusinessLayer.Service.Implement
                 Data = donationReponse
             };
         }
+        public async Task<BaseResponseModel<IEnumerable<DonationReponseModel>>> GetAllbyIdUserAsync(Guid id)
+        {
+            var DonationRepo = _unitOfWork.Repository<Donation>();
+            var donations = await DonationRepo.GetAllAsync();
+            var listDonations = donations.Where(d => d.UserId == id);
+
+            var donationReponse = _mapper.Map<IEnumerable<DonationReponseModel>>(listDonations);
+
+            if (donations.Count() == 0)
+            {
+                return new BaseResponseModel<IEnumerable<DonationReponseModel>>
+                {
+                    Code = 404,
+                    Message = "No donation found, return null as no data",
+                    Data = donationReponse
+                };
+            }
+
+            return new BaseResponseModel<IEnumerable<DonationReponseModel>>
+            {
+                Code = 200,
+                Message = "Success",
+                Data = donationReponse
+            };
+        }
 
 
         public async Task<BaseResponseModel<DonationReponseModel>> GetDetailAsync(Guid id)
@@ -186,7 +211,7 @@ namespace BusinessLayer.Service.Implement
             donation.Status = "Waiting....";
             var check = await AddAsync(donation);
             
-            var cancelUrl = "http://localhost:5032/"; // Replace with your actual cancel URL
+            var cancelUrl = "https://localhost:7132/"; // Replace with your actual cancel URL
                                                       // var returnUrl = "https://tutor-serverapi20240712023601.azurewebsites.net/api/Transaction/PaymentandUpdateTransaction/orderCode=" + orderID; // Replace with your actual success URL
             var returnUrl = "https://localhost:7297/api/donation/orderCode=" + orderID;
             //string dataToSign = $"amount={amount}&cancelUrl={cancelUrl}&description={noidung}&orderCode={check.Data.DonationId}&returnUrl={returnUrl}";

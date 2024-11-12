@@ -12,6 +12,7 @@ namespace BusinessLayer.Service.Interface
         Task<BaseResponseModel<DonationReponseModel>> GetDetailAsync(Guid id);
         Task<String> GenerateQRBanking(Guid EventID, Guid ShelterID, Guid UserId, int amount);
         Task<BaseResponseModel<DonationReponseModel>> GetDonationbyNotes(string notes);
+        Task<BaseResponseModel<IEnumerable<DonationReponseModel>>> GetAllbyIdUserAsync(Guid id);
 
     }
 }

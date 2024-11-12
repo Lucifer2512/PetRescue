@@ -35,6 +35,12 @@ namespace PetRescueAPI.Controllers
             var response = await _donationService.GetAllAsync();
             return StatusCode((int)response.Code, response);
         }
+        [HttpGet("GetDonationbyId")]
+        public async Task<IActionResult> GetDonationbyUerId(Guid id)
+        {
+            var response = await _donationService.GetAllbyIdUserAsync(id);
+            return StatusCode((int)response.Code, response);
+        }
 
         [HttpPost("donationQRUrl")]
         public async Task<IActionResult> CreateQRCodeandTransaction([FromBody] DonationRequestModelQRCode request)
@@ -74,7 +80,7 @@ namespace PetRescueAPI.Controllers
                     try
                     {
                         
-                    return Redirect("https://localhost:7132/UserPage");
+                    return Redirect("https://localhost:7132/Events/Index");
                         
                     }
                     catch (Exception ex)
