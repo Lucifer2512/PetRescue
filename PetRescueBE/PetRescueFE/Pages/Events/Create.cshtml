@@ -37,12 +37,12 @@
             </div>
             <div class="form-group">
                 <label asp-for="Event.StartDateTime" class="control-label"></label>
-                <input asp-for="Event.StartDateTime" class="form-control" type="datetime-local" />
+                <input asp-for="Event.StartDateTime" class="form-control datetime-picker" type="text" />
                 <span asp-validation-for="Event.StartDateTime" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Event.EndDateTime" class="control-label"></label>
-                <input asp-for="Event.EndDateTime" class="form-control" type="datetime-local" />
+                <input asp-for="Event.EndDateTime" class="form-control datetime-picker" type="text" />
                 <span asp-validation-for="Event.EndDateTime" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -72,12 +72,20 @@
     </div>
 </div>
 
-
 <div class="text-center mt-4">
     <a asp-page="Index" class="btn btn-secondary">Back to List</a>
 </div>
 
-
+<link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        flatpickr(".datetime-picker", {
+            enableTime: true,
+            dateFormat: "Y-m-d H:i",
+        });
+    });
+</script>
 
 <style>
     .profile-container {
@@ -94,12 +102,12 @@
         padding: 20px;
     }
 
-        .form-section h5 {
-            border-bottom: 1px solid #ddd;
-            padding-bottom: 5px;
-            margin-bottom: 15px;
-            color: #3572EF;
-        }
+    .form-section h5 {
+        border-bottom: 1px solid #ddd;
+        padding-bottom: 5px;
+        margin-bottom: 15px;
+        color: #3572EF;
+    }
 
     .form-group {
         margin-bottom: 1.5em;
@@ -126,17 +134,42 @@
         margin-right: 10px;
     }
 
-        .btn-primary:hover {
-            background-color: #247524;
-        }
+    .btn-primary:hover {
+        background-color: #247524;
+    }
 
     .btn-secondary {
         color: #333;
         border-radius: 20px;
         padding: 10px 20px;
     }
-</style>
 
+    .flatpickr-calendar {
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .flatpickr-month {
+        background-color: #3572EF;
+        color: white;
+        border-radius: 10px 10px 0 0;
+    }
+
+    .flatpickr-day {
+        border-radius: 50%;
+        transition: background-color 0.2s;
+    }
+
+    .flatpickr-day:hover {
+        background-color: #f0f0f0;
+    }
+
+    .flatpickr-day.selected {
+        background-color: #2c8a2c;
+        color: white;
+    }
+</style>
 
 @section Scripts {
     @{
