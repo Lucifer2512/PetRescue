@@ -5,129 +5,119 @@
     ViewData["Title"] = "Details";
 }
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8" />
-    <title>@ViewData["Title"] - PetRescueFE</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <style>
-        .profile-container {
-            max-width: 900px;
-            margin: auto;
-            background-color: #f8f9fa;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            font-family: Arial, Helvetica, sans-serif;
-        }
-
-        .profile-header {
-            background-color: #e6f7e6;
-            border-radius: 10px 10px 0 0;
-            padding: 20px;
-            text-align: center;
-            color: #2c8a2c;
-        }
-
-            .profile-header img {
-                width: 100px;
-                height: 100px;
-                border-radius: 50%;
-                margin-bottom: 10px;
-            }
-
-        .form-section {
-            padding: 20px;
-        }
-
-            .form-section h5 {
-                border-bottom: 1px solid #ddd;
-                padding-bottom: 5px;
-                margin-bottom: 15px;
-                color: #3572EF;
-            }
-
-            .form-section dt, .form-section dd {
-                margin: 0;
-                padding: 10px 0;
-            }
-
-            .form-section dd {
-                color: #333;
-            }
-
-        .btn-save {
-            background-color: #2c8a2c;
-            color: white;
-            border-radius: 20px;
-            padding: 10px 20px;
-            border: none;
-            cursor: pointer;
-        }
-
-            .btn-save:hover {
-                background-color: #247524;
-            }
-    </style>
-</head>
-<body>
-    <div class="profile-container">
-        <div class="profile-header">
-            <img src="data:image/png;base64,@Model.User.ImageData" alt="User Image" />
-            <h2>@Model.User.FirstName @Model.User.LastName</h2>
-            <p>It takes nothing away from a human to be kind to an animal.</p>
-        </div>
-
-        <div class="form-section">
-            <h5>User Profile</h5>
-            <dl class="row">
-                <dt class="col-sm-3">First Name</dt>
-                <dd class="col-sm-3">@Model.User.FirstName</dd>
-
-                <dt class="col-sm-3">Last Name</dt>
-                <dd class="col-sm-3">@Model.User.LastName</dd>
-
-                <dt class="col-sm-3">Email</dt>
-                <dd class="col-sm-3">@Model.User.Email</dd>
-
-                <dt class="col-sm-3">Phone Number</dt>
-                <dd class="col-sm-3">@Model.User.PhoneNumber</dd>
-
-                <dt class="col-sm-3">Address</dt>
-                <dd class="col-sm-3">@Model.User.Address</dd>
-
-                <dt class="col-sm-3">Status</dt>
-                <dd class="col-sm-3">
-                    @if (Model.User.Status == "ACTIVE")
-                    {
-                        <span style="background-color: #2c8a2c; color: white; padding: 5px 10px; border-radius: 5px;">@Model.User.Status</span>
-                    }
-                    else if (Model.User.Status == "INACTIVE")
-                    {
-                        <span style="background-color: #d9534f; color: white; padding: 5px 10px; border-radius: 5px;">@Model.User.Status</span>
-                    }
-                </dd>
-
-                <dt class="col-sm-3">Role</dt>
-                <dd class="col-sm-3">@Model.User.RoleName</dd>
-            </dl>
-        </div>
-
-        <div class="text-center mt-4">
-            <a class="btn btn-primary" asp-page="./Edit" asp-route-id="@Model.User?.UserId">Edit</a>
-            @if (Model.UserRole == "d290f1ee-6c54-4b01-90e6-d701748f0851")
-            {
-                <a class="btn btn-secondary" asp-page="/UserPage/Index">Back to List</a>
-            }
-            else
-            {
-                <a class="btn btn-secondary" asp-page="/Index">Back</a>
-            }
-        </div>
+<div class="profile-container">
+    <div class="profile-header">
+        <img src="data:image/png;base64,@Model.User.ImageData" alt="User Image" />
+        <h2>@Model.User.FirstName @Model.User.LastName</h2>
+        <p>It takes nothing away from a human to be kind to an animal.</p>
     </div>
 
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+    <div class="form-section">
+        <h5>User Profile</h5>
+        <dl class="row">
+            <dt class="col-sm-3">First Name</dt>
+            <dd class="col-sm-3">@Model.User.FirstName</dd>
+
+            <dt class="col-sm-3">Last Name</dt>
+            <dd class="col-sm-3">@Model.User.LastName</dd>
+
+            <dt class="col-sm-3">Email</dt>
+            <dd class="col-sm-3">@Model.User.Email</dd>
+
+            <dt class="col-sm-3">Phone Number</dt>
+            <dd class="col-sm-3">@Model.User.PhoneNumber</dd>
+
+            <dt class="col-sm-3">Address</dt>
+            <dd class="col-sm-3">@Model.User.Address</dd>
+
+            <dt class="col-sm-3">Status</dt>
+            <dd class="col-sm-3">
+                @if (Model.User.Status == "ACTIVE")
+                {
+                    <span class="status-active">@Model.User.Status</span>
+                }
+                else if (Model.User.Status == "INACTIVE")
+                {
+                    <span class="status-inactive">@Model.User.Status</span>
+                }
+            </dd>
+
+            <dt class="col-sm-3">Role</dt>
+            <dd class="col-sm-3">@Model.User.RoleName</dd>
+        </dl>
+    </div>
+
+    <div class="text-center mt-4">
+        <a class="btn btn-primary" asp-page="./Edit" asp-route-id="@Model.User?.UserId">Edit</a>
+        @if (Model.UserRole == "d290f1ee-6c54-4b01-90e6-d701748f0851")
+        {
+            <a class="btn btn-secondary" asp-page="/UserPage/Index">Back to List</a>
+        }
+        else
+        {
+            <a class="btn btn-secondary" asp-page="/Index">Back</a>
+        }
+    </div>
+</div>
+
+
+<style>
+    .profile-container {
+        max-width: 900px;
+        margin: auto;
+        background-color: #f8f9fa;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .profile-header {
+        background-color: #e6f7e6;
+        border-radius: 10px 10px 0 0;
+        padding: 20px;
+        text-align: center;
+        color: #2c8a2c;
+    }
+
+        .profile-header img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin-bottom: 10px;
+        }
+
+    .form-section {
+        padding: 20px;
+    }
+
+        .form-section h5 {
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 5px;
+            margin-bottom: 15px;
+            color: #3572EF;
+        }
+
+        .form-section dt, .form-section dd {
+            margin: 0;
+            padding: 10px 0;
+        }
+
+        .form-section dd {
+            color: #333;
+        }
+
+    .status-active {
+        background-color: #28a745; /* Green */
+        color: white;
+        padding: 5px 10px;
+        border-radius: 5px;
+    }
+
+    .status-inactive {
+        background-color: #dc3545; /* Red */
+        color: white;
+        padding: 5px 10px;
+        border-radius: 5px;
+    }
+</style>
