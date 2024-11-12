@@ -82,7 +82,69 @@ namespace BusinessLayer.Service.Implement
                 };
             }
 
-            public async Task<BaseResponseModel<AdoptionApplicationResponseModel>> AddAsync(AdoptionApplicationRequestModel request)
+        public async Task<BaseResponseModel<IEnumerable<AdoptionApplicationResponseModel>>> GetAllForShelterAsync(Guid id)
+        {
+            var applicationRepo = _unitOfWork.Repository<AdoptionApplication>();
+            var petRepo = _unitOfWork.Repository<Pet>();
+            var userRepo = _unitOfWork.Repository<User>();
+
+            var applications = await applicationRepo.GetAll()
+                .Include(u => u.User)
+                .Include(p => p.Pet)
+                .Where(s => s.Pet.ShelterId == id)
+                .ToListAsync();
+            var responseModels = _mapper.Map<IEnumerable<AdoptionApplicationResponseModel>>(applications);
+
+            if (applications.Count() == 0)
+            {
+                return new BaseResponseModel<IEnumerable<AdoptionApplicationResponseModel>>
+                {
+                    Code = 200,
+                    Message = "No Shelters in the list",
+                    Data = responseModels
+                };
+            }
+
+            return new BaseResponseModel<IEnumerable<AdoptionApplicationResponseModel>>
+            {
+                Code = 200,
+                Message = "Shelters retrieved successfully",
+                Data = responseModels
+            };
+        }
+
+        public async Task<BaseResponseModel<IEnumerable<AdoptionApplicationResponseModel>>> GetAllForUserAsync(Guid id)
+        {
+            var applicationRepo = _unitOfWork.Repository<AdoptionApplication>();
+            var petRepo = _unitOfWork.Repository<Pet>();
+            var userRepo = _unitOfWork.Repository<User>();
+
+            var applications = await applicationRepo.GetAll()
+                .Include(u => u.User)
+                .Include(p => p.Pet)
+                .Where(s => s.UserId == id)
+                .ToListAsync();
+            var responseModels = _mapper.Map<IEnumerable<AdoptionApplicationResponseModel>>(applications);
+
+            if (applications.Count() == 0)
+            {
+                return new BaseResponseModel<IEnumerable<AdoptionApplicationResponseModel>>
+                {
+                    Code = 200,
+                    Message = "No Shelters in the list",
+                    Data = responseModels
+                };
+            }
+
+            return new BaseResponseModel<IEnumerable<AdoptionApplicationResponseModel>>
+            {
+                Code = 200,
+                Message = "Shelters retrieved successfully",
+                Data = responseModels
+            };
+        }
+
+        public async Task<BaseResponseModel<AdoptionApplicationResponseModel>> AddAsync(AdoptionApplicationRequestModel request)
             {
                 var applicationRepo = _unitOfWork.Repository<AdoptionApplication>();
                 var petRepo = _unitOfWork.Repository<Pet>();

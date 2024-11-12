@@ -29,14 +29,14 @@ namespace PetRescueAPI.Controllers
             return StatusCode((int)response.Code, response);
         }
 
-        [HttpGet("/Shelter/{id}")]
+        [HttpGet("shelter/{id}")]
         public async Task<IActionResult> GetAllApplicationsForShelter(Guid id)
         {
             var response = await _adoptionApplicationService.GetAllForShelterAsync(id);
             return StatusCode((int)response.Code, response);
         }
 
-        [HttpGet("/User/{id}")]
+        [HttpGet("user/{id}")]
         public async Task<IActionResult> GetAllApplicationsForUser(Guid id)
         {
             var response = await _adoptionApplicationService.GetAllForUserAsync(id);
