@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.IdentityModel.Tokens;
 using PetRescueFE.Pages.Model;
 using PetRescueFE.Pages.Model.Events;
 
@@ -9,10 +10,12 @@ namespace PetRescueFE.Pages.Events
     public class EditModel : PageModel
     {
         private readonly ApiService _apiService;
+        private readonly EventGlobalUtility _utility;
 
-        public EditModel(ApiService apiService)
+        public EditModel(ApiService apiService, EventGlobalUtility utility)
         {
             _apiService = apiService;
+            _utility = utility;
         }
 
         [BindProperty]
@@ -29,6 +32,12 @@ namespace PetRescueFE.Pages.Events
 
         public async Task<IActionResult> OnGetAsync()
         {
+            var role = _utility.GetUserRole();
+            if (role.IsNullOrEmpty() || _utility.IsEditable(role))
+            {
+                return RedirectToPage("/Login");
+            }
+            
             var response = await TryGetEvent(EventUrlProfile.GET_DETAIL, Id);
             if (response == null)
             {
