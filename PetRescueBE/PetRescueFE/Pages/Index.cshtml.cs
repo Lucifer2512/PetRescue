@@ -17,7 +17,15 @@ namespace PetRescueFE.Pages
 
         public async Task OnGet()
         {
+            var userId = HttpContext.Session.GetString("UserId");
 
+            var apiUrl = $"https://localhost:7297/api/users/{userId}";
+            var response = await _apiService.GetAsync<BaseResponseModelFE<UserResponseModelFE>>(apiUrl);
+
+            if (response.Data != null && response.Data.ImageData != null)
+            {
+                HttpContext.Session.SetString("UserImageBase64", response.Data.ImageData);
+            }
         }
     }
 }

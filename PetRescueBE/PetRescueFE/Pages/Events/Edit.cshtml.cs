@@ -25,6 +25,8 @@ namespace PetRescueFE.Pages.Events
 
         public IFormFile? ImageFile { get; set; }
 
+        public string? ExistingImageData { get; set; }
+
         public async Task<IActionResult> OnGetAsync()
         {
             var response = await TryGetEvent(EventUrlProfile.GET_DETAIL, Id);
@@ -45,6 +47,11 @@ namespace PetRescueFE.Pages.Events
                 Goal = response.Goal,
                 Status = response.Status
             };
+
+            if (response.ImageData != null)
+            {
+                ExistingImageData = response.ImageData;
+            }
 
             StatusList = new SelectList(Enum.GetNames(typeof(Status)));
 

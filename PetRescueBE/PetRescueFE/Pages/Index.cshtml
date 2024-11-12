@@ -4,7 +4,76 @@
     ViewData["Title"] = "Home page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="hero-section">
+    <div class="hero-images">
+        <img src="https://comptroller.texas.gov/economy/fiscal-notes/archive/2021/jul/images/rescue-hero.jpg" alt="Image 1">
+        <img src="https://c4.wallpaperflare.com/wallpaper/595/798/475/animals-blue-cats-eyes-wallpaper-preview.jpg" alt="Image 2">
+        <img src="https://c1.wallpaperflare.com/preview/392/228/940/dog-volunteer-pet-animal.jpg" alt="Image 3">
+        <img src="https://c4.wallpaperflare.com/wallpaper/145/152/895/blue-eyes-cat-mammal-kittens-wallpaper-preview.jpg" alt="Image 4">
+        <img src="https://c4.wallpaperflare.com/wallpaper/49/262/523/dog-siberian-husky-puppies-animals-wallpaper-preview.jpg" alt="Image 5">
+    </div>
 </div>
+
+<style>
+    .hero-section {
+        position: relative;
+        width: 100%;
+        height: 600px;
+        overflow: hidden;
+        cursor: pointer; /* Add cursor pointer to indicate clickability */
+    }
+
+    .hero-images {
+        position: relative;
+        width: 100%;
+        height: 100%;
+    }
+
+        .hero-images img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+            .hero-images img.active {
+                opacity: 1;
+            }
+</style>
+
+<script>
+    let slideIndex = 1;
+    showSlides(slideIndex);
+
+    // Next slide on image click
+    document.querySelector('.hero-section').addEventListener('click', function () {
+        plusSlides(1);
+    });
+
+
+    function plusSlides(n) {
+        showSlides(slideIndex += n);
+    }
+
+    function showSlides(n) {
+        let i;
+        let slides = document.getElementsByClassName("hero-images")[0].getElementsByTagName("img");
+
+        if (n > slides.length) { slideIndex = 1 }
+        if (n < 1) { slideIndex = slides.length }
+        for (i = 0; i < slides.length; i++) {
+            slides[i].classList.remove("active");
+        }
+        slides[slideIndex - 1].classList.add("active");
+    }
+
+    // Automatic slideshow every 7 seconds
+    setInterval(function () {
+        plusSlides(1);
+    }, 7000);
+
+</script>

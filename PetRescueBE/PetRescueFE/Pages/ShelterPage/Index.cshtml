@@ -5,10 +5,14 @@
     ViewData["Title"] = "Shelter List";
 }
 
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
 <div class="page-container">
     <div class="page-header">
         <h1>@ViewData["Title"]</h1>
-        <a asp-page="Create" class="btn-create">Create</a>
+        <a asp-page="Create" class="btn-create">
+            <i class="bi bi-plus-circle"></i>Create
+        </a>
     </div>
 
 
@@ -85,7 +89,6 @@
         border: none;
         cursor: pointer;
         text-decoration: none;
-        font-weight: bold;
     }
 
         .btn-create:hover {

@@ -2,111 +2,147 @@
 @model PetRescueFE.Pages.Events.DetailsModel
 
 @{
-    ViewData["Title"] = "Details";
-    Layout = "~/Pages/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Event Details";
 }
 
-<h1>Details</h1>
-
-<div>
-    <h4>Event</h4>
-    <hr/>
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Event.Name)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Event.Name)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Event.Description)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Event.Description)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Event.StartDateTime)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Event.StartDateTime)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Event.EndDateTime)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Event.EndDateTime)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Event.Location)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Event.Location)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Event.Status)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Event.Status)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Event.EventType)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Event.EventType)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Event.Goal)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Event.Goal)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Event.Shelter)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Event.Shelter.ShelterAddress)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Event.ImageData)
-        </dt>
-        <dd class="col-sm-10">
-            <img src="data:image/png;base64,@Model.Event.ImageData" alt="Shelter Image" />
-        </dd>
-    </dl>
-</div>
-@*<div class="mt-4">
-    <h4>Donations</h4>
-    <hr/>
-    @if (Model.Event.Donations != null && Model.Event.Donations.Any())
+<div class="profile-container">
+    @if (!string.IsNullOrEmpty(Model.Event.ImageData))
     {
-        <table class="table">
-            <thead>
-            <tr>
-                <th>Donation Date</th>
-                <th>Amount</th>
-                <th>Notes</th>
-                <th>Donor Email</th>
-            </tr>
-            </thead>
-            <tbody>
-            @foreach (var donation in Model.Event.Donations)
-            {
-                <tr>
-                    <td>@donation.DonationDate</td>
-                    <td>@donation.Amount</td>
-                    <td>@donation.Notes</td>
-                    <td>@donation.User.UserEmail</td>
-                </tr>
-            }
-            </tbody>
-        </table>
+        <div class="profile-header">
+            <img src="data:image/jpeg;base64,@Model.Event.ImageData" alt="Event Image" />
+            <h2>@Model.Event.Name</h2>
+        </div>
     }
     else
     {
-        <p>No donations have been made for this event yet.</p>
+        <div class="profile-header">
+            <h2>@Model.Event.Name</h2>
+        </div>
     }
-</div>*@
-<div>
-    <a asp-page="./Edit" asp-route-id="@Model.Event?.EventId">Edit</a> |
-    <a asp-page="./Index">Back to List</a>
+
+    <div class="form-section">
+        <h5>Event Details</h5>
+        <dl class="row">
+            <dt class="col-sm-3">Event Name</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.Event.Name)</dd>
+
+            <dt class="col-sm-3">Description</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.Event.Description)</dd>
+
+            <dt class="col-sm-3">Start Date & Time</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.Event.StartDateTime)</dd>
+
+            <dt class="col-sm-3">End Date & Time</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.Event.EndDateTime)</dd>
+
+            <dt class="col-sm-3">Location</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.Event.Location)</dd>
+
+            <dt class="col-sm-3">Status</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.Event.Status)</dd>
+
+            <dt class="col-sm-3">Event Type</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.Event.EventType)</dd>
+
+            <dt class="col-sm-3">Goal</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.Event.Goal)</dd>
+
+            <dt class="col-sm-3">Shelter</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.Event.Shelter.ShelterName)</dd>
+        </dl>
+    </div>
+
+    <div class="text-center mt-4">
+        @if (Model.CanEdit)
+        {
+            <a class="btn btn-primary" asp-page="./Edit" asp-route-id="@Model.Event?.EventId">Edit</a>
+        }
+        <a class="btn btn-secondary" asp-page="./Index">Back to List</a>
+    </div>
+
+    @*Optional donation section if needed*@
+    @*<div class="mt-4">
+    <h4>Donations</h4>
+    <hr/>
+    @if (Model.Donations.Any())
+    {
+    <table class="table">
+    <thead>
+    <tr>
+    <th>Donation Date</th>
+    <th>Amount</th>
+    <th>Donor</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var donation in Model.Donations)
+    {
+    <tr>
+    <td>@donation.DonationDate</td>
+    <td>@donation.Amount</td>
+    <td>@donation.User.UserEmail</td>
+    </tr>
+    }
+    </tbody>
+    </table>
+    }
+    else
+    {
+    <p>No donations have been made for this event yet.</p>
+    }
+    </div>*@
 </div>
+
+
+<style>
+    /* Style consistent with Shelter details page */
+    .profile-container {
+        max-width: 900px;
+        margin: auto;
+        background-color: #f8f9fa;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .profile-header {
+        background-color: #e6f7e6; /* Light green background */
+        border-radius: 10px 10px 0 0;
+        padding: 20px;
+        text-align: center;
+        color: #2c8a2c; /* Darker green text */
+    }
+
+        .profile-header img {
+            width: 100%; /* Image takes full width */
+            height: auto; /* Maintain aspect ratio */
+            border-radius: 10px;
+            margin-bottom: 10px;
+            max-height: 300px;
+        }
+
+    .form-section {
+        padding: 20px;
+    }
+
+        .form-section h5 {
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 5px;
+            margin-bottom: 15px;
+            color: #3572EF; /* Blue color for headings */
+        }
+
+        .form-section dt, .form-section dd {
+            margin: 0;
+            padding: 10px 0; /* Add some vertical spacing */
+        }
+
+            .form-section dt {
+                font-weight: bold; /* Make labels bold */
+
+            }
+            .form-section dd {
+                color: #333; /* Dark gray text for values */
+            }
+</style>
