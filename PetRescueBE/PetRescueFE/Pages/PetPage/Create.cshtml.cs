@@ -21,28 +21,29 @@ namespace PetRescueFE.Pages.PetPage
 
         [BindProperty]
         public PetAddRequestModelFE Pet { get; set; } = new PetAddRequestModelFE();
+        public List<SelectListItem> ShelterOptions { get; set; } = new List<SelectListItem>();
 
-        public IList<SelectListItem> PetOptions { get; set; } = new List<SelectListItem>();
-     
-        public async Task<IActionResult> OnGetAsync()
+        public IFormFile? ImageFile { get; set; }
+
+        private async Task LoadShelterAsync()
         {
             var apiUrl = "https://localhost:7297/api/shelter";
             var response = await _apiService.GetAsync<BaseResponseModelFE<IList<ShelterResponseModel>>>(apiUrl);
 
-            // Kiểm tra phản hồi từ API
-            if (response == null || response.Data == null)
+            if (response.Data != null)
+
             {
-                ModelState.AddModelError(string.Empty, "Unable to load shelter data.");
-                return Page();
+                ShelterOptions = response.Data.Select(shelter => new SelectListItem
+                {
+                    Value = shelter.ShelterId.ToString(),
+                    Text = shelter.ShelterName
+                }).ToList();
             }
+        }
 
-            // Thiết lập PetOptions cho dropdown từ dữ liệu shelter lấy từ API
-            PetOptions = response.Data.Select(s => new SelectListItem
-            {
-                Value = s.ShelterId.ToString(),
-                Text = s.ShelterName
-            }).ToList();
-
+        public async Task<IActionResult> OnGetAsync()
+        {
+            await LoadShelterAsync();
             return Page();
         }
 
@@ -50,8 +51,11 @@ namespace PetRescueFE.Pages.PetPage
         {
             if (!ModelState.IsValid || Pet == null)
             {
+                await LoadShelterAsync();
                 return Page();
             }
+
+            Pet.Image = ImageFile != null ? await _apiService.ConvertToByteArrayAsync(ImageFile) : null;
 
             // Gọi API để tạo pet mới
             var response = await _apiService.PostAsync<PetAddRequestModelFE, BaseResponseModelFE<PetResponseModelFE>>("https://localhost:7297/api/pet/add", Pet);
@@ -59,8 +63,8 @@ namespace PetRescueFE.Pages.PetPage
             
             if (response == null || response.Data == null)
             {
-                
                 ModelState.AddModelError(string.Empty, response.Message.ToString());
+                await LoadShelterAsync();
                 return Page();
             }
 

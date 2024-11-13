@@ -11,6 +11,6 @@
         public string Species { get; set; } = null!;
         public string? Status { get; set; }
         public DateTime? ArrivalDate { get; set; }
-        public string? PhotoUrl { get; set; }
+        public string? ImageData { get; set; }
     }
 }

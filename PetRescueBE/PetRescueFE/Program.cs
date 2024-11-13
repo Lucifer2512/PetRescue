@@ -1,6 +1,8 @@
 ﻿using AspNetCoreHero.ToastNotification;
+using Microsoft.AspNetCore.SignalR;
 using PetRescueFE;
 using PetRescueFE.Pages.Events;
+using PetRescueFE.SignalRealtime;
 using System.Net.Http.Headers;
 using System.Text.Json.Serialization;
 
@@ -40,6 +42,8 @@ builder.Services.AddCors(options =>
 });
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<EventGlobalUtility>();
+builder.Services.AddSignalR();
+builder.Services.AddSingleton<IUserIdProvider, CustomUserIdProvider>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -57,6 +61,9 @@ app.UseRouting();
 app.UseSession();
 
 app.UseAuthorization();
+app.MapRazorPages();
+app.MapHub<NotificationHub>("/notificationHub");
+
 
 app.MapRazorPages();
 

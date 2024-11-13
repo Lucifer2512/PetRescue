@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using DataAccessLayer.Context;
 using DataAccessLayer.Entity;
 using PetRescueFE.Pages.Model;
+using PetRescueFE.Pages.Model.Shelters;
 
 namespace PetRescueFE.Pages.PetPage
 {
@@ -25,6 +26,23 @@ namespace PetRescueFE.Pages.PetPage
         public PetUpdateRequestModelFE Pet { get; set; } = default!;
 
         public List<SelectListItem> ShelterOptions { get; set; } = new List<SelectListItem>();
+
+        public IFormFile? ImageFile { get; set; }
+
+        private async Task LoadShelterAsync()
+        {
+            var apiUrl = "https://localhost:7297/api/shelter";
+            var response = await _apiService.GetAsync<BaseResponseModelFE<IList<ShelterResponseModel>>>(apiUrl);
+
+            if (response.Data != null)
+            {
+                ShelterOptions = response.Data.Select(shelter => new SelectListItem
+                {
+                    Value = shelter.ShelterId.ToString(),
+                    Text = shelter.ShelterName
+                }).ToList();
+            }
+        }
 
         public async Task<IActionResult> OnGetAsync(Guid? id)
         {
@@ -43,19 +61,7 @@ namespace PetRescueFE.Pages.PetPage
 
             Pet = response.Data;
 
-            // Danh sách shelter tạm thời để sử dụng làm dropdown
-            var predefinedShelters = new List<Shelter>
-            {
-                new Shelter { ShelterId = Guid.Parse("61c88ed1-7b25-4956-b746-41908b607cb3"), ShelterName = "Shelter A" },
-                new Shelter { ShelterId = Guid.Parse("4dc88ed1-7b25-4956-b746-41908b607cb3"), ShelterName = "Shelter B" },
-                new Shelter { ShelterId = Guid.Parse("8ac88ed1-7b25-4956-b746-41908b607cb3"), ShelterName = "Shelter C" }
-            };
-
-            ShelterOptions = predefinedShelters.Select(s => new SelectListItem
-            {
-                Value = s.ShelterId.ToString(),
-                Text = s.ShelterName
-            }).ToList();
+            await LoadShelterAsync();
 
             return Page();
         }
@@ -64,8 +70,11 @@ namespace PetRescueFE.Pages.PetPage
         {
             if (!ModelState.IsValid)
             {
+                await LoadShelterAsync();
                 return Page();
             }
+
+            Pet.Image = ImageFile != null ? await _apiService.ConvertToByteArrayAsync(ImageFile) : null;
 
             // Gọi API để cập nhật Pet
             var response = await _apiService.PutAsync<PetUpdateRequestModelFE, BaseResponseModelFE<PetResponseModelFE>>(
@@ -73,6 +82,7 @@ namespace PetRescueFE.Pages.PetPage
 
             if (response == null || response.Code != 200)
             {
+                await LoadShelterAsync();
                 ModelState.AddModelError(string.Empty, "Failed to update the pet.");
                 return Page();
             }

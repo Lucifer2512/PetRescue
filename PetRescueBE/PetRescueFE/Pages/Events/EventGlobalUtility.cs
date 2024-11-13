@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.IdentityModel.Tokens.Jwt;
+using Microsoft.IdentityModel.Tokens;
 
 namespace PetRescueFE.Pages.Events;
 
@@ -42,6 +43,20 @@ public class EventGlobalUtility
         if (string.IsNullOrEmpty(role))
             return null;
         return role;
+    }
+
+    public bool IsEditable(string role)
+    {
+        bool canEdit = false;
+        if (role.IsNullOrEmpty())
+        {
+            return false;
+        }
+        canEdit = role == Role4Event.ADMIN || // Admin
+                  role == Role4Event.SHELTER_OWNER;    // ShelterOwner
+        canEdit = role == Role4Event.USER; // User
+        
+        return canEdit;
     }
 }
 public class DateRangeAttribute : ValidationAttribute

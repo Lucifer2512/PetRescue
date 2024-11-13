@@ -37,7 +37,14 @@ namespace BusinessLayer.Ultility
                 .ForMember(dest => dest.PetName, opt => opt.MapFrom(src => src.Pet.Name));
             CreateMap<Pet, PetResponseModel>();
             CreateMap<PetAddRequestModel, Pet>();
-            CreateMap<PetUpdateRequestModel, Pet>();
+            CreateMap<PetUpdateRequestModel, Pet>()
+                .ForMember(dest => dest.Image, opt =>
+                {
+                    opt.MapFrom(src => src.Image);
+                    opt.Condition((src, dest) => src.Image != null);
+                });
+
+
             #region Event families
 
             CreateMap<Event, EventResponseModel>()

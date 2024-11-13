@@ -51,7 +51,7 @@ namespace PetRescueFE.Pages
                     HttpContext.Session.SetString("UserId", id);
 
                     var userId = HttpContext.Session.GetString("UserId");
-
+                    
                     var apiUrl = $"https://localhost:7297/api/users/{userId}";
                     var response = await _apiService.GetAsync<BaseResponseModelFE<UserResponseModelFE>>(apiUrl);
 
