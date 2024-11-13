@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using PetRescueFE.Pages.Model;
 using PetRescueFE.Pages.Model.Shelters;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -43,6 +44,12 @@ namespace PetRescueFE.Pages.PetPage
 
         public async Task<IActionResult> OnGetAsync()
         {
+            var role = HttpContext.Session.GetString("Role");
+            if (string.IsNullOrEmpty(role) || role == "e7b8f3d2-4a2f-4c3b-8f4d-9c5d8a3e1b2c") // User role
+            {
+                return RedirectToPage("/Login");
+            }
+
             await LoadShelterAsync();
             return Page();
         }

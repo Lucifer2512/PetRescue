@@ -28,6 +28,18 @@ namespace PetRescueAPI.Controllers
             var response = await _petService.GetAllAsync();
             return StatusCode((int)response.Code, response);
         }
+        [HttpGet("search")]
+        public async Task<IActionResult> GetPetBySearch(string? searchTerm)
+        {
+            var response = await _petService.GetBySearchAsync(searchTerm);
+            return StatusCode((int)response.Code, response);
+        }
+        [HttpGet("user-search")]
+        public async Task<IActionResult> GetPetByUserSearch(string? searchTerm)
+        {
+            var response = await _petService.GetByUserSearchAsync(searchTerm);
+            return StatusCode((int)response.Code, response);
+        }
         [HttpGet("id")]
         public async Task<IActionResult> PetDetail(Guid id)
         {
@@ -35,11 +47,12 @@ namespace PetRescueAPI.Controllers
             return StatusCode((int)response.Code, response);
         }
         [HttpGet("shelter/{id}")]
-        public async Task<IActionResult> PetByShelter(Guid id)
+        public async Task<IActionResult> PetByShelter(Guid id,string? searchTerm)
         {
-            var response = await _petService.GetByShelterAsync(id);
+            var response = await _petService.GetByShelterAsync(id,searchTerm);
             return StatusCode((int)response.Code, response);
         }
+
         [HttpPut("update")]
         public async Task<IActionResult> UpdatePet([FromBody] PetUpdateRequestModel petUpdateRequestModel)
         {

@@ -12,7 +12,8 @@ namespace BusinessLayer.Service.Interface
         Task<BaseResponseModel<PetResponseModel>> DeleteAsync(Guid id);
         //   Task<BaseResponseModel<ICollection<PetResponseModel>>> GetAllByShelterIdAsync(Guid shelterId);
 
-        Task<BaseResponseModel<ICollection<PetResponseModel>>> GetByShelterAsync(Guid id);
-
+        Task<BaseResponseModel<ICollection<PetResponseModel>>> GetByShelterAsync(Guid id,string searchTerm);
+        Task<BaseResponseModel<ICollection<PetResponseModel>>> GetBySearchAsync(string? searchTerm);
+        Task<BaseResponseModel<ICollection<PetResponseModel>>> GetByUserSearchAsync(string? searchTerm);
     }
 }

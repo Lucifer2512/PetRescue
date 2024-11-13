@@ -127,15 +127,83 @@ namespace BusinessLayer.Service.Implement
             };
         }
 
-        public async Task<BaseResponseModel<ICollection<PetResponseModel>>> GetByShelterAsync(Guid id)
+        public async Task<BaseResponseModel<ICollection<PetResponseModel>>> GetBySearchAsync(string searchTerm)
         {
-            var listPet = await _unitOfWork.Repository<Pet>().GetAll().Where(x => x.ShelterId == id).ToListAsync();
+            searchTerm = searchTerm?.ToLower();
+            IList<Pet> listPet;
+
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                listPet = await _unitOfWork.Repository<Pet>()
+                    .GetAll()
+                    .Where(p => p.Name.ToLower().Contains(searchTerm) || p.Species.ToLower().Contains(searchTerm))
+                    .ToListAsync();
+            }
+            else
+            {
+                listPet = await _unitOfWork.Repository<Pet>().GetAllAsync();
+            }
+
+            var response = _mapper.Map<ICollection<PetResponseModel>>(listPet);
+
+            return new BaseResponseModel<ICollection<PetResponseModel>>
+            {
+                Code = 200,
+                Message = "Search successful",
+                Data = response
+            };
+        }
+
+        public async Task<BaseResponseModel<ICollection<PetResponseModel>>> GetByShelterAsync(Guid id, string? searchTerm)  
+        {
+            var query = _unitOfWork.Repository<Pet>().GetAll().Where(x => x.ShelterId == id);
+
+            // If a search term is provided, apply it to filter the pet names or species
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                searchTerm = searchTerm.ToLower();  // Normalize the search term to lowercase
+                query = query.Where(x => x.Name.ToLower().Contains(searchTerm) || x.Species.ToLower().Contains(searchTerm));
+            }
+
+            // Execute the query and fetch the list of pets
+            var listPet = await query.ToListAsync();
+
+            // Map the list of Pet entities to PetResponseModel
             var response = _mapper.Map<ICollection<PetResponseModel>>(listPet);
             return new BaseResponseModel<ICollection<PetResponseModel>>
             {
                 Code = 200,
                 Message = "get all success",
                 Data = response.ToList()
+            };
+        }
+
+        public async Task<BaseResponseModel<ICollection<PetResponseModel>>> GetByUserSearchAsync(string? searchTerm)
+        {
+            searchTerm = searchTerm?.ToLower();
+            IList<Pet> listPet;
+
+            // Query to get all pets that are ACTIVE
+            var query = _unitOfWork.Repository<Pet>()
+                        .GetAll()
+                        .Where(p => p.Status == "ACTIVE");
+
+            // If there's a search term, filter by name or species as well
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                query = query.Where(p => p.Name.ToLower().Contains(searchTerm) || p.Species.ToLower().Contains(searchTerm));
+            }
+
+            // Execute the query and get the list of pets
+            listPet = await query.ToListAsync();
+
+            var response = _mapper.Map<ICollection<PetResponseModel>>(listPet);
+
+            return new BaseResponseModel<ICollection<PetResponseModel>>
+            {
+                Code = 200,
+                Message = "Search successful",
+                Data = response
             };
         }
 
