@@ -21,7 +21,6 @@ namespace PetRescueFE.Pages.PetPage
 
         [BindProperty]
         public PetAddRequestModelFE Pet { get; set; } = new PetAddRequestModelFE();
-
         public List<SelectListItem> ShelterOptions { get; set; } = new List<SelectListItem>();
 
         public IFormFile? ImageFile { get; set; }
@@ -32,6 +31,7 @@ namespace PetRescueFE.Pages.PetPage
             var response = await _apiService.GetAsync<BaseResponseModelFE<IList<ShelterResponseModel>>>(apiUrl);
 
             if (response.Data != null)
+
             {
                 ShelterOptions = response.Data.Select(shelter => new SelectListItem
                 {
@@ -60,6 +60,7 @@ namespace PetRescueFE.Pages.PetPage
             // Gọi API để tạo pet mới
             var response = await _apiService.PostAsync<PetAddRequestModelFE, BaseResponseModelFE<PetResponseModelFE>>("https://localhost:7297/api/pet/add", Pet);
           
+            
             if (response == null || response.Data == null)
             {
                 ModelState.AddModelError(string.Empty, response.Message.ToString());
