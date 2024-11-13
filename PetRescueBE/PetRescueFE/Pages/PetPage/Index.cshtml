@@ -7,80 +7,68 @@
 
 <h1>Pet List</h1>
 
-<p>
-    <a asp-page="Create">Create New</a>
-</p>
+<div class="d-flex align-items-center mb-3">
+    @if (Model.IsAdmin)
+    {
+        <button class="btn btn-primary mx-2" onclick="location.href='@Url.Page("Create")'">Create New</button>
+    }
+    <form method="get" class="d-flex align-items-center w-100">
+        <input type="text" name="searchTerm" placeholder="Search pets..." class="form-control me-2" value="@Model.SearchTerm" />
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+</div>
+@if (!string.IsNullOrEmpty(Model.ErrorMessage))
+{
+    <div class="alert alert-danger">@Model.ErrorMessage</div>
+}
 
 @if (Model.Pets != null && Model.Pets.Any())
 {
-    <table class="table">
+    <table class="table table-bordered">
         <thead>
             <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Pets.FirstOrDefault().Name)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Pets.FirstOrDefault().Age)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Pets.FirstOrDefault().Gender)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Pets.FirstOrDefault().Description)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Pets.FirstOrDefault().Species)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Pets.FirstOrDefault().Status)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Pets.FirstOrDefault().ArrivalDate)
-                </th>
-                <th>
-                    Image
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Pets.FirstOrDefault().ShelterId)
-                </th>
-                <th></th>
+                <th>@Html.DisplayNameFor(model => model.Pets.FirstOrDefault().Name)</th>
+                <th>@Html.DisplayNameFor(model => model.Pets.FirstOrDefault().Age)</th>
+                <th>@Html.DisplayNameFor(model => model.Pets.FirstOrDefault().Gender)</th>
+                <th>@Html.DisplayNameFor(model => model.Pets.FirstOrDefault().Description)</th>
+                <th>@Html.DisplayNameFor(model => model.Pets.FirstOrDefault().Species)</th>
+                <th>@Html.DisplayNameFor(model => model.Pets.FirstOrDefault().Status)</th>
+                <th>@Html.DisplayNameFor(model => model.Pets.FirstOrDefault().ArrivalDate)</th>
+                <th>Image</th>
+                @if (Model.IsAdmin)
+                {
+                    <th>@Html.DisplayNameFor(model => model.Pets.FirstOrDefault().ShelterId)</th>
+                }
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var item in Model.Pets)
             {
                 <tr>
+                    <td>@Html.DisplayFor(modelItem => item.Name)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Age)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Gender)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Description)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Species)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Status)</td>
+                    <td>@Html.DisplayFor(modelItem => item.ArrivalDate)</td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Name)
+                        <img src="data:image/png;base64,@item.ImageData" alt="Pet Image" style="width: 100px; height: 100px; object-fit: cover;" />
                     </td>
+                    @if (Model.IsAdmin)
+                    {
+                        <td>@Html.DisplayFor(modelItem => item.ShelterId)</td>
+                    }
                     <td>
-                        @Html.DisplayFor(modelItem => item.Age)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Gender)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Description)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Species)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Status)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.ArrivalDate)
-                    </td>
-                    <td>
-                        <img src="data:image/png;base64,@item.ImageData" alt="Pet Image" />
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.ShelterId)
-                    </td>
-                    <td>
-                        <a asp-page="./Edit" asp-route-id="@item.PetId">Edit</a> |
-                        <a asp-page="./Details" asp-route-id="@item.PetId">Details</a> |
-                        <a asp-page="./Delete" asp-route-id="@item.PetId">Delete</a>
+                        <div class="d-flex justify-content-center">
+                            <button class="btn btn-secondary mx-1" onclick="location.href='@Url.Page("./Details", new { id = item.PetId })'">Details</button>
+                            @if (Model.IsAdmin)
+                            {
+                                <button class="btn btn-info mx-1" onclick="location.href='@Url.Page("./Edit", new { id = item.PetId })'">Edit</button>
+                                <button class="btn btn-danger mx-1" onclick="location.href='@Url.Page("./Delete", new { id = item.PetId })'">Delete</button>
+                            }
+                        </div>
                     </td>
                 </tr>
             }
@@ -89,5 +77,5 @@
 }
 else
 {
-    <p>No pets available.</p>
+    <p>No pets available matching the search term.</p>
 }
