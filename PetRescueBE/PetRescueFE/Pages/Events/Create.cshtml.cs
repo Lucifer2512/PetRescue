@@ -1,8 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 using PetRescueFE.Pages.Model;
 using PetRescueFE.Pages.Model.Events;
+using PetRescueFE.SignalRealtime;
 
 namespace PetRescueFE.Pages.Events
 {
@@ -10,11 +13,12 @@ namespace PetRescueFE.Pages.Events
     {
         private readonly ApiService _apiService;
         private readonly EventGlobalUtility _utility;
-
-        public CreateModel(ApiService apiService, EventGlobalUtility utility)
+        private readonly IHubContext<NotificationHub> _hubContext;
+        public CreateModel(ApiService apiService, EventGlobalUtility utility, IHubContext<NotificationHub> hubContext)
         {
             _apiService = apiService;
             _utility = utility;
+            _hubContext = hubContext;
         }
 
         [BindProperty]
@@ -94,6 +98,8 @@ namespace PetRescueFE.Pages.Events
                     EventUrlProfile.POST_CREATE,
                     Event
                 );
+                await SendNotification("New events added, check now!  ", "");
+
 
                 return RedirectToPage("./Index");
             }
@@ -139,6 +145,15 @@ namespace PetRescueFE.Pages.Events
         {
             var response = await _apiService.GetAsync<BaseResponseModelFE<List<Shelter4EventResponse>>>(url);
             return response?.Data ?? new List<Shelter4EventResponse>();
+        }
+        public async Task SendNotification(string label, string url)
+        {
+            var message = new
+            {
+                label = label,
+                url = url
+            };
+            await _hubContext.Clients.All.SendAsync("ReceiveNotification", JsonConvert.SerializeObject(message));
         }
     }
 }

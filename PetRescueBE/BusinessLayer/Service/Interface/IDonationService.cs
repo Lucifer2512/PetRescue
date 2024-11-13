@@ -3,7 +3,7 @@ using BusinessLayer.Model.Response;
 
 namespace BusinessLayer.Service.Interface
 {
-    public interface IDonationService
+    public interface IDonationService 
     {
         Task<BaseResponseModel<IEnumerable<DonationReponseModel>>> GetAllAsync();
         Task<BaseResponseModel<DonationReponseModel>> AddAsync(DonationRequestModel request);
@@ -13,6 +13,7 @@ namespace BusinessLayer.Service.Interface
         Task<String> GenerateQRBanking(Guid EventID, Guid ShelterID, Guid UserId, int amount);
         Task<BaseResponseModel<DonationReponseModel>> GetDonationbyNotes(string notes);
         Task<BaseResponseModel<IEnumerable<DonationReponseModel>>> GetAllbyIdUserAsync(Guid id);
+
 
     }
 }

@@ -35,10 +35,10 @@ namespace PetRescueAPI.Controllers
             var response = await _donationService.GetAllAsync();
             return StatusCode((int)response.Code, response);
         }
-        [HttpGet("GetDonationbyId")]
-        public async Task<IActionResult> GetDonationbyUerId(Guid id)
+        [HttpGet("GetDonationbyUserId/{Id}")]
+        public async Task<IActionResult> GetDonationbyUserId(Guid Id)
         {
-            var response = await _donationService.GetAllbyIdUserAsync(id);
+            var response = await _donationService.GetAllbyIdUserAsync(Id);
             return StatusCode((int)response.Code, response);
         }
 

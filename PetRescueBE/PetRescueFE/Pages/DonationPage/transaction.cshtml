@@ -1,0 +1,242 @@
+﻿@page
+@model tutor_server.WebPage.Pages.transactionModel
+@{
+    ViewData["Title"] = "Transaction History Page";
+    var transactions = Model.transaction;
+    var cultureInfo = new System.Globalization.CultureInfo("vi-VN");
+    var AccountId = HttpContext.Session.GetString("AccountId");
+}
+<div class="container">
+    <div class="header">
+        <h1>Transaction History</h1>
+        <div class="header-buttons">
+            
+            <button id="downloadButton"><i class="fas fa-download"></i> Download As</button>
+        </div>
+    </div>
+
+    <div class="transaction-box">
+        <table>
+            <thead>
+                <tr>
+                   @* <th>ID</th>*@
+                    <th>Donation Date</th>
+                    <th>Amount</th>
+                    <th>Payment Method</th>
+                    <th>Notes</th>
+                    <th>Status</th>
+                    
+                </tr>
+            </thead>
+            <tbody class="transactionList">
+                @if (transactions.Count > 0)
+                {
+
+                    foreach (var transaction in transactions)
+                    {
+                        var statusClass = transaction.Status == "Waiting...." ? "status-await-payment" :
+                        transaction.Status ==  "Success" ? "status-payment-success" : "";
+                        <tr>
+                            <td>@transaction.DonationDate</td>
+                            <td>@transaction.Amount</td>                           
+                            <td>@transaction.PaymentMethod</td>
+                            <td>@transaction.Notes</td>
+                            <td class ="@statusClass">@transaction.Status</td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<nav aria-label="Page navigation">
+    <ul class="pagination justify-content-center">
+        @if (Model.transaction.HasPreviousPage)
+        {
+            <li class="page-item">
+                <a class="page-link" asp-page-handler="Index" asp-route-pageIndex="@(Model.transaction.PageIndex - 1)">Previous</a>
+            </li>
+        }
+        else
+        {
+            <li class="page-item disabled">
+                <span class="page-link">Previous</span>
+            </li>
+        }
+
+        @for (var i = 1; i <= Model.transaction.TotalPages; i++)
+        {
+            if (i == Model.transaction.PageIndex)
+            {
+                <li class="page-item active">
+                    <span class="page-link">@i</span>
+                </li>
+            }
+            else
+            {
+                <li class="page-item">
+                    <a class="page-link" asp-page-handler="Index" asp-route-pageIndex="@i">@i</a>
+                </li>
+            }
+        }
+
+        @if (Model.transaction.HasNextPage)
+        {
+            <li class="page-item">
+                <a class="page-link" asp-page-handler="Index" asp-route-pageIndex="@(Model.transaction.PageIndex + 1)">Next</a>
+            </li>
+        }
+        else
+        {
+            <li class="page-item disabled">
+                <span class="page-link">Next</span>
+            </li>
+        }
+    </ul>
+</nav>
+<style>
+    .pagination {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+    }
+
+        .pagination .page-item {
+            margin: 0 5px;
+            list-style-type: none; /* Remove default list styles */
+        }
+
+        .pagination .page-link {
+            color: #007bff;
+            background-color: #fff;
+            border: 1px solid #dee2e6;
+            padding: 6px 12px;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+            .pagination .page-link:hover {
+                background-color: #007bff;
+                color: #fff;
+                border-color: #007bff;
+            }
+
+        .pagination .page-item.active .page-link {
+            background-color: #007bff;
+            color: #fff;
+            border-color: #007bff;
+        }
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        color: #333;
+        margin: 0;
+        padding: 0;
+    }
+
+    .status-await-payment {
+        background-color: greenyellow;
+    }
+
+    .status-payment-success {
+        background-color: limegreen;
+        color: white; /* Màu chữ trắng để dễ đọc hơn trên nền xanh dương */
+    }
+    .container {
+        width: 80%;
+        margin: 90px auto;
+        background: white;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        border-radius: 8px;
+        padding: 20px;
+    }
+
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+        .header h1 {
+            margin: 0;
+        }
+
+    .header-buttons {
+        display: flex;
+        gap: 10px;
+    }
+
+        .header-buttons button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+            .header-buttons button i {
+                margin-right: 5px;
+            }
+
+            .header-buttons button:hover {
+                background-color: #0056b3;
+            }
+
+    .transaction-box {
+        margin-top: 20px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+    th, td {
+        padding: 12px;
+        border: 1px solid #ddd;
+        text-align: center;
+    }
+
+    th {
+        background-color: #f2f2f2;
+    }
+
+</style>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        fetch('/api/transactions')
+            .then(response => response.json())
+            .then(data => {
+                const transactionTable = document.getElementById('transactionTable');
+                data.forEach(transaction => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                                <td>${transaction.id}</td>
+                                <td>${transaction.userName}</td>
+                                <td>${transaction.date}</td>
+                                <td>${transaction.location}</td>
+                                <td>${transaction.amount}</td>
+                                <td>${transaction.status}</td>
+                                <td><button class="action-button">Action</button></td>
+                            `;
+                    transactionTable.appendChild(row);
+                });
+            });
+    });
+    document.getElementById('filterButton').addEventListener('click', function () {
+        var dropdown = document.getElementById('filterDropdown');
+        if (dropdown.style.display === 'none') {
+            dropdown.style.display = 'block';
+        } else {
+            dropdown.style.display = 'none';
+        }
+    });
+</script>
+<script src="https://kit.fontawesome.com/a076d05399.js"></script>

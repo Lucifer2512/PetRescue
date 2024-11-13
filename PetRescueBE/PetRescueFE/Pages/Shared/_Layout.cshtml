@@ -7,7 +7,52 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <style>
+        .popup-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 300px;
+            z-index: 1000;
+        }
 
+        .notification {
+            background-color: #f8f9fa;
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            font-size: 16px;
+            text-align: center;
+        }
+
+        .notification-label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .notification-link {
+            display: block;
+            color: #007bff;
+            text-decoration: none;
+        }
+
+            .notification-link:hover {
+                text-decoration: underline;
+            }
+
+        .close-button {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+        }
+    </style>
     <style>
         body {
             font-family: Arial, Helvetica, sans-serif;
@@ -16,6 +61,8 @@
             min-height: 100vh;
             margin: 0;
         }
+
+       
 
         .navbar {
             background-color: #3572EF;
@@ -183,6 +230,7 @@
                 </div>
                 <ul class="dropdown-menu dropdown-menu-bottom-center" aria-labelledby="userDropdown">
                     <li><a asp-page="/userpage/Details" asp-route-Id="@Context.Session.GetString("UserId")"><i class="fa-solid fa-user"></i> Profile</a></li>
+                        <li><a asp-page="/donationpage/transaction" asp-route-Id="@Context.Session.GetString("UserId")"><i class="fa-solid fa-hand-holding-dollar"></i> Donation History</a></li>
                     <li><a asp-page="/Logout"><i class="fa-solid fa-right-from-bracket"></i> Logout</a></li>
                 </ul>
             </div>
@@ -196,7 +244,82 @@
 
     <div class="container">
         <main role="main" class="pb-3">
+            <div id="notificationsPopup" class="popup-container"></div>
             @RenderBody()
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/5.0.9/signalr.min.js"></script>
+            <script>
+                document.addEventListener("DOMContentLoaded", function () {
+                    // Lấy userId từ ViewData (nếu cần thiết)
+                    //const userId = '@ViewData["UserClientRequestId"]';
+                    const userId = '@Context.Session.GetString("UserId")'
+                    console.log("UserId:", userId);
+
+                    // Khởi tạo kết nối SignalR không cần truyền userId
+                    const connection = new signalR.HubConnectionBuilder()
+                        .withUrl(`/notificationHub`)  // Không cần truyền userId nữa
+                        .build();
+
+                    // Bắt đầu kết nối
+                    connection.start()
+                        .then(() => {
+                            console.log("SignalR connection established.");
+                        })
+                        .catch(err => {
+                            console.error("Error establishing SignalR connection:", err.toString());
+                        });
+
+                    // Đăng ký sự kiện nhận thông báo
+                    connection.on("ReceiveNotification", function (message) {
+                        console.log("Received notification:", message);
+                        displayNotification(message);
+                    });
+
+                    // Hàm hiển thị thông báo trên UI
+                    function displayNotification(message) {
+                        console.log("Displaying notification:", message);
+
+                        const notificationsPopup = document.getElementById("notificationsPopup");
+                        const newNotification = document.createElement("div");
+                        newNotification.className = "notification";
+
+                        // Giả sử message là một chuỗi JSON có cấu trúc { label: "Notification", url: "https://example.com" }
+                        const messageData = JSON.parse(message);
+
+                        const label = document.createElement("span");
+                        label.className = "notification-label";
+                        label.innerText = messageData.label;
+
+                        const link = document.createElement("a");
+                        link.className = "notification-link";
+                        link.target = "_blank"; // Mở liên kết trong tab mới
+                        link.href = messageData.url;
+                        link.innerText = messageData.url;
+
+                        const closeButton = document.createElement("button");
+                        closeButton.className = "close-button";
+                        closeButton.innerText = "×"; // Biểu tượng đóng
+                        closeButton.onclick = function () {
+                            clearTimeout(timeoutId); // Hủy bỏ timeout
+                            notificationsPopup.removeChild(newNotification);
+                            console.log("Notification closed:", message);
+                        };
+
+                        newNotification.appendChild(label);
+                        newNotification.appendChild(link);
+                        newNotification.appendChild(closeButton);
+                        notificationsPopup.appendChild(newNotification);
+
+                        // Tự động xoá thông báo sau 5 phút
+                        const timeoutId = setTimeout(() => {
+                            if (notificationsPopup.contains(newNotification)) {
+                                notificationsPopup.removeChild(newNotification);
+                                console.log("Notification removed:", message);
+                            }
+                        }, 5000);
+                    }
+                });
+            </script>
+
         </main>
     </div>
 
