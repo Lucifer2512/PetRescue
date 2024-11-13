@@ -146,6 +146,15 @@ namespace BusinessLayer.Service.Implement
 
             var response = _mapper.Map<ICollection<PetResponseModel>>(listPet);
 
+            foreach (var item in response)
+            {
+                var originalPet = listPet.FirstOrDefault(p => p.PetId == item.PetId);
+                if (originalPet.Image != null)
+                {
+                    item.ImageData = Convert.ToBase64String(originalPet.Image);
+                }
+            }
+
             return new BaseResponseModel<ICollection<PetResponseModel>>
             {
                 Code = 200,
@@ -170,6 +179,16 @@ namespace BusinessLayer.Service.Implement
 
             // Map the list of Pet entities to PetResponseModel
             var response = _mapper.Map<ICollection<PetResponseModel>>(listPet);
+
+            foreach (var item in response)
+            {
+                var originalPet = listPet.FirstOrDefault(p => p.PetId == item.PetId);
+                if (originalPet.Image != null)
+                {
+                    item.ImageData = Convert.ToBase64String(originalPet.Image);
+                }
+            }
+
             return new BaseResponseModel<ICollection<PetResponseModel>>
             {
                 Code = 200,
@@ -198,6 +217,15 @@ namespace BusinessLayer.Service.Implement
             listPet = await query.ToListAsync();
 
             var response = _mapper.Map<ICollection<PetResponseModel>>(listPet);
+
+            foreach (var item in response)
+            {
+                var originalPet = listPet.FirstOrDefault(p => p.PetId == item.PetId);
+                if (originalPet.Image != null)
+                {
+                    item.ImageData = Convert.ToBase64String(originalPet.Image);
+                }
+            }
 
             return new BaseResponseModel<ICollection<PetResponseModel>>
             {
