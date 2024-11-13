@@ -30,7 +30,7 @@ namespace PetRescueFE.Pages.PetPage
             var token = HttpContext.Session.GetString("JWTToken");
             var role = HttpContext.Session.GetString("Role");
             string apiUrl = string.Empty;
-            if (role == "d290f1ee-6c54-4b01-90e6-d701748f0851" || role == "f3C8d4e5-6b7a-4c9d-8e2f-0a1b2c3d4e5f")
+            if (role == "d290f1ee-6c54-4b01-90e6-d701748f0851" || role == "f3c8d4e5-6b7a-4c9d-8e2f-0a1b2c3d4e5f")
             {
                 IsAdmin = true; 
                 apiUrl = $"https://localhost:7297/api/pet/search?searchTerm={searchTerm}";
