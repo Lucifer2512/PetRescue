@@ -34,6 +34,12 @@ namespace PetRescueAPI.Controllers
             var response = await _petService.GetDetailAsync(id);
             return StatusCode((int)response.Code, response);
         }
+        [HttpGet("shelter/{id}")]
+        public async Task<IActionResult> PetByShelter(Guid id)
+        {
+            var response = await _petService.GetByShelterAsync(id);
+            return StatusCode((int)response.Code, response);
+        }
         [HttpPut("update")]
         public async Task<IActionResult> UpdatePet([FromBody] PetUpdateRequestModel petUpdateRequestModel)
         {

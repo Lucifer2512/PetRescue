@@ -4,6 +4,7 @@ using BusinessLayer.Model.Response;
 using BusinessLayer.Service.Interface;
 using DataAccessLayer.Entity;
 using DataAccessLayer.UnitOfWork.Interface;
+using Microsoft.EntityFrameworkCore;
 
 namespace BusinessLayer.Service.Implement
 {
@@ -103,6 +104,18 @@ namespace BusinessLayer.Service.Implement
         public async Task<BaseResponseModel<ICollection<PetResponseModel>>> GetAllAsync()
         {
             var listPet = await _unitOfWork.Repository<Pet>().GetAllAsync();
+            var response = _mapper.Map<ICollection<PetResponseModel>>(listPet);
+            return new BaseResponseModel<ICollection<PetResponseModel>>
+            {
+                Code = 200,
+                Message = "get all success",
+                Data = response.ToList()
+            };
+        }
+
+        public async Task<BaseResponseModel<ICollection<PetResponseModel>>> GetByShelterAsync(Guid id)
+        {
+            var listPet = await _unitOfWork.Repository<Pet>().GetAll().Where(x => x.ShelterId == id).ToListAsync();
             var response = _mapper.Map<ICollection<PetResponseModel>>(listPet);
             return new BaseResponseModel<ICollection<PetResponseModel>>
             {

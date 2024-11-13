@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using PetRescueFE.Pages.Model;
+using PetRescueFE.Pages.Model.Shelters;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -21,20 +22,22 @@ namespace PetRescueFE.Pages.PetPage
         [BindProperty]
         public PetAddRequestModelFE Pet { get; set; } = new PetAddRequestModelFE();
 
-        public List<SelectListItem> PetOptions { get; set; } = new List<SelectListItem>();
-
+        public IList<SelectListItem> PetOptions { get; set; } = new List<SelectListItem>();
+     
         public async Task<IActionResult> OnGetAsync()
         {
-            // Danh sách shelter tạm thời
-            var predefinedShelters = new List<Shelter>
-    {
-        new Shelter { ShelterId = Guid.Parse("61c88ed1-7b25-4956-b746-41908b607cb3"), ShelterName = "Shelter A" },
-        new Shelter { ShelterId = Guid.NewGuid(), ShelterName = "Shelter B" },
-        new Shelter { ShelterId = Guid.NewGuid(), ShelterName = "Shelter C" }
-    };
+            var apiUrl = "https://localhost:7297/api/shelter";
+            var response = await _apiService.GetAsync<BaseResponseModelFE<IList<ShelterResponseModel>>>(apiUrl);
 
-            // Thiết lập PetOptions cho dropdown từ danh sách shelter tạm thời
-            PetOptions = predefinedShelters.Select(s => new SelectListItem
+            // Kiểm tra phản hồi từ API
+            if (response == null || response.Data == null)
+            {
+                ModelState.AddModelError(string.Empty, "Unable to load shelter data.");
+                return Page();
+            }
+
+            // Thiết lập PetOptions cho dropdown từ dữ liệu shelter lấy từ API
+            PetOptions = response.Data.Select(s => new SelectListItem
             {
                 Value = s.ShelterId.ToString(),
                 Text = s.ShelterName
@@ -53,6 +56,7 @@ namespace PetRescueFE.Pages.PetPage
             // Gọi API để tạo pet mới
             var response = await _apiService.PostAsync<PetAddRequestModelFE, BaseResponseModelFE<PetResponseModelFE>>("https://localhost:7297/api/pet/add", Pet);
           
+            
             if (response == null || response.Data == null)
             {
                 
