@@ -6,15 +6,12 @@ namespace BusinessLayer.Service.Interface
     public interface IPetService
     {
         Task<BaseResponseModel<PetResponseModel>> GetDetailAsync(Guid id);
-        Task<BaseResponseModel<ICollection<PetResponseModel>>> GetAllAsync();
+        Task<BaseResponseModel<ICollection<PetResponseModel>>> GetAllForUserAsync(
+            string? searchTerm, string? species, string? gender, Guid? shelterId);
+        Task<BaseResponseModel<ICollection<PetResponseModel>>> GetAllForShelterAsync(
+            Guid userId, string? searchTerm, string? species, string? gender, string? status);
         Task<BaseResponseModel<PetResponseModel>> UpdateASync(PetUpdateRequestModel requestModel);
         Task<BaseResponseModel<PetResponseModel>> AddAsync(PetAddRequestModel requestModel);
         Task<BaseResponseModel<PetResponseModel>> DeleteAsync(Guid id);
-        //   Task<BaseResponseModel<ICollection<PetResponseModel>>> GetAllByShelterIdAsync(Guid shelterId);
-
-        Task<BaseResponseModel<ICollection<PetResponseModel>>> GetByShelterAsync(Guid id,string searchTerm);
-        Task<BaseResponseModel<ICollection<PetResponseModel>>> GetBySearchAsync(string? searchTerm);
-        Task<BaseResponseModel<ICollection<PetResponseModel>>> GetByUserSearchAsync(string? searchTerm);
-        Task<BaseResponseModel<ICollection<PetResponseModel>>> GetByUserShelterAsync(Guid id, string? searchTerm);
     }
 }

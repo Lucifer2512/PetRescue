@@ -1,5 +1,6 @@
 ﻿using BusinessLayer.Model.Request;
 using BusinessLayer.Service.Interface;
+using DataAccessLayer.Entity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace PetRescueAPI.Controllers
@@ -22,40 +23,33 @@ namespace PetRescueAPI.Controllers
             return StatusCode((int)response.Code, response);
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetAll()
+        [HttpGet("ForUser")]
+        public async Task<IActionResult> GetAllForUser(
+            string? searchTerm = null,
+            string? species = null,
+            string? gender = null,
+            Guid? shelterId = null)
         {
-            var response = await _petService.GetAllAsync();
+            var response = await _petService.GetAllForUserAsync(searchTerm, species, gender, shelterId);
             return StatusCode((int)response.Code, response);
         }
-        [HttpGet("search")]
-        public async Task<IActionResult> GetPetBySearch(string? searchTerm)
+
+        [HttpGet("ForShelter/{userId}")]
+        public async Task<IActionResult> GetAllForShelter(
+            Guid userId,
+            string? searchTerm = null,
+            string? species = null,
+            string? gender = null,
+            string? status = null)
         {
-            var response = await _petService.GetBySearchAsync(searchTerm);
+            var response = await _petService.GetAllForShelterAsync(userId, searchTerm, species, gender, status);
             return StatusCode((int)response.Code, response);
         }
-        [HttpGet("user-search")]
-        public async Task<IActionResult> GetPetByUserSearch(string? searchTerm)
-        {
-            var response = await _petService.GetByUserSearchAsync(searchTerm);
-            return StatusCode((int)response.Code, response);
-        }
+
         [HttpGet("id")]
         public async Task<IActionResult> PetDetail(Guid id)
         {
             var response = await _petService.GetDetailAsync(id);
-            return StatusCode((int)response.Code, response);
-        }
-        [HttpGet("shelter/{id}")]
-        public async Task<IActionResult> PetByShelter(Guid id,string? searchTerm)
-        {
-            var response = await _petService.GetByShelterAsync(id, searchTerm);
-            return StatusCode((int)response.Code, response);
-        }
-        [HttpGet("user-shelter/{id}")]
-        public async Task<IActionResult> PetByUserShelter(Guid id, string? searchTerm)
-        {
-            var response = await _petService.GetByUserShelterAsync(id, searchTerm);
             return StatusCode((int)response.Code, response);
         }
 

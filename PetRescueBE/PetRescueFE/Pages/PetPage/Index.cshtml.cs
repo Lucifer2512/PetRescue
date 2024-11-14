@@ -10,6 +10,7 @@ using DataAccessLayer.Entity;
 using PetRescueFE.Pages.Model;
 using System.IdentityModel.Tokens.Jwt;
 using PetRescueFE.Pages.Model.Shelters;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace PetRescueFE.Pages.PetPage
 {
@@ -23,46 +24,91 @@ namespace PetRescueFE.Pages.PetPage
         }
 
         public ICollection<PetResponseModelFE> Pets { get; set; } = new List<PetResponseModelFE>();
-        public bool IsAdmin { get; private set; }
-        public string SearchTerm { get; set; }
-        public string ErrorMessage { get; set; }
-        public async Task OnGetAsync(string searchTerm)
-        {
-            var apiUrlShelter = "https://localhost:7297/api/shelter";
-            var listShelter = await _apiService.GetAsync<BaseResponseModelFE<IList<ShelterResponseModel>>>(apiUrlShelter);
+        public bool IsShelter { get; private set; }
+        [BindProperty(SupportsGet = true)] 
+        public string? SearchTerm { get; set; }
 
-            var role = HttpContext.Session.GetString("Role");
-            string apiUrl = string.Empty;
-            if (role == "d290f1ee-6c54-4b01-90e6-d701748f0851" || role == "f3c8d4e5-6b7a-4c9d-8e2f-0a1b2c3d4e5f")
+        [BindProperty(SupportsGet = true)] 
+        public string? Species { get; set; }
+        [BindProperty(SupportsGet = true)]
+        public string? Gender { get; set; }
+        [BindProperty(SupportsGet = true)]
+        public Guid? ShelterId { get; set; } 
+        [BindProperty(SupportsGet = true)]
+        public string? Status { get; set; }
+
+        public List<SelectListItem> ShelterOptions { get; set; } = new List<SelectListItem>();
+        public List<SelectListItem> SpeciesOptions { get; set; } = new List<SelectListItem>
+        {
+            new SelectListItem { Value = "", Text = "All Species" },
+            new SelectListItem { Value = "Cat", Text = "Cat" },
+            new SelectListItem { Value = "Dog", Text = "Dog" },
+            new SelectListItem { Value = "Other", Text = "Other" }
+        };
+
+        public List<SelectListItem> GenderOptions { get; set; } = new List<SelectListItem>
+        {
+            new SelectListItem { Value = "", Text = "All Gender" },
+            new SelectListItem { Value = "Male", Text = "Male" },
+            new SelectListItem { Value = "Female", Text = "Female" }
+        };
+        public List<SelectListItem> StatusOptions { get; set; } = new List<SelectListItem>
+        {
+            new SelectListItem { Value = "", Text = "All Status" },
+            new SelectListItem { Value = "ACTIVE", Text = "Active" },
+            new SelectListItem { Value = "DELETE", Text = "Deleted" }
+        };
+
+        public string ErrorMessage { get; set; }
+
+        private async Task LoadSheltersAsync()
+        {
+            var apiUrl = "https://localhost:7297/api/shelter";
+            var response = await _apiService.GetAsync<BaseResponseModelFE<IList<ShelterResponseModel>>>(apiUrl);
+
+            if (response?.Data != null)
             {
-                IsAdmin = true;
-                apiUrl = $"https://localhost:7297/api/pet/search?searchTerm={searchTerm}";
+                ShelterOptions = response.Data.Select(shelter => new SelectListItem
+                {
+                    Value = shelter.ShelterId.ToString(),
+                    Text = shelter.ShelterName
+                }).ToList();
+                ShelterOptions.Insert(0, new SelectListItem { Value = "", Text = "All Shelters" });
+            }
+        }
+
+        public async Task OnGetAsync(string? searchTerm, string? species, string? gender, Guid? shelterId, string? status)
+        {
+            await LoadSheltersAsync();
+            var role = HttpContext.Session.GetString("Role");
+            string apiUrl;
+
+            if (role == "f3c8d4e5-6b7a-4c9d-8e2f-0a1b2c3d4e5f")
+            {
+                IsShelter = true;
+                var userId = HttpContext.Session.GetString("UserId");
+                apiUrl = $"https://localhost:7297/api/pet/forshelter/{userId}?searchTerm={searchTerm}&species={species}&gender={gender}&status={status}";
             }
             else
             {
-                apiUrl = $"https://localhost:7297/api/pet/user-search?searchTerm={searchTerm}";
+                apiUrl = $"https://localhost:7297/api/pet/foruser?searchTerm={searchTerm}&species={species}&gender={gender}&shelterId={shelterId}";
             }
 
             var response = await _apiService.GetAsync<BaseResponseModelFE<ICollection<PetResponseModelFE>>>(apiUrl);
-            if (response != null && response.Code == 200)
+            if (response?.Code == 200 && response.Data != null)
             {
                 Pets = response.Data;
+                var shelterLookup = ShelterOptions.ToDictionary(s => s.Value, s => s.Text);
 
-                // Add ShelterName to each Pet based on ShelterId
                 foreach (var pet in Pets)
                 {
-                    var shelter = listShelter.Data.FirstOrDefault(s => s.ShelterId == pet.ShelterId);
-                    if (shelter != null)
-                    {
-                        pet.ShelterName = shelter.ShelterName; 
-                    }
+                    pet.ShelterName = shelterLookup.GetValueOrDefault(pet.ShelterId.ToString());
                 }
             }
             else
             {
-                ErrorMessage = response.Message;
+                ErrorMessage = response?.Message ?? "An error occurred while retrieving the pet data.";
             }
         }
-
     }
 }
