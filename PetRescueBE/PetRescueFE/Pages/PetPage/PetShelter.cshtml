@@ -1,10 +1,8 @@
-﻿@page
-@model PetRescueFE.Pages.PetPage.IndexModel
-
+﻿@page "{shelterId?}/{searchTerm?}"
+@model PetRescueFE.Pages.PetPage.PetShelterModel
 @{
-    ViewData["Title"] = "Index";
+	ViewData["Title"] = "Pet Shelter";
 }
-
 <h1>Pet List</h1>
 
 <div class="d-flex align-items-center mb-3">
@@ -17,7 +15,6 @@
         <button type="submit" class="btn btn-primary">Search</button>
     </form>
 </div>
-
 @if (!string.IsNullOrEmpty(Model.ErrorMessage))
 {
     <div class="alert alert-danger">@Model.ErrorMessage</div>
@@ -66,13 +63,10 @@
                     </td>
                     @if (Model.IsAdmin)
                     {
+
                         <td>@Html.DisplayFor(modelItem => item.ShelterId)</td>
                     }
-                    <td>
-                        <a href="@Url.Page("./PetShelter", new { shelterId = item.ShelterId, searchTerm = Model.SearchTerm })">        
-                            @Html.DisplayFor(modelItem => item.ShelterName)
-                        </a>
-                    </td>
+                    <td>@Html.DisplayFor(modelItem => item.ShelterName)</td>
                     <td>
                         <div class="d-flex justify-content-center">
                             <button class="btn btn-secondary mx-1" onclick="location.href='@Url.Page("./Details", new { id = item.PetId })'">Details</button>
@@ -92,3 +86,4 @@ else
 {
     <p>No pets available matching the search term.</p>
 }
+

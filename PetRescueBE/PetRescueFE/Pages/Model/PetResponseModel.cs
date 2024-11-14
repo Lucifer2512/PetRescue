@@ -4,6 +4,7 @@
     {
         public Guid PetId { get; set; }
         public Guid ShelterId { get; set; }
+        public string ShelterName { get; set; }
         public string? Name { get; set; }
         public int? Age { get; set; }
         public string? Gender { get; set; }

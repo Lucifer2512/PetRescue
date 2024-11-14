@@ -49,7 +49,13 @@ namespace PetRescueAPI.Controllers
         [HttpGet("shelter/{id}")]
         public async Task<IActionResult> PetByShelter(Guid id,string? searchTerm)
         {
-            var response = await _petService.GetByShelterAsync(id,searchTerm);
+            var response = await _petService.GetByShelterAsync(id, searchTerm);
+            return StatusCode((int)response.Code, response);
+        }
+        [HttpGet("user-shelter/{id}")]
+        public async Task<IActionResult> PetByUserShelter(Guid id, string? searchTerm)
+        {
+            var response = await _petService.GetByUserShelterAsync(id, searchTerm);
             return StatusCode((int)response.Code, response);
         }
 
