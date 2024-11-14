@@ -10,5 +10,5 @@ public class UrlProfile
     public static readonly string GETS_PET = "Pet";
     public static readonly string GETS_SHELTER = "Shelter";
     public static readonly string GETS_DONATION = "Donation/GetAllDonation";
-    public static readonly string GETS_ADOPTION = "AdoptionApplication";
+    public static readonly string GETS_ADOPTION = "AdoptionApplication?status=all";
 }
