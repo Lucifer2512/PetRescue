@@ -1,4 +1,5 @@
 ﻿using BusinessLayer.Model.Request;
+using BusinessLayer.Service.Implement;
 using BusinessLayer.Service.Interface;
 using Microsoft.AspNetCore.Mvc;
 
@@ -43,10 +44,17 @@ namespace PetRescueAPI.Controllers
             return StatusCode((int)response.Code, response);
         }
 
-        [HttpGet("userId/{id}")]
-        public async Task<IActionResult> GetAllShelters(Guid id)
+        [HttpGet("paging")]
+        public async Task<IActionResult> GetAllSheltersPaginated([FromQuery] int index, [FromQuery] int size)
         {
-            var response = await _shelterService.GetAllByUserIdAsync(id);
+            var response = await _shelterService.GetAllPaginatedAsync(index, size);
+            return StatusCode((int)response.Code, response);
+        }
+
+        [HttpGet("userId/{id}")]
+        public async Task<IActionResult> GetAllShelters(Guid id, [FromQuery] int index, [FromQuery] int size)
+        {
+            var response = await _shelterService.GetAllByUserIdAsync(id, index, size);
             return StatusCode((int)response.Code, response);
         }
 

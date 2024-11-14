@@ -195,28 +195,97 @@ namespace BusinessLayer.Service.Implement
             };
         }
 
-        public async Task<BaseResponseModel<IEnumerable<ShelterResponseModel>>> GetAllByUserIdAsync(Guid userId)
+        public async Task<BaseResponseModel<PaginatedList<ShelterResponseModel>>> GetAllPaginatedAsync(int index, int size)
         {
             var shelterRepository = _unitOfWork.Repository<Shelter>();
 
-            var shelters = await shelterRepository.GetAll().Where(s => s.UsersId == userId).Include(s => s.Users).ToListAsync();
+            var shelters = await shelterRepository.GetAll().Include(s => s.Users)
+                .Skip((index - 1) * size)
+                .Take(size)
+                .ToListAsync();
+
+            var count = await shelterRepository.GetAll().CountAsync();
+            var totalPages = (int)Math.Ceiling(count / (double)size);
             var shelterResponseModels = _mapper.Map<IEnumerable<ShelterResponseModel>>(shelters);
 
             if (shelters.Count() == 0)
             {
-                return new BaseResponseModel<IEnumerable<ShelterResponseModel>>
+                return new BaseResponseModel<PaginatedList<ShelterResponseModel>>
                 {
                     Code = 200,
                     Message = "No Shelters in the list",
-                    Data = shelterResponseModels
+                    Data = new PaginatedList<ShelterResponseModel>
+                    {
+                        Items = shelterResponseModels.ToList(),
+                        PageIndex = index,
+                        TotalPages = totalPages,
+                        TotalCount = count,
+                        HasPreviousPage = index > 1,
+                        HasNextPage = index < totalPages
+                    }
                 };
             }
 
-            return new BaseResponseModel<IEnumerable<ShelterResponseModel>>
+            return new BaseResponseModel<PaginatedList<ShelterResponseModel>>
             {
                 Code = 200,
                 Message = "Shelters retrieved successfully",
-                Data = shelterResponseModels
+                Data = new PaginatedList<ShelterResponseModel>
+                {
+                    Items = shelterResponseModels.ToList(),
+                    PageIndex = index,
+                    TotalPages = totalPages,
+                    TotalCount = count,
+                    HasPreviousPage = index > 1,
+                    HasNextPage = index < totalPages
+                }
+            };
+        }
+
+        public async Task<BaseResponseModel<PaginatedList<ShelterResponseModel>>> GetAllByUserIdAsync(Guid userId, int index, int size)
+        {
+            var shelterRepository = _unitOfWork.Repository<Shelter>();
+
+            var shelters = await shelterRepository.GetAll().Where(s => s.UsersId == userId).Include(s => s.Users)
+                .Skip((index - 1) * size)
+                .Take(size)
+                .ToListAsync();
+
+            var count = await shelterRepository.GetAll().CountAsync();
+            var totalPages = (int)Math.Ceiling(count / (double)size);
+            var shelterResponseModels = _mapper.Map<IEnumerable<ShelterResponseModel>>(shelters);
+
+            if (shelters.Count() == 0)
+            {
+                return new BaseResponseModel<PaginatedList<ShelterResponseModel>>
+                {
+                    Code = 200,
+                    Message = "No Shelters in the list",
+                    Data = new PaginatedList<ShelterResponseModel>
+                    {
+                        Items = shelterResponseModels.ToList(),
+                        PageIndex = index,
+                        TotalPages = totalPages,
+                        TotalCount = count,
+                        HasPreviousPage = index > 1,
+                        HasNextPage = index < totalPages
+                    }
+                };
+            }
+
+            return new BaseResponseModel<PaginatedList<ShelterResponseModel>>
+            {
+                Code = 200,
+                Message = "Shelters retrieved successfully",
+                Data = new PaginatedList<ShelterResponseModel>
+                {
+                    Items = shelterResponseModels.ToList(),
+                    PageIndex = index,
+                    TotalPages = totalPages,
+                    TotalCount = count,
+                    HasPreviousPage = index > 1,
+                    HasNextPage = index < totalPages
+                }
             };
         }
 
