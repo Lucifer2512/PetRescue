@@ -5,7 +5,6 @@ namespace BusinessLayer.Service.Interface
 {
     public interface IAdoptionApplicationService
     {
-
         Task<BaseResponseModel<AdoptionApplicationResponseModel>> GetDetailAsync(Guid id);
         Task<BaseResponseModel<IEnumerable<AdoptionApplicationResponseModel>>> GetAllAsync(string status);
         Task<BaseResponseModel<IEnumerable<AdoptionApplicationResponseModel>>> GetAllForShelterAsync(Guid id, string status);
