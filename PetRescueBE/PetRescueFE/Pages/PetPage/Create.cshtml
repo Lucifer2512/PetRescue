@@ -2,179 +2,128 @@
 @model PetRescueFE.Pages.PetPage.CreateModel
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Create Pet";
 }
 
-<h1 class="text-center">Create</h1>
-
-<h4 class="text-center">Pet</h4>
-<hr />
-<div class="row justify-content-center">
-    <div class="col-md-8">
+<div class="profile-container">
+    <div class="form-section">
+        <h5>Create New Pet</h5>
         <form method="post" enctype="multipart/form-data">
-            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-            <!-- Shelter Select -->
-            <div class="form-group mb-4">
-                <label asp-for="Pet.ShelterId" class="form-label">Shelter</label>
-                <select asp-for="Pet.ShelterId" class="form-control" asp-items="Model.ShelterOptions">
-                    <option value="">Select Shelter</option>
-                </select>
-                <span asp-validation-for="Pet.ShelterId" class="text-danger"></span>
-            </div>
-
-            <!-- Pet Name Input -->
-            <div class="form-group mb-4">
-                <label asp-for="Pet.Name" class="form-label">Pet Name</label>
+            <div class="form-group">
+                <label asp-for="Pet.Name" class="control-label"></label>
                 <input asp-for="Pet.Name" class="form-control" />
                 <span asp-validation-for="Pet.Name" class="text-danger"></span>
             </div>
-
-            <!-- Pet Age Input -->
-            <div class="form-group mb-4">
-                <label asp-for="Pet.Age" class="form-label">Age</label>
-                <input asp-for="Pet.Age" class="form-control" />
+            <div class="form-group">
+                <label asp-for="Pet.Age" class="control-label"></label>
+                <input asp-for="Pet.Age" class="form-control" type="number" />
                 <span asp-validation-for="Pet.Age" class="text-danger"></span>
             </div>
-
-            <!-- Pet Gender Input -->
             <div class="form-group mb-4">
-                <label asp-for="Pet.Gender" class="form-label">Gender</label>
-                <input asp-for="Pet.Gender" class="form-control" />
+                <label asp-for="Pet.ShelterId" class="form-label"></label>
+                <select asp-for="Pet.ShelterId" class="form-control">
+                    @foreach (var shelter in Model.ShelterOptions)
+                    {
+                        <option value="@shelter.Value">@shelter.Text</option>
+                    }
+                </select>
+                <span asp-validation-for="Pet.ShelterId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Pet.Gender" class="control-label"></label>
+                <select asp-for="Pet.Gender" class="form-control">
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                </select>
                 <span asp-validation-for="Pet.Gender" class="text-danger"></span>
             </div>
-
-            <!-- Pet Description Input -->
-            <div class="form-group mb-4">
-                <label asp-for="Pet.Description" class="form-label">Description</label>
-                <input asp-for="Pet.Description" class="form-control" />
+            <div class="form-group">
+                <label asp-for="Pet.Description" class="control-label"></label>
+                <textarea asp-for="Pet.Description" class="form-control" rows="4"></textarea>
                 <span asp-validation-for="Pet.Description" class="text-danger"></span>
             </div>
-
-            <!-- Pet Species Input -->
-            <div class="form-group mb-4">
-                <label asp-for="Pet.Species" class="form-label">Species</label>
-                <input asp-for="Pet.Species" class="form-control" />
+            <div class="form-group">
+                <label asp-for="Pet.Species" class="control-label"></label>
+                <select asp-for="Pet.Species" class="form-control">
+                    <option value="Cat">Cat</option>
+                    <option value="Dog">Dog</option>
+                    <option value="Other">Other</option>
+                </select>
                 <span asp-validation-for="Pet.Species" class="text-danger"></span>
             </div>
-
-            <!-- Profile Image Input -->
-            <div class="form-group mb-4">
-                <label asp-for="ImageFile" class="form-label">Profile Image</label>
+            <div class="form-group">
+                <label asp-for="ImageFile" class="control-label">Pet Image</label>
                 <input asp-for="ImageFile" type="file" class="form-control" />
                 <span asp-validation-for="ImageFile" class="text-danger"></span>
             </div>
 
-            <!-- Submit Button -->
-            <div class="form-group text-center">
-                <input type="submit" value="Create" class="btn btn-primary btn-lg" />
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
-<!-- Back to List Link -->
 <div class="text-center mt-4">
     <a asp-page="Index" class="btn btn-secondary">Back to List</a>
 </div>
 
-@section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
-}
-
 <style>
-    body {
-        font-family: Arial, sans-serif;
-        background-color: #f7f7f7;
-        color: #333;
-    }
-
-    h1, h4 {
-        font-family: 'Segoe UI', sans-serif;
-    }
-
-    hr {
-        margin-top: 20px;
-        border-color: #ddd;
-    }
-
-    /* Form container */
-    .row {
-        margin-top: 50px;
-    }
-
-    .col-md-8 {
-        background-color: #fff;
-        padding: 30px;
+    .profile-container {
+        max-width: 900px;
+        margin: auto;
+        background-color: #f8f9fa;
         border-radius: 10px;
+        padding: 20px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        font-family: Arial, Helvetica, sans-serif;
     }
 
-    /* Form group styling */
-    .form-group {
-        margin-bottom: 1.5rem;
+    .form-section {
+        padding: 20px;
     }
 
-    .form-label {
-        font-size: 1.1rem;
-        font-weight: bold;
-        color: #333;
-    }
-
-    /* Input fields and select */
-    .form-control {
-        height: 2.5rem;
-        padding: 0.5rem;
-        font-size: 1.1rem;
-        border-radius: 0.375rem;
-        border: 1px solid #ccc;
-        box-sizing: border-box;
-    }
-
-        /* Focus effect for inputs and selects */
-        .form-control:focus {
-            border-color: #0069d9;
-            box-shadow: 0 0 0 0.2rem rgba(38, 143, 255, 0.25);
+        .form-section h5 {
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 5px;
+            margin-bottom: 15px;
+            color: #3572EF;
         }
 
-    /* Validation error styling */
-    .text-danger {
-        font-size: 0.9rem;
+    .form-group {
+        margin-bottom: 1.5em;
     }
 
-    /* Submit button */
-    .btn {
-        font-size: 1.2rem;
-        padding: 12px 24px;
-        border-radius: 0.375rem;
-        transition: background-color 0.3s ease;
+    .form-control {
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 0.5em;
+    }
+
+    .control-label {
+        font-weight: bold;
+        color: #555;
     }
 
     .btn-primary {
-        background-color: #0069d9;
-        border-color: #0062cc;
+        background-color: #2c8a2c;
+        color: white;
+        border-radius: 20px;
+        padding: 10px 20px;
+        border: none;
+        cursor: pointer;
+        margin-right: 10px;
     }
 
         .btn-primary:hover {
-            background-color: #0056b3;
-            border-color: #004085;
+            background-color: #247524;
         }
 
     .btn-secondary {
-        background-color: #6c757d;
-        border-color: #5a6268;
+        color: #333;
+        border-radius: 20px;
+        padding: 10px 20px;
     }
-
-        .btn-secondary:hover {
-            background-color: #5a6268;
-            border-color: #4e555b;
-        }
-
-    /* Back to List button */
-    .text-center {
-        text-align: center;
-    }
-
 </style>

@@ -64,8 +64,8 @@ namespace PetRescueFE.Pages.PetPage
             }
 
             Pet.Image = ImageFile != null ? await _apiService.ConvertToByteArrayAsync(ImageFile) : null;
-
-            // Gọi API để tạo pet mới
+            // Gọi API để tạo
+            // pet mới
             var response = await _apiService.PostAsync<PetAddRequestModelFE, BaseResponseModelFE<PetResponseModelFE>>("https://localhost:7297/api/pet/add", Pet);
           
             

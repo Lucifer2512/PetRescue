@@ -2,141 +2,89 @@
 @model PetRescueFE.Pages.PetPage.DetailsModel
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Pet Details";
 }
 
 <div class="profile-container">
     <div class="profile-header">
-        <img class="profile-image" src="data:image/png;base64,@Model.Pet.ImageData" alt="Pet Image" />
-        <h1 class="profile-name">@Html.DisplayFor(model => model.Pet.Name)</h1>
-        <div class="profile-species-status">
-            <span class="profile-species">@Html.DisplayFor(model => model.Pet.Species)</span>
-        </div>
+        <img src="data:image/png;base64,@Model.Pet.ImageData" alt="Pet Image" />
+        <h2>@Model.Pet.Name</h2>
     </div>
 
-    <div class="profile-details">
-        <h4>Details</h4>
+    <div class="form-section">
+        <h5>Pet Profile</h5>
         <dl class="row">
-            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Pet.Age)</dt>
-            <dd class="col-sm-9">@Html.DisplayFor(model => model.Pet.Age)</dd>
+            <dt class="col-sm-3">Pet Name</dt>
+            <dd class="col-sm-9">@Model.Pet.Name</dd>
 
-            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Pet.Gender)</dt>
-            <dd class="col-sm-9">@Html.DisplayFor(model => model.Pet.Gender)</dd>
+            <dt class="col-sm-3">Age</dt>
+            <dd class="col-sm-9">@Model.Pet.Age</dd>
 
-            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Pet.Description)</dt>
-            <dd class="col-sm-9">@Html.DisplayFor(model => model.Pet.Description)</dd>
+            <dt class="col-sm-3">Gender</dt>
+            <dd class="col-sm-9">@Model.Pet.Gender</dd>
 
-            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Pet.ArrivalDate)</dt>
-            <dd class="col-sm-9">@Html.DisplayFor(model => model.Pet.ArrivalDate)</dd>
+            <dt class="col-sm-3">Description</dt>
+            <dd class="col-sm-9">@Model.Pet.Description</dd>
 
-            @if (Model.IsAdmin)
-            {
-                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Pet.Status)</dt>
-                <dd class="col-sm-9">@Html.DisplayFor(model => model.Pet.Status)</dd>
+            <dt class="col-sm-3">Species</dt>
+            <dd class="col-sm-9">@Model.Pet.Species</dd>
 
-                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Pet.ShelterId)</dt>
-                <dd class="col-sm-9">@Html.DisplayFor(model => model.Pet.ShelterId)</dd>
-            }
+            <dt class="col-sm-3">ArrivalDate</dt>
+            <dd class="col-sm-9">@Model.Pet.ArrivalDate</dd>
         </dl>
     </div>
 
-    <div class="profile-actions">
-        @if (Model.IsAdmin)
-        {
-            <a class="btn btn-info" asp-page="./Edit" asp-route-id="@Model.Pet?.PetId">Edit</a>
-        }
-        <a class="btn btn-secondary" asp-page="./Index">Back to List</a>
+    <div class="text-center mt-4">
+        <a class="btn btn-primary" asp-page="./Edit" asp-route-id="@Model.Pet?.PetId">Edit</a>
+        <a class="btn btn-secondary" asp-page="/PetPage/Index">Back to List</a>
     </div>
 </div>
 
 <style>
     .profile-container {
-        max-width: 800px;
-        margin: 0 auto;
-        padding: 20px;
-        background-color: #f9f9f9;
+        max-width: 900px;
+        margin: auto;
+        background-color: #f8f9fa;
         border-radius: 10px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        font-family: Arial, Helvetica, sans-serif;
     }
 
     .profile-header {
+        background-color: #e6f7e6;
+        border-radius: 10px 10px 0 0;
+        padding: 20px;
         text-align: center;
-        margin-bottom: 20px;
+        color: #2c8a2c;
     }
 
-    .profile-image {
-        width: 150px;
-        height: 150px;
-        object-fit: cover;
-        border-radius: 50%;
-        border: 4px solid #4caf50;
-        margin-bottom: 20px;
-    }
-
-    .profile-name {
-        font-size: 2rem;
-        color: #333;
-        margin: 0;
-    }
-
-    .profile-species-status {
-        font-size: 1.1rem;
-        color: #666;
-    }
-
-    .profile-species,
-    .profile-status {
-        display: inline-block;
-        margin: 0 10px;
-    }
-
-    .profile-details h4 {
-        font-size: 1.4rem;
-        color: #333;
-        margin-bottom: 15px;
-    }
-
-    .profile-details dl {
-        display: grid;
-        grid-template-columns: 1fr 2fr; 
-        gap: 10px; /* Add some spacing between rows */
-        align-items: start; /* Align items to the top of each row */
-    }
-
-    .profile-details dt {
-        font-weight: bold;
-        color: #444;
-        /* Remove the fixed width */
-    }
-
-    .profile-details dd {
-        color: #555;
-        margin-left: 0; /* Remove the left margin */
-    }
-
-    .profile-actions {
-        text-align: center;
-        margin-top: 30px;
-    }
-
-        .profile-actions .btn {
-            padding: 10px 20px;
-            font-size: 1rem;
-            margin: 0 10px;
+        .profile-header img {
+            width: auto;
+            max-width: 100%;
+            height: auto;
+            max-height: 300px;
+            border-radius: 10px;
+            margin-bottom: 10px;
         }
 
-        .profile-actions .btn-info {
-            background-color: #17a2b8;
-            border-color: #17a2b8;
+    .form-section {
+        padding: 20px;
+    }
+
+        .form-section h5 {
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 5px;
+            margin-bottom: 15px;
+            color: #3572EF;
         }
 
-        .profile-actions .btn-secondary {
-            background-color: #6c757d;
-            border-color: #6c757d;
+        .form-section dt, .form-section dd {
+            margin: 0;
+            padding: 10px 0;
         }
 
-        .profile-actions .btn:hover {
-            opacity: 0.8;
+        .form-section dd {
+            color: #333;
         }
-
 </style>
