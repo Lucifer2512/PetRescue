@@ -4,7 +4,7 @@ using PetRescueFE;
 using PetRescueFE.Pages;
 using PetRescueFE.Pages.Model;
 
-namespace tutor_server.WebPage.Pages
+namespace PetRescueFE.Pages.DonationPage
 {
     public class transactionModel : PageModel
     {
