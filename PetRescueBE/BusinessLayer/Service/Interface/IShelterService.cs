@@ -12,6 +12,7 @@ namespace BusinessLayer.Service.Interface
         Task<BaseResponseModel> DeleteAsync(Guid id);
         Task<BaseResponseModel<ShelterResponseModel>> GetDetailAsync(Guid id);
         Task<BaseResponseModel<ShelterResponseModel>> UpdateBalanceAsync(Guid id, decimal amount);
-        Task<BaseResponseModel<PaginatedList<ShelterResponseModel>>> GetAllByUserIdAsync(Guid userId, int index, int size);
+        Task<BaseResponseModel<PaginatedList<ShelterResponseModel>>> GetAllByUserIdPagingAsync(Guid userId, int index, int size);
+        Task<BaseResponseModel<IEnumerable<ShelterResponseModel>>> GetAllByUserIdAsync(Guid userId);
     }
 }

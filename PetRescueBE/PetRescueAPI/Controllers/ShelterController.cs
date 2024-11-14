@@ -52,9 +52,16 @@ namespace PetRescueAPI.Controllers
         }
 
         [HttpGet("userId/{id}")]
-        public async Task<IActionResult> GetAllShelters(Guid id, [FromQuery] int index, [FromQuery] int size)
+        public async Task<IActionResult> GetAllShelters(Guid id)
         {
-            var response = await _shelterService.GetAllByUserIdAsync(id, index, size);
+            var response = await _shelterService.GetAllByUserIdAsync(id);
+            return StatusCode((int)response.Code, response);
+        }
+
+        [HttpGet("paging/userId/{id}")]
+        public async Task<IActionResult> GetAllSheltersPaging(Guid id, [FromQuery] int index, [FromQuery] int size)
+        {
+            var response = await _shelterService.GetAllByUserIdPagingAsync(id, index, size);
             return StatusCode((int)response.Code, response);
         }
 

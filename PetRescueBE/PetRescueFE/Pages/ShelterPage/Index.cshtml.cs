@@ -37,7 +37,7 @@ namespace PetRescueFE.Pages.ShelterPage
 
             if (role == "f3c8d4e5-6b7a-4c9d-8e2f-0a1b2c3d4e5f")
             {
-                var apiUrlForShelterOwner = $"https://localhost:7297/api/shelter/userId/{userId}?index={CurrentPage}&size=3";
+                var apiUrlForShelterOwner = $"https://localhost:7297/api/shelter/paging/userId/{userId}?index={CurrentPage}&size=3";
                 var responseForShelterOwner = await _apiService.GetAsync<BaseResponseModelFE<PaginatedList<ShelterResponseModel>>>(apiUrlForShelterOwner);
 
                 if (responseForShelterOwner.Data != null)

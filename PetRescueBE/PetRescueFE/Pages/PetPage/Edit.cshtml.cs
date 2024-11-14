@@ -32,10 +32,12 @@ namespace PetRescueFE.Pages.PetPage
 
         private async Task LoadShelterAsync()
         {
-            var apiUrl = "https://localhost:7297/api/shelter";
+            var userId = HttpContext.Session.GetString("UserId");
+            var apiUrl = $"https://localhost:7297/api/shelter/userid/{userId}";
             var response = await _apiService.GetAsync<BaseResponseModelFE<IList<ShelterResponseModel>>>(apiUrl);
 
             if (response.Data != null)
+
             {
                 ShelterOptions = response.Data.Select(shelter => new SelectListItem
                 {
