@@ -91,6 +91,7 @@ namespace BusinessLayer.Service.Implement
                     Message = "Pet Not found"
                 };
             }
+
             var response = _mapper.Map<Pet>(pet);
             response.Status = "DELETE";
             await petRepos.UpdateAsync(response);
@@ -98,6 +99,25 @@ namespace BusinessLayer.Service.Implement
             {
                 Code = 200,
                 Message = "delete pet success"
+            };
+        }
+
+        public async Task<BaseResponseModel<List<PetResponseModel>>> GetsPet()
+        {
+            var petRepos = _unitOfWork.Repository<Pet>();
+            var listPet = await petRepos.GetAll().ToListAsync();
+            if (listPet is null)
+            {
+                return new BaseResponseModel<List<PetResponseModel>>
+                    { Code = 404, Message = "Pet not found", Data = new() };
+            }
+
+            var response = _mapper.Map<List<PetResponseModel>>(listPet);
+            return new BaseResponseModel<List<PetResponseModel>>
+            {
+                Code = 200,
+                Message = "Get all success",
+                Data = response
             };
         }
 
@@ -115,14 +135,17 @@ namespace BusinessLayer.Service.Implement
             {
                 query = query.Where(p => p.Name.ToLower().Contains(searchTerm));
             }
+
             if (!string.IsNullOrEmpty(species))
             {
                 query = query.Where(p => p.Species.ToLower() == species);
             }
+
             if (!string.IsNullOrEmpty(gender))
             {
                 query = query.Where(p => p.Gender.ToLower() == gender);
             }
+
             if (shelterId.HasValue)
             {
                 query = query.Where(p => p.ShelterId == shelterId.Value);
@@ -171,21 +194,25 @@ namespace BusinessLayer.Service.Implement
             gender = gender?.ToLower();
             status = status?.ToLower();
 
-            var query = _unitOfWork.Repository<Pet>().GetAll().Include(p => p.Shelter).Where(p => p.Shelter.UsersId == userId);
+            var query = _unitOfWork.Repository<Pet>().GetAll().Include(p => p.Shelter)
+                .Where(p => p.Shelter.UsersId == userId);
 
             // Apply filters if values are provided
             if (!string.IsNullOrEmpty(searchTerm))
             {
                 query = query.Where(p => p.Name.ToLower().Contains(searchTerm));
             }
+
             if (!string.IsNullOrEmpty(species))
             {
                 query = query.Where(p => p.Species.ToLower() == species);
             }
+
             if (!string.IsNullOrEmpty(gender))
             {
                 query = query.Where(p => p.Gender.ToLower() == gender);
             }
+
             if (!string.IsNullOrEmpty(status))
             {
                 query = query.Where(p => p.Status.ToLower() == status);
@@ -233,12 +260,11 @@ namespace BusinessLayer.Service.Implement
             {
                 return new BaseResponseModel<PetResponseModel>
                 {
-
                     Code = 200,
                     Message = "pet not found"
-
                 };
             }
+
             var response = _mapper.Map<PetResponseModel>(pet);
 
             // Convert image to base64 string if it exists
@@ -249,7 +275,6 @@ namespace BusinessLayer.Service.Implement
 
             return new BaseResponseModel<PetResponseModel>
             {
-
                 Code = 200,
                 Message = "Get Pet Success",
                 Data = response
@@ -269,6 +294,7 @@ namespace BusinessLayer.Service.Implement
                     Message = "Pet not found"
                 };
             }
+
             _mapper.Map(requestModel, pet);
             try
             {
@@ -285,6 +311,7 @@ namespace BusinessLayer.Service.Implement
                     Message = ex.Message
                 };
             }
+
             var petResponse = _mapper.Map<PetResponseModel>(pet);
             return new BaseResponseModel<PetResponseModel>
             {

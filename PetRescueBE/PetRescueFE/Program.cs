@@ -5,6 +5,7 @@ using PetRescueFE.Pages.Events;
 using PetRescueFE.SignalRealtime;
 using System.Net.Http.Headers;
 using System.Text.Json.Serialization;
+using PetRescueFE.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -42,6 +43,8 @@ builder.Services.AddCors(options =>
 });
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<EventGlobalUtility>();
+builder.Services.AddScoped<DashboardService>();
+builder.Services.AddScoped<WebService>();
 builder.Services.AddSignalR();
 builder.Services.AddSingleton<IUserIdProvider, CustomUserIdProvider>();
 var app = builder.Build();

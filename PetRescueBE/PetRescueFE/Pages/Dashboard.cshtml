@@ -1,0 +1,331 @@
+﻿@page
+@model PetRescueFE.Pages.DashboardModel
+
+@{
+    ViewData["Title"] = "Dashboard";
+    Layout = "_AdminLayout";
+}
+
+<div class="dashboard-container">
+    <h1 class="dashboard-title">Dashboard Overview</h1>
+    
+    <div class="row">
+        <div class="col-md-6">
+            <div class="stats-card">
+                <div class="stats-header">
+                    <h3 class="stats-title">Events Overview</h3>
+                </div>
+                <div class="stats-numbers">
+                    <div class="stat-item">
+                        <div class="stat-value">@(Model.TotalEvents ?? 0)</div>
+                        <div class="stat-label">Total</div>
+                    </div>
+                    @if (Model.ActiveEvents.HasValue)
+                    {
+                        <div class="stat-item">
+                            <div class="stat-value">@Model.ActiveEvents</div>
+                            <div class="stat-label">Active</div>
+                        </div>
+                    }
+                </div>
+                <div class="chart-container">
+                    <canvas id="eventsChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="stats-card">
+                <div class="stats-header">
+                    <h3 class="stats-title">Pets Status</h3>
+                </div>
+                <div class="stats-numbers">
+                    <div class="stat-item">
+                        <div class="stat-value">@(Model.TotalPets ?? 0)</div>
+                        <div class="stat-label">Total</div>
+                    </div>
+                    @if (Model.ActivePets.HasValue)
+                    {
+                        <div class="stat-item">
+                            <div class="stat-value">@Model.ActivePets</div>
+                            <div class="stat-label">Active</div>
+                        </div>
+                    }
+                </div>
+                <div class="chart-container">
+                    <canvas id="petsChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="stats-card">
+                <div class="stats-header">
+                    <h3 class="stats-title">Adoptions</h3>
+                </div>
+                <div class="stats-numbers">
+                    <div class="stat-item">
+                        <div class="stat-value">@(Model.TotalAdoptions ?? 0)</div>
+                        <div class="stat-label">Total</div>
+                    </div>
+                    @if (Model.ActiveAdoptions.HasValue)
+                    {
+                        <div class="stat-item">
+                            <div class="stat-value">@Model.ActiveAdoptions</div>
+                            <div class="stat-label">Active</div>
+                        </div>
+                    }
+                </div>
+                <div class="chart-container">
+                    <canvas id="adoptionsChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="stats-card">
+                <div class="stats-header">
+                    <h3 class="stats-title">Shelters</h3>
+                </div>
+                <div class="stats-numbers">
+                    <div class="stat-item">
+                        <div class="stat-value">@(Model.TotalShelters ?? 0)</div>
+                        <div class="stat-label">Total</div>
+                    </div>
+                    @if (Model.ActiveShelters.HasValue)
+                    {
+                        <div class="stat-item">
+                            <div class="stat-value">@Model.ActiveShelters</div>
+                            <div class="stat-label">Active</div>
+                        </div>
+                    }
+                </div>
+                <div class="chart-container">
+                    <canvas id="sheltersChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="stats-card">
+                <div class="stats-header">
+                    <h3 class="stats-title">Donations Overview</h3>
+                </div>
+                <div class="stats-numbers">
+                    <div class="stat-item">
+                        <div class="stat-value">@(Model.TotalDonations ?? 0)</div>
+                        <div class="stat-label">Total Count</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">$@(Model.TotalDonationAmount ?? 0)</div>
+                        <div class="stat-label">Total Amount</div>
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <canvas id="donationsChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .dashboard-container {
+        padding: 20px;
+        background-color: #f8f9fa;
+        border-radius: 15px;
+        margin: -2rem;
+    }
+
+    .dashboard-title {
+        color: #2c3e50;
+        margin-bottom: 30px;
+        padding: 0 20px 15px;
+        border-bottom: 3px solid #3572EF;
+        display: inline-block;
+    }
+
+    .stats-card {
+        background: white;
+        border-radius: 15px;
+        padding: 25px;
+        margin-bottom: 25px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        transition: transform 0.2s;
+        height: 100%;
+    }
+
+    .stats-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+    }
+
+    .stats-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        padding-bottom: 15px;
+        border-bottom: 2px solid #f0f0f0;
+    }
+
+    .stats-title {
+        font-size: 1.4em;
+        color: #2c3e50;
+        font-weight: 600;
+        margin: 0;
+    }
+
+    .stats-numbers {
+        display: flex;
+        justify-content: space-around;
+        margin-bottom: 20px;
+    }
+
+    .stat-item {
+        text-align: center;
+        padding: 10px;
+        flex: 1;
+    }
+
+    .stat-value {
+        font-size: 1.8em;
+        font-weight: bold;
+        color: #3572EF;
+        margin-bottom: 5px;
+    }
+
+    .stat-label {
+        color: #6c757d;
+        font-size: 0.9em;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .chart-container {
+        height: 250px;
+        margin-top: 20px;
+        position: relative;
+    }
+
+    .row {
+        margin: 0 0 25px 0;
+        padding: 0 10px;
+    }
+
+    .row:last-child {
+        margin-bottom: 0;
+    }
+
+    @@media (max-width: 768px) {
+    .dashboard-container {
+        margin: -2rem -1rem; /* Horizontal margin adjusted */
+        padding: 15px;
+    }
+
+    .stats-card {
+        margin-bottom: 20px;
+    }
+
+    .chart-container {
+        height: 200px;
+    }
+
+    .dashboard-title {
+        font-size: 1.5em;
+        padding: 0 10px 10px;
+    }
+
+    .row {
+        margin: 0 0 15px 0;
+        padding: 0 5px;
+    }
+}
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
+<script>
+    function createChart(elementId, data, labels, type = 'doughnut') {
+        const ctx = document.getElementById(elementId).getContext('2d');
+        
+        // Check if we have valid data for the chart
+        const hasValidData = data.some(value => value > 0);
+        
+        if (!hasValidData) {
+            // Display "No Data Available" message
+            const noDataText = 'No Data Available';
+            const textWidth = ctx.measureText(noDataText).width;
+            const centerX = ctx.canvas.width / 2;
+            const centerY = ctx.canvas.height / 2;
+            
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillStyle = '#6c757d';
+            ctx.font = '14px Arial';
+            ctx.fillText(noDataText, centerX, centerY);
+            return;
+        }
+
+        return new Chart(ctx, {
+            type: type,
+            data: {
+                labels: labels,
+                datasets: [{
+                    data: data,
+                    backgroundColor: [
+                        '#3572EF',
+                        '#FF6384',
+                        '#36A2EB'
+                    ],
+                    borderWidth: 2,
+                    borderColor: '#ffffff'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            padding: 20,
+                            font: {
+                                size: 12
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    // Create charts with null checks
+    createChart('eventsChart', 
+        [@(Model.ActiveEvents ?? 0), @(Model.InactiveEvents ?? 0)], 
+        ['Active', 'Inactive']
+    );
+    
+    createChart('petsChart', 
+        [@(Model.ActivePets ?? 0), @(Model.InactivePets ?? 0)], 
+        ['Active', 'Inactive']
+    );
+    
+    createChart('adoptionsChart', 
+        [@(Model.ActiveAdoptions ?? 0), @(Model.InactiveAdoptions ?? 0)], 
+        ['Active', 'Inactive']
+    );
+    
+    createChart('sheltersChart', 
+        [@(Model.ActiveShelters ?? 0), @(Model.InactiveShelters ?? 0)], 
+        ['Active', 'Inactive']
+    );
+    
+    createChart('donationsChart', 
+        [@(Model.TotalDonations ?? 0), @(Model.TotalDonationAmount ?? 0)], 
+        ['Count', 'Amount'], 
+        'bar'
+    );
+</script>
