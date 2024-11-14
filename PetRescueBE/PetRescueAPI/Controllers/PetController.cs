@@ -69,5 +69,12 @@ namespace PetRescueAPI.Controllers
             return StatusCode((int)response.Code, response);
         }
 
+        
+        [HttpGet]
+        public async Task<IActionResult> GetsPet()
+        {
+            var response = await _petService.GetsPet();
+            return StatusCode((int)response.Code, response);
+        }
     }
 }
