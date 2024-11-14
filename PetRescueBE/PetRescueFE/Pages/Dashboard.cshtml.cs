@@ -40,9 +40,9 @@ public class DashboardModel : PageModel
 
     public async Task<IActionResult> OnGetAsync()
     {
-        if (!_webService.IsAccessible() && !_webService.IsAdmin())
+        if (!_webService.IsAdmin())
         {
-            return RedirectToPage("/Login");
+            return RedirectToPage("/AuthorizationError");
         }
         
         var events = await _dashboardService.GetEvents();
