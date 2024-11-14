@@ -33,7 +33,8 @@
             </div>
             <div class="form-group">
                 <label asp-for="Event.Description" class="control-label"></label>
-                <textarea asp-for="Event.Description" class="form-control" rows="4"></textarea> <span asp-validation-for="Event.Description" class="text-danger"></span>
+                <textarea asp-for="Event.Description" class="form-control" rows="4"></textarea>
+                <span asp-validation-for="Event.Description" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Event.StartDateTime" class="control-label"></label>
@@ -52,12 +53,15 @@
             </div>
             <div class="form-group">
                 <label asp-for="Event.EventType" class="control-label"></label>
-                <input asp-for="Event.EventType" class="form-control" />
+                <select asp-for="Event.EventType" class="form-control">
+                    <option value="Fundraising">Fundraising</option>
+                    <option value="Promotion">Promotion</option>
+                </select>
                 <span asp-validation-for="Event.EventType" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Event.Goal" class="control-label"></label>
-                <input asp-for="Event.Goal" class="form-control" type="number" />
+                <textarea asp-for="Event.Description" class="form-control" rows="4"></textarea>
                 <span asp-validation-for="Event.Goal" class="text-danger"></span>
             </div>
             <div class="form-group">
