@@ -1,4 +1,4 @@
-﻿namespace tutor_server.WebPage.ViewModels
+﻿namespace PetRescueFE.Pages.Model
 {
     public class TransactionModel
     {
