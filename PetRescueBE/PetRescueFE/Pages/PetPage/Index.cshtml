@@ -82,6 +82,30 @@
     .search-filter-area { 
         margin-bottom: 50px;
     }
+
+    .pagination {
+        margin-bottom: 2rem;
+    }
+
+    .page-link {
+        color: #2c3e50;
+        border-color: #dee2e6;
+    }
+
+    .page-item.active .page-link {
+        background-color: #2c3e50;
+        border-color: #2c3e50;
+    }
+
+    .page-link:hover {
+        color: #1a252f;
+        background-color: #e9ecef;
+        border-color: #dee2e6;
+    }
+
+    .page-item.disabled .page-link {
+        color: #6c757d;
+    }
 </style>
 
 
@@ -177,4 +201,49 @@
     {
         <p>No pets available matching the search criteria.</p>
     }
+
+    <div class="container mt-4">
+        @* Pagination container *@
+        <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-center">
+                @if (Model.HasPreviousPage)
+                {
+                    <li class="page-item">
+                        <a class="page-link" asp-page="./Index" asp-route-pageIndex="@(Model.CurrentPage - 1)">
+                            <i class="bi bi-chevron-left"></i> Previous
+                        </a>
+                    </li>
+                }
+                else
+                {
+                    <li class="page-item disabled">
+                        <span class="page-link"><i class="bi bi-chevron-left"></i> Previous</span>
+                    </li>
+                }
+
+                @for (int i = 1; i <= Model.TotalPages; i++)
+                {
+                    <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                        <a class="page-link" asp-page="./Index" asp-route-pageIndex="@i">@i</a>
+                    </li>
+                }
+
+                @if (Model.HasNextPage)
+                {
+                    <li class="page-item">
+                        <a class="page-link" asp-page="./Index" asp-route-pageIndex="@(Model.CurrentPage + 1)">
+                            Next <i class="bi bi-chevron-right"></i>
+                        </a>
+                    </li>
+                }
+                else
+                {
+                    <li class="page-item disabled">
+                        <span class="page-link">Next <i class="bi bi-chevron-right"></i></span>
+                    </li>
+                }
+            </ul>
+        </nav>
+    </div>
+
 </div>

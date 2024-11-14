@@ -61,6 +61,11 @@ namespace PetRescueFE.Pages.PetPage
 
         public string ErrorMessage { get; set; }
 
+        public int CurrentPage { get; set; } = 1;
+        public int TotalPages { get; set; }
+        public bool HasPreviousPage { get; set; }
+        public bool HasNextPage { get; set; }
+
         private async Task LoadSheltersAsync()
         {
             var apiUrl = "https://localhost:7297/api/shelter";
@@ -77,27 +82,32 @@ namespace PetRescueFE.Pages.PetPage
             }
         }
 
-        public async Task OnGetAsync(string? searchTerm, string? species, string? gender, Guid? shelterId, string? status)
+        public async Task OnGetAsync(string? searchTerm, string? species, string? gender, Guid? shelterId, string? status, int? pageIndex)
         {
             await LoadSheltersAsync();
             var role = HttpContext.Session.GetString("Role");
             string apiUrl;
+            CurrentPage = pageIndex ?? 1;
 
             if (role == "f3c8d4e5-6b7a-4c9d-8e2f-0a1b2c3d4e5f")
             {
                 IsShelter = true;
                 var userId = HttpContext.Session.GetString("UserId");
-                apiUrl = $"https://localhost:7297/api/pet/forshelter/{userId}?searchTerm={searchTerm}&species={species}&gender={gender}&status={status}";
+                apiUrl = $"https://localhost:7297/api/pet/forshelter/{userId}?searchTerm={searchTerm}&species={species}&gender={gender}&status={status}&index={CurrentPage}&size=3";
             }
             else
             {
-                apiUrl = $"https://localhost:7297/api/pet/foruser?searchTerm={searchTerm}&species={species}&gender={gender}&shelterId={shelterId}";
+                apiUrl = $"https://localhost:7297/api/pet/foruser?searchTerm={searchTerm}&species={species}&gender={gender}&shelterId={shelterId}&index={CurrentPage}&size=3";
             }
 
-            var response = await _apiService.GetAsync<BaseResponseModelFE<ICollection<PetResponseModelFE>>>(apiUrl);
+            var response = await _apiService.GetAsync<BaseResponseModelFE<PaginatedList<PetResponseModelFE>>>(apiUrl);
             if (response?.Code == 200 && response.Data != null)
             {
-                Pets = response.Data;
+                Pets = response.Data.Items;
+                TotalPages = response.Data.TotalPages;
+                HasPreviousPage = response.Data.HasPreviousPage;
+                HasNextPage = response.Data.HasNextPage;
+
                 var shelterLookup = ShelterOptions.ToDictionary(s => s.Value, s => s.Text);
 
                 foreach (var pet in Pets)

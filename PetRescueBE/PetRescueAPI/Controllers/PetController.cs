@@ -25,24 +25,28 @@ namespace PetRescueAPI.Controllers
 
         [HttpGet("ForUser")]
         public async Task<IActionResult> GetAllForUser(
+            int index,
+            int size,
             string? searchTerm = null,
             string? species = null,
             string? gender = null,
             Guid? shelterId = null)
         {
-            var response = await _petService.GetAllForUserAsync(searchTerm, species, gender, shelterId);
+            var response = await _petService.GetAllForUserAsync(searchTerm, species, gender, shelterId, index, size);
             return StatusCode((int)response.Code, response);
         }
 
         [HttpGet("ForShelter/{userId}")]
         public async Task<IActionResult> GetAllForShelter(
             Guid userId,
+            int index,
+            int size,
             string? searchTerm = null,
             string? species = null,
             string? gender = null,
             string? status = null)
         {
-            var response = await _petService.GetAllForShelterAsync(userId, searchTerm, species, gender, status);
+            var response = await _petService.GetAllForShelterAsync(userId, searchTerm, species, gender, status, index, size);
             return StatusCode((int)response.Code, response);
         }
 
