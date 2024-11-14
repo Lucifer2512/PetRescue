@@ -82,9 +82,9 @@ namespace PetRescueFE.Pages.Events
                     return Page();
                 }
 
-                // Ensure dates are in UTC
-                Event.StartDateTime = DateTime.SpecifyKind(Event.StartDateTime, DateTimeKind.Utc);
-                Event.EndDateTime = DateTime.SpecifyKind(Event.EndDateTime, DateTimeKind.Utc);
+                // Set default time to 00:00 for both start and end dates
+                Event.StartDateTime = DateTime.SpecifyKind(Event.StartDateTime.Date, DateTimeKind.Utc);
+                Event.EndDateTime = DateTime.SpecifyKind(Event.EndDateTime.Date, DateTimeKind.Utc);
 
                 // Set default status if not provided
                 if (string.IsNullOrEmpty(Event.Status))
@@ -99,7 +99,6 @@ namespace PetRescueFE.Pages.Events
                     Event
                 );
                 await SendNotification("New events added, check now!  ", "");
-
 
                 return RedirectToPage("./Index");
             }

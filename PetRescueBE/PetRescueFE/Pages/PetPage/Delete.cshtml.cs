@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using DataAccessLayer.Context;
-using DataAccessLayer.Entity;
 using PetRescueFE.Pages.Model;
 
 namespace PetRescueFE.Pages.PetPage
@@ -25,6 +18,12 @@ namespace PetRescueFE.Pages.PetPage
 
         public async Task<IActionResult> OnGetAsync(Guid? id)
         {
+            var role = HttpContext.Session.GetString("Role");
+            if (string.IsNullOrEmpty(role) || role == "e7b8f3d2-4a2f-4c3b-8f4d-9c5d8a3e1b2c") // User role
+            {
+                return RedirectToPage("/Login");
+            }
+
             if (id == null)
             {
                 return NotFound();

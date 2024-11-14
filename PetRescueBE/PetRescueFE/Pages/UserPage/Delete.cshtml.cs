@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using PetRescueFE.Pages.Model;
 
@@ -72,16 +71,16 @@ namespace PetRescueFE.Pages.UserPage
 
                 if (response == false)
                 {
-                    ModelState.AddModelError(string.Empty, "Failed to delete user.");
+                    ModelState.AddModelError(string.Empty, "There is other information related to this user, so this CANNOT BE DELETED.");
                     await LoadUserAsync(id.Value);
                     return Page();
                 }
 
-                
+
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError(string.Empty, "Failed to delete user.");
+                ModelState.AddModelError(string.Empty, "There is other information related to this user, so this CANNOT BE DELETED.");
                 await LoadUserAsync(id.Value);
                 return Page();
             }

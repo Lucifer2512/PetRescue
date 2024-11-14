@@ -2,66 +2,89 @@
 @model PetRescueFE.Pages.PetPage.DetailsModel
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Pet Details";
 }
 
-<h1>Details</h1>
+<div class="profile-container">
+    <div class="profile-header">
+        <img src="data:image/png;base64,@Model.Pet.ImageData" alt="Pet Image" />
+        <h2>@Model.Pet.Name</h2>
+    </div>
 
-<div>
-    <h4>Pet</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Pet.Name)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Pet.Name)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Pet.Age)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Pet.Age)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Pet.Gender)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Pet.Gender)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Pet.Description)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Pet.Description)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Pet.Species)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Pet.Species)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Pet.Status)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Pet.Status)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Pet.ArrivalDate)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Pet.ArrivalDate)
-        </dd>
-        <dt class="col-sm-2">
-            Image
-        </dt>
-        <dd class="col-sm-10">
-            <img src="data:image/png;base64,@Model.Pet.ImageData" alt="Pet Image" />
-        </dd>
-    </dl>
+    <div class="form-section">
+        <h5>Pet Profile</h5>
+        <dl class="row">
+            <dt class="col-sm-3">Pet Name</dt>
+            <dd class="col-sm-9">@Model.Pet.Name</dd>
+
+            <dt class="col-sm-3">Age</dt>
+            <dd class="col-sm-9">@Model.Pet.Age</dd>
+
+            <dt class="col-sm-3">Gender</dt>
+            <dd class="col-sm-9">@Model.Pet.Gender</dd>
+
+            <dt class="col-sm-3">Description</dt>
+            <dd class="col-sm-9">@Model.Pet.Description</dd>
+
+            <dt class="col-sm-3">Species</dt>
+            <dd class="col-sm-9">@Model.Pet.Species</dd>
+
+            <dt class="col-sm-3">ArrivalDate</dt>
+            <dd class="col-sm-9">@Model.Pet.ArrivalDate</dd>
+        </dl>
+    </div>
+
+    <div class="text-center mt-4">
+        <a class="btn btn-primary" asp-page="./Edit" asp-route-id="@Model.Pet?.PetId">Edit</a>
+        <a class="btn btn-secondary" asp-page="/PetPage/Index">Back to List</a>
+    </div>
 </div>
-<div>
-    <a asp-page="./Edit" asp-route-id="@Model.Pet?.PetId">Edit</a> |
-    <a asp-page="./Index">Back to List</a>
-</div>
+
+<style>
+    .profile-container {
+        max-width: 900px;
+        margin: auto;
+        background-color: #f8f9fa;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .profile-header {
+        background-color: #e6f7e6;
+        border-radius: 10px 10px 0 0;
+        padding: 20px;
+        text-align: center;
+        color: #2c8a2c;
+    }
+
+        .profile-header img {
+            width: auto;
+            max-width: 100%;
+            height: auto;
+            max-height: 300px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+
+    .form-section {
+        padding: 20px;
+    }
+
+        .form-section h5 {
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 5px;
+            margin-bottom: 15px;
+            color: #3572EF;
+        }
+
+        .form-section dt, .form-section dd {
+            margin: 0;
+            padding: 10px 0;
+        }
+
+        .form-section dd {
+            color: #333;
+        }
+</style>

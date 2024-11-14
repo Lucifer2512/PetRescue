@@ -14,9 +14,12 @@ namespace PetRescueFE.Pages.UserPage
         }
 
         public IList<UserResponseModelFE> Users { get; set; } = default!;
+        public int CurrentPage { get; set; } = 1;
+        public int TotalPages { get; set; }
+        public bool HasPreviousPage { get; set; }
+        public bool HasNextPage { get; set; }
 
-
-        public async Task<IActionResult> OnGetAsync()
+        public async Task<IActionResult> OnGetAsync(int? pageIndex)
         {
             var role = HttpContext.Session.GetString("Role");
 
@@ -25,12 +28,17 @@ namespace PetRescueFE.Pages.UserPage
                 return RedirectToPage("/AuthorizationError");
             }
 
-            var apiUrl = "https://localhost:7297/api/users";
-            var response = await _apiService.GetAsync<BaseResponseModelFE<IList<UserResponseModelFE>>>(apiUrl);
+            CurrentPage = pageIndex ?? 1;
+
+            var apiUrl = $"https://localhost:7297/api/users/paging?index={CurrentPage}&size=3";
+            var response = await _apiService.GetAsync<BaseResponseModelFE<PaginatedList<UserResponseModelFE>>>(apiUrl);
 
             if (response.Data != null)
             {
-                Users = response.Data;
+                Users = response.Data.Items;
+                TotalPages = response.Data.TotalPages;
+                HasPreviousPage = response.Data.HasPreviousPage;
+                HasNextPage = response.Data.HasNextPage;
             }
 
             return Page();

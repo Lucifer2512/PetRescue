@@ -2,16 +2,11 @@
 using BusinessLayer.Model.Request;
 using BusinessLayer.Model.Response;
 using BusinessLayer.Service.Interface;
+using BusinessLayer.Service.Interface.ConstantsService;
 using DataAccessLayer.Entity;
 using DataAccessLayer.UnitOfWork.Interface;
-using Net.payOS.Types;
 using Net.payOS;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BusinessLayer.Service.Interface.ConstantsService;
+using Net.payOS.Types;
 
 namespace BusinessLayer.Service.Implement
 {
@@ -140,7 +135,7 @@ namespace BusinessLayer.Service.Implement
                 Message = "Get Donation Detail Success",
                 Data = _mapper.Map<DonationReponseModel>(ExistedDonations)
             };
-        
+
         }
         public async Task<BaseResponseModel<DonationReponseModel>> UpdateStatusDonate(Guid id, string status)
         {
@@ -210,9 +205,9 @@ namespace BusinessLayer.Service.Implement
             donation.Notes = orderID.ToString();
             donation.Status = "Waiting....";
             var check = await AddAsync(donation);
-            
+
             var cancelUrl = "https://localhost:7132/"; // Replace with your actual cancel URL
-                                                      // var returnUrl = "https://tutor-serverapi20240712023601.azurewebsites.net/api/Transaction/PaymentandUpdateTransaction/orderCode=" + orderID; // Replace with your actual success URL
+                                                       // var returnUrl = "https://tutor-serverapi20240712023601.azurewebsites.net/api/Transaction/PaymentandUpdateTransaction/orderCode=" + orderID; // Replace with your actual success URL
             var returnUrl = "https://localhost:7297/api/donation/orderCode=" + orderID;
             //string dataToSign = $"amount={amount}&cancelUrl={cancelUrl}&description={noidung}&orderCode={check.Data.DonationId}&returnUrl={returnUrl}";
             //string signature = GenerateSignature(dataToSign, Constants.checksumKey);

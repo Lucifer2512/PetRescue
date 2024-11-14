@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using DataAccessLayer.Context;
-using DataAccessLayer.Entity;
 using PetRescueFE.Pages.Model;
 using PetRescueFE.Pages.Model.Shelters;
 
@@ -29,12 +22,16 @@ namespace PetRescueFE.Pages.PetPage
 
         public IFormFile? ImageFile { get; set; }
 
+        public string? ExistingImageData { get; set; }
+
         private async Task LoadShelterAsync()
         {
-            var apiUrl = "https://localhost:7297/api/shelter";
+            var userId = HttpContext.Session.GetString("UserId");
+            var apiUrl = $"https://localhost:7297/api/shelter/userid/{userId}";
             var response = await _apiService.GetAsync<BaseResponseModelFE<IList<ShelterResponseModel>>>(apiUrl);
 
             if (response.Data != null)
+
             {
                 ShelterOptions = response.Data.Select(shelter => new SelectListItem
                 {
@@ -46,6 +43,11 @@ namespace PetRescueFE.Pages.PetPage
 
         public async Task<IActionResult> OnGetAsync(Guid? id)
         {
+            var role = HttpContext.Session.GetString("Role");
+            if (string.IsNullOrEmpty(role) || role == "e7b8f3d2-4a2f-4c3b-8f4d-9c5d8a3e1b2c") // User role
+            {
+                return RedirectToPage("/Login");
+            }
             if (id == null)
             {
                 return NotFound();
@@ -59,7 +61,17 @@ namespace PetRescueFE.Pages.PetPage
                 return NotFound();
             }
 
+            // Gọi API để lấy thông tin Pet
+            var petResponse = await _apiService.GetAsync<BaseResponseModelFE<PetResponseModelFE>>($"https://localhost:7297/api/pet/id?id={id}");
+
+            if (petResponse == null || petResponse.Data == null)
+            {
+                return NotFound();
+            }
+
             Pet = response.Data;
+
+            ExistingImageData = petResponse.Data.ImageData;
 
             await LoadShelterAsync();
 
@@ -75,6 +87,16 @@ namespace PetRescueFE.Pages.PetPage
             }
 
             Pet.Image = ImageFile != null ? await _apiService.ConvertToByteArrayAsync(ImageFile) : null;
+
+            // Gọi API để lấy thông tin Pet
+            var petResponse = await _apiService.GetAsync<BaseResponseModelFE<PetResponseModelFE>>($"https://localhost:7297/api/pet/id?id={Pet.PetId}");
+
+            if (petResponse == null || petResponse.Data == null)
+            {
+                return NotFound();
+            }
+
+            Pet.Status = petResponse.Data.Status;
 
             // Gọi API để cập nhật Pet
             var response = await _apiService.PutAsync<PetUpdateRequestModelFE, BaseResponseModelFE<PetResponseModelFE>>(

@@ -11,10 +11,10 @@ namespace PetRescueAPI.Controllers
     {
         private readonly IDonationService _donationService;
         private readonly IShelterService _shelterService;
-        public DonationController( IDonationService donationService,IShelterService shelterService)
+        public DonationController(IDonationService donationService, IShelterService shelterService)
         {
             _donationService = donationService;
-            _shelterService = shelterService;   
+            _shelterService = shelterService;
         }
         [HttpPost("CreateDonation")]
         public async Task<IActionResult> CreateDonation([FromBody] DonationRequestModel request)
@@ -74,14 +74,14 @@ namespace PetRescueAPI.Controllers
                 var donation = await _donationService.GetDonationbyNotes(ordercode);
                 donation.Data.Status = "Payment success";
                 var updateDonation = await _donationService.UpdateStatusDonate(donation.Data.DonationId, donation.Data.Status);
-                 var check = await _shelterService.UpdateBalanceAsync(donation.Data.ShelterId, donation.Data.Amount);                
+                var check = await _shelterService.UpdateBalanceAsync(donation.Data.ShelterId, donation.Data.Amount);
                 if (check.Code == 200 && updateDonation.Code == 200)
                 {
                     try
                     {
-                        
-                    return Redirect("https://localhost:7132/Events/Index");
-                        
+
+                        return Redirect("https://localhost:7132/Events/Index");
+
                     }
                     catch (Exception ex)
                     {

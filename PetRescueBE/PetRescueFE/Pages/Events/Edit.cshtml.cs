@@ -37,7 +37,7 @@ namespace PetRescueFE.Pages.Events
             {
                 return RedirectToPage("/Login");
             }
-            
+
             var response = await TryGetEvent(EventUrlProfile.GET_DETAIL, Id);
             if (response == null)
             {

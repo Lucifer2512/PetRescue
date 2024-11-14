@@ -6,6 +6,7 @@ namespace BusinessLayer.Service.Interface
     public interface IUserService
     {
         Task<BaseResponseModel<IEnumerable<UserResponseModel>>> GetAllUsersAsync();
+        Task<BaseResponseModel<PaginatedList<UserResponseModel>>> GetAllUsersPaginatedAsync(int index, int size);
         Task<BaseResponseModel<LoginResponseModel>> LoginAsync(LoginRequestModel request);
         Task<BaseResponseModel<UserResponseModel>> AddAsync(UserRequestModel request);
         Task<BaseResponseModel<UserResponseModel>> UpdateAsync(UserRequestModelForUpdate user, Guid id);

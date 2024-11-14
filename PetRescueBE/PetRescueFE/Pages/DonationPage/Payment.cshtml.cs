@@ -1,10 +1,6 @@
-﻿using DataAccessLayer.Entity;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using PetRescueFE.Pages.Model;
-using System.Net.Http;
 using System.Text;
 
 
@@ -42,7 +38,7 @@ namespace PetRescueFE.Pages.DonationPage
                 return Page();
             }
             UserId = HttpContext.Session.GetString("UserId");
-            
+
             DonationRequestModelQRCode donation = new DonationRequestModelQRCode();
             donation.ShelterId = ShelterId;
             donation.EventId = EventId;
@@ -55,7 +51,7 @@ namespace PetRescueFE.Pages.DonationPage
                 {
                     TempData["ErrorMessage"] = response.Message;
                     return Page();
-                }            
+                }
                 string url = response.Data.ToString();
                 return Redirect(url);
             }

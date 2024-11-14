@@ -10,11 +10,13 @@
 <div class="page-container">
     <div class="page-header">
         <h1>@ViewData["Title"]</h1>
-        <a asp-page="Create" class="btn-create">
-            <i class="bi bi-plus-circle"></i>Create
-        </a>
+        @if (Model.CanCreate)
+        {
+            <a asp-page="Create" class="btn-create">
+                <i class="bi bi-plus-circle"></i>Create
+            </a>
+        }
     </div>
-
 
     <div class="table-container">
         <table class="table">
@@ -40,7 +42,7 @@
                         <td>@Html.DisplayFor(modelItem => item.ShelterName)</td>
                         <td>@Html.DisplayFor(modelItem => item.ShelterAddress)</td>
                         <td>@Html.DisplayFor(modelItem => item.ShelterPhoneNumber)</td>
-                        <td>@Html.DisplayFor(modelItem => item.Balance)</td>
+                        <td>@item.Balance.ToString("#,0", System.Globalization.CultureInfo.GetCultureInfo("vi-VN")) VND</td>
                         <td>@Html.DisplayFor(modelItem => item.UserEmail)</td>
                         <td class="action-links">
                             <a asp-page="./Edit" asp-route-id="@item.ShelterId" class="btn-action btn-edit">
@@ -59,6 +61,51 @@
             </tbody>
         </table>
     </div>
+
+    <div class="container mt-4">
+        @* Pagination container *@
+        <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-center">
+                @if (Model.HasPreviousPage)
+                {
+                    <li class="page-item">
+                        <a class="page-link" asp-page="./Index" asp-route-pageIndex="@(Model.CurrentPage - 1)">
+                            <i class="bi bi-chevron-left"></i> Previous
+                        </a>
+                    </li>
+                }
+                else
+                {
+                    <li class="page-item disabled">
+                        <span class="page-link"><i class="bi bi-chevron-left"></i> Previous</span>
+                    </li>
+                }
+
+                @for (int i = 1; i <= Model.TotalPages; i++)
+                {
+                    <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                        <a class="page-link" asp-page="./Index" asp-route-pageIndex="@i">@i</a>
+                    </li>
+                }
+
+                @if (Model.HasNextPage)
+                {
+                    <li class="page-item">
+                        <a class="page-link" asp-page="./Index" asp-route-pageIndex="@(Model.CurrentPage + 1)">
+                            Next <i class="bi bi-chevron-right"></i>
+                        </a>
+                    </li>
+                }
+                else
+                {
+                    <li class="page-item disabled">
+                        <span class="page-link">Next <i class="bi bi-chevron-right"></i></span>
+                    </li>
+                }
+            </ul>
+        </nav>
+    </div>
+
 </div>
 
 
@@ -112,12 +159,17 @@
             background-color: #3572EF;
             color: white;
             text-align: center;
+            padding: 10px;
+            border: 1px solid #ddd;
         }
 
-        .table td, .table th {
+        .table td {
             padding: 10px;
             text-align: center;
             border: 1px solid #ddd;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
     .btn-action {
@@ -169,5 +221,29 @@
         display: flex;
         justify-content: center;
         gap: 5px;
+    }
+
+    .pagination {
+        margin-bottom: 2rem;
+    }
+
+    .page-link {
+        color: #2c3e50;
+        border-color: #dee2e6;
+    }
+
+    .page-item.active .page-link {
+        background-color: #2c3e50;
+        border-color: #2c3e50;
+    }
+
+    .page-link:hover {
+        color: #1a252f;
+        background-color: #e9ecef;
+        border-color: #dee2e6;
+    }
+
+    .page-item.disabled .page-link {
+        color: #6c757d;
     }
 </style>

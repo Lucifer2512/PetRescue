@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using PetRescueFE.Pages.Model;
-using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace PetRescueFE.Pages.UserPage
@@ -94,6 +93,6 @@ namespace PetRescueFE.Pages.UserPage
             return RedirectToPage("./Index");
         }
 
-       
+
     }
 }

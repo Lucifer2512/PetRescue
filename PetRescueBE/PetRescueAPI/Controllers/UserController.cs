@@ -1,7 +1,6 @@
 ﻿using BusinessLayer.Model.Request;
 using BusinessLayer.Service.Interface;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace PetRescueAPI.Controllers
 {
@@ -48,6 +47,13 @@ namespace PetRescueAPI.Controllers
         public async Task<IActionResult> GetAllUsers()
         {
             var response = await _userService.GetAllUsersAsync();
+            return StatusCode((int)response.Code, response);
+        }
+
+        [HttpGet("paging")]
+        public async Task<IActionResult> GetAllUsersPaginated([FromQuery] int index, [FromQuery] int size)
+        {
+            var response = await _userService.GetAllUsersPaginatedAsync(index, size);
             return StatusCode((int)response.Code, response);
         }
 

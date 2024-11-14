@@ -1,6 +1,4 @@
-﻿using Microsoft.VisualBasic;
-
-namespace PetRescueFE.Pages
+﻿namespace PetRescueFE.Pages
 {
     public class PaginatedListFe<T> : List<T>
     {

@@ -1,6 +1,6 @@
-﻿using System.ComponentModel;
+﻿using PetRescueFE.Pages.Events;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using PetRescueFE.Pages.Events;
 
 namespace PetRescueFE.Pages.Model.Events;
 

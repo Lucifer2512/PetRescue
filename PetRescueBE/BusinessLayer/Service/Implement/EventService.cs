@@ -30,7 +30,7 @@ public class EventService : IEventService
             .ThenInclude(donation => donation.User)*/
             .OrderBy(e => e.StartDateTime)
             .AsQueryable();
-        
+
         Guid? userIdRaw = null;
         if (userId != null)
         {
@@ -45,13 +45,13 @@ public class EventService : IEventService
         {
             query = query.Where(e => e.Status.ToLower() == Status.ACTIVE.ToString().ToLower());
         }
-        
+
         var count = await query.CountAsync();
         var events = await query
             .Skip((index - 1) * size)
             .Take(size)
             .ToListAsync();
-        
+
         var totalPages = (int)Math.Ceiling(count / (double)size);
         var eventResponse = _mapper.Map<List<EventResponseModel>>(events);
 

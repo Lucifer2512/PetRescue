@@ -4,8 +4,8 @@ using BusinessLayer.Model.Response;
 using BusinessLayer.Service.Interface;
 using DataAccessLayer.Entity;
 using DataAccessLayer.UnitOfWork.Interface;
-using Microsoft.Extensions.Logging;
-using static System.Net.Mime.MediaTypeNames;
+using Microsoft.EntityFrameworkCore;
+
 
 namespace BusinessLayer.Service.Implement
 {
@@ -33,13 +33,13 @@ namespace BusinessLayer.Service.Implement
             }
 
             // Kiểm tra sự tồn tại của Shelter
-             var checkShelter = await _unitOfWork.Repository<Shelter>().FindAsync(requestModel.ShelterId);
+            var checkShelter = await _unitOfWork.Repository<Shelter>().FindAsync(requestModel.ShelterId);
             if (checkShelter == null)
             {
                 return new BaseResponseModel<PetResponseModel>
                 {
                     Code = 404,
-                    Message = "Shelter not found"                   
+                    Message = "Shelter not found"
                 };
             }
 
@@ -79,7 +79,6 @@ namespace BusinessLayer.Service.Implement
             };
         }
 
-
         public async Task<BaseResponseModel<PetResponseModel>> DeleteAsync(Guid id)
         {
             var petRepos = _unitOfWork.Repository<Pet>();
@@ -102,9 +101,104 @@ namespace BusinessLayer.Service.Implement
             };
         }
 
-        public async Task<BaseResponseModel<ICollection<PetResponseModel>>> GetAllAsync()
+        public async Task<BaseResponseModel<PaginatedList<PetResponseModel>>> GetAllForUserAsync(
+            string? searchTerm, string? species, string? gender, Guid? shelterId, int index, int size)
         {
-            var listPet = await _unitOfWork.Repository<Pet>().GetAllAsync();
+            searchTerm = searchTerm?.ToLower();
+            species = species?.ToLower();
+            gender = gender?.ToLower();
+
+            var query = _unitOfWork.Repository<Pet>().GetAll().Where(p => p.Status == "ACTIVE");
+
+            // Apply filters if values are provided
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                query = query.Where(p => p.Name.ToLower().Contains(searchTerm));
+            }
+            if (!string.IsNullOrEmpty(species))
+            {
+                query = query.Where(p => p.Species.ToLower() == species);
+            }
+            if (!string.IsNullOrEmpty(gender))
+            {
+                query = query.Where(p => p.Gender.ToLower() == gender);
+            }
+            if (shelterId.HasValue)
+            {
+                query = query.Where(p => p.ShelterId == shelterId.Value);
+            }
+
+            var listPet = await query
+                .Skip((index - 1) * size)
+                .Take(size)
+                .ToListAsync();
+
+            var count = await _unitOfWork.Repository<Pet>().GetAll().CountAsync();
+            var totalPages = (int)Math.Ceiling(count / (double)size);
+
+            var response = _mapper.Map<ICollection<PetResponseModel>>(listPet);
+
+            foreach (var item in response)
+            {
+                var originalPet = listPet.FirstOrDefault(p => p.PetId == item.PetId);
+                if (originalPet?.Image != null)
+                {
+                    item.ImageData = Convert.ToBase64String(originalPet.Image);
+                }
+            }
+
+            return new BaseResponseModel<PaginatedList<PetResponseModel>>
+            {
+                Code = 200,
+                Message = "Get all success",
+                Data = new PaginatedList<PetResponseModel>
+                {
+                    Items = response.ToList(),
+                    PageIndex = index,
+                    TotalPages = totalPages,
+                    TotalCount = count,
+                    HasPreviousPage = index > 1,
+                    HasNextPage = index < totalPages
+                }
+            };
+        }
+
+        public async Task<BaseResponseModel<PaginatedList<PetResponseModel>>> GetAllForShelterAsync(
+            Guid userId, string? searchTerm, string? species, string? gender, string? status, int index, int size)
+        {
+            searchTerm = searchTerm?.ToLower();
+            species = species?.ToLower();
+            gender = gender?.ToLower();
+            status = status?.ToLower();
+
+            var query = _unitOfWork.Repository<Pet>().GetAll().Include(p => p.Shelter).Where(p => p.Shelter.UsersId == userId);
+
+            // Apply filters if values are provided
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                query = query.Where(p => p.Name.ToLower().Contains(searchTerm));
+            }
+            if (!string.IsNullOrEmpty(species))
+            {
+                query = query.Where(p => p.Species.ToLower() == species);
+            }
+            if (!string.IsNullOrEmpty(gender))
+            {
+                query = query.Where(p => p.Gender.ToLower() == gender);
+            }
+            if (!string.IsNullOrEmpty(status))
+            {
+                query = query.Where(p => p.Status.ToLower() == status);
+            }
+
+            var listPet = await query
+                .Skip((index - 1) * size)
+                .Take(size)
+                .ToListAsync();
+
+            var count = await _unitOfWork.Repository<Pet>().GetAll().CountAsync();
+            var totalPages = (int)Math.Ceiling(count / (double)size);
+
             var response = _mapper.Map<ICollection<PetResponseModel>>(listPet);
 
             foreach (var item in response)
@@ -116,12 +210,19 @@ namespace BusinessLayer.Service.Implement
                 }
             }
 
-
-            return new BaseResponseModel<ICollection<PetResponseModel>>
+            return new BaseResponseModel<PaginatedList<PetResponseModel>>
             {
                 Code = 200,
-                Message = "get all success",
-                Data = response.ToList()
+                Message = "Get all success",
+                Data = new PaginatedList<PetResponseModel>
+                {
+                    Items = response.ToList(),
+                    PageIndex = index,
+                    TotalPages = totalPages,
+                    TotalCount = count,
+                    HasPreviousPage = index > 1,
+                    HasNextPage = index < totalPages
+                }
             };
         }
 
@@ -157,7 +258,7 @@ namespace BusinessLayer.Service.Implement
 
         public async Task<BaseResponseModel<PetResponseModel>> UpdateASync(PetUpdateRequestModel requestModel)
         {
-            var petRepos =  _unitOfWork.Repository<Pet>();
+            var petRepos = _unitOfWork.Repository<Pet>();
             var pet = await petRepos.FindAsync(requestModel.PetId);
 
             if (pet == null)
@@ -172,7 +273,7 @@ namespace BusinessLayer.Service.Implement
             try
             {
                 await _unitOfWork.BeginTransaction();
-                await petRepos.UpdateAsync(pet,false);
+                await petRepos.UpdateAsync(pet, false);
                 await _unitOfWork.CommitTransaction();
             }
             catch (Exception ex)
