@@ -400,3 +400,4 @@ FodyWeavers.xsd
 /PetRescueBE/PetRescueFE/appsettings.json
 /PetRescueBE/BusinessLayer/Service/Implement/AdoptionApplicationservice.cs
 /PetRescueBE/BusinessLayer/Service/Implement/IAdoptionApplicationservice.cs
+/PetRescueBE/BusinessLayer/Service/Interface/IAdoptionApplicationservice.cs
