@@ -65,14 +65,14 @@ namespace PetRescueFE.Pages.ShelterPage
 
                 if (response == false)
                 {
-                    ModelState.AddModelError(string.Empty, "Failed to delete shelter.");
+                    ModelState.AddModelError(string.Empty, "There is other information related to this shelter, so this CANNOT BE DELETED.");
                     await LoadShelterAsync(id.Value);
                     return Page();
                 }
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError(string.Empty, "Failed to delete shelter.");
+                ModelState.AddModelError(string.Empty, "There is other information related to this shelter, so this CANNOT BE DELETED.");
                 await LoadShelterAsync(id.Value);
                 return Page();
             }

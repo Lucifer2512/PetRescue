@@ -72,7 +72,7 @@ namespace PetRescueFE.Pages.UserPage
 
                 if (response == false)
                 {
-                    ModelState.AddModelError(string.Empty, "Failed to delete user.");
+                    ModelState.AddModelError(string.Empty, "There is other information related to this user, so this CANNOT BE DELETED.");
                     await LoadUserAsync(id.Value);
                     return Page();
                 }
@@ -81,7 +81,7 @@ namespace PetRescueFE.Pages.UserPage
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError(string.Empty, "Failed to delete user.");
+                ModelState.AddModelError(string.Empty, "There is other information related to this user, so this CANNOT BE DELETED.");
                 await LoadUserAsync(id.Value);
                 return Page();
             }

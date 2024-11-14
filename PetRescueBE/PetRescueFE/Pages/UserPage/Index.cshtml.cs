@@ -32,7 +32,7 @@ namespace PetRescueFE.Pages.UserPage
 
             CurrentPage = pageIndex ?? 1;
 
-            var apiUrl = $"https://localhost:7297/api/users/paging?index={CurrentPage}&size=5";
+            var apiUrl = $"https://localhost:7297/api/users/paging?index={CurrentPage}&size=3";
             var response = await _apiService.GetAsync<BaseResponseModelFE<PaginatedList<UserResponseModelFE>>>(apiUrl);
 
             if (response.Data != null)
