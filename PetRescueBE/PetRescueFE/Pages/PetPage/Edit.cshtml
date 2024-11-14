@@ -9,62 +9,142 @@
 
 <h4>Pet</h4>
 <hr />
-<div class="row">
-    <div class="col-md-4">
+<div class="row justify-content-center">
+    <div class="col-md-6">
         <form method="post" enctype="multipart/form-data">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
             <input type="hidden" asp-for="Pet.PetId" />
-            <div class="form-group">
-                <label asp-for="Pet.ShelterId" class="control-label"></label>
-                <select asp-for="Pet.ShelterId" class="form-control" asp-items="Model.ShelterOptions"></select>
-                <span asp-validation-for="Pet.ShelterId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Pet.Name" class="control-label"></label>
+
+            <!-- Shelter Select -->
+        @*      <div class="form-group mb-4">
+                 <label asp-for="Pet.ShelterId" class="form-label"></label>
+                 <select asp-for="Pet.ShelterId" class="form-control">
+                     <option value="">Select Shelter</option>
+                     @foreach (var shelter in Model.ShelterOptions)
+                     {
+                         <option value="@shelter.Value">@shelter.Text</option>
+                     }
+                 </select>
+                 <span asp-validation-for="Pet.ShelterId" class="text-danger"></span>
+             </div> *@
+            <input type="hidden" asp-for="Pet.ShelterId" />
+
+            <!-- Pet Name Input -->
+            <div class="form-group mb-4">
+                <label asp-for="Pet.Name" class="form-label"></label>
                 <input asp-for="Pet.Name" class="form-control" />
                 <span asp-validation-for="Pet.Name" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Pet.Age" class="control-label"></label>
+
+            <!-- Pet Age Input -->
+            <div class="form-group mb-4">
+                <label asp-for="Pet.Age" class="form-label"></label>
                 <input asp-for="Pet.Age" class="form-control" />
                 <span asp-validation-for="Pet.Age" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Pet.Gender" class="control-label"></label>
+
+            <!-- Pet Gender Input -->
+            <div class="form-group mb-4">
+                <label asp-for="Pet.Gender" class="form-label"></label>
                 <input asp-for="Pet.Gender" class="form-control" />
                 <span asp-validation-for="Pet.Gender" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Pet.Description" class="control-label"></label>
+
+            <!-- Pet Description Input -->
+            <div class="form-group mb-4">
+                <label asp-for="Pet.Description" class="form-label"></label>
                 <input asp-for="Pet.Description" class="form-control" />
                 <span asp-validation-for="Pet.Description" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Pet.Species" class="control-label"></label>
+
+            <!-- Pet Species Input -->
+            <div class="form-group mb-4">
+                <label asp-for="Pet.Species" class="form-label"></label>
                 <input asp-for="Pet.Species" class="form-control" />
                 <span asp-validation-for="Pet.Species" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Pet.Status" class="control-label"></label>
-                <input asp-for="Pet.Status" class="form-control" />
-                <span asp-validation-for="Pet.Status" class="text-danger"></span>
-            </div>        
-            <div class="form-group">
-                <label asp-for="ImageFile" class="control-label">Profile Image</label>
+
+            <!-- Profile Image Input -->
+            <div class="form-group mb-4">
+                <label asp-for="ImageFile" class="form-label">Profile Image</label>
                 <input asp-for="ImageFile" type="file" class="form-control" />
                 <span asp-validation-for="ImageFile" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+
+            <input type="hidden" asp-for="Pet.Status" value="Active" />
+            <!-- Save Button -->
+            <div class="form-group text-center">
+                <input type="submit" value="Save" class="btn btn-primary px-5 py-2 btn-lg" />
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-page="./Index">Back to List</a>
+<!-- Back to List Link -->
+<div class="mt-4 text-center">
+    <a asp-page="./Index" class="btn btn-secondary btn-lg">Back to List</a>
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
+
+<style>
+    /* Form Container Spacing */
+    .row {
+        margin-top: 50px;
+    }
+
+    .col-md-6 {
+        padding: 30px;
+        background-color: #f9f9f9;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .form-label {
+        font-weight: bold;
+    }
+
+    /* Style for inputs and selects */
+    .form-control {
+        height: calc(2.25rem + 2px);
+        font-size: 1.1rem;
+        border-radius: 0.375rem;
+    }
+
+    /* Button Styles */
+    .btn {
+        border-radius: 0.375rem;
+        padding: 0.75rem 1.5rem;
+        font-size: 1.1rem;
+    }
+
+    /* Hover effect for Save button */
+    .btn-primary:hover {
+        background-color: #0056b3;
+        border-color: #0056b3;
+    }
+
+    /* Focus effect for form elements */
+    .form-control:focus {
+        border-color: #0069d9;
+        box-shadow: 0 0 0 0.2rem rgba(38, 143, 255, 0.25);
+    }
+
+    /* Styling for validation errors */
+    .text-danger {
+        font-size: 0.9rem;
+    }
+
+    /* Spacing for Back to List button */
+    .mt-4 {
+        margin-top: 30px;
+    }
+</style>

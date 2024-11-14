@@ -235,6 +235,34 @@ namespace BusinessLayer.Service.Implement
             };
         }
 
+        public async Task<BaseResponseModel<ICollection<PetResponseModel>>> GetByUserShelterAsync(Guid id, string? searchTerm)
+        {
+            var query = _unitOfWork.Repository<Pet>().GetAll()
+               .Where(x => x.ShelterId == id && x.Status == "ACTIVE"); 
+
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                searchTerm = searchTerm.ToLower();  // Normalize the search term to lowercase
+                query = query.Where(x => x.Name.ToLower().Contains(searchTerm) || x.Species.ToLower().Contains(searchTerm));
+            }
+            var listPet = await query.ToListAsync();
+            var response = _mapper.Map<ICollection<PetResponseModel>>(listPet);
+            foreach (var item in response)
+            {
+                var originalPet = listPet.FirstOrDefault(p => p.PetId == item.PetId);
+                if (originalPet.Image != null)
+                {
+                    item.ImageData = Convert.ToBase64String(originalPet.Image);
+                }
+            }
+            return new BaseResponseModel<ICollection<PetResponseModel>>
+            {
+                Code = 200,
+                Message = "get all success",
+                Data = response.ToList()
+            };
+        }
+
         public async Task<BaseResponseModel<PetResponseModel>> GetDetailAsync(Guid id)
         {
             var pet = await _unitOfWork.Repository<Pet>().FindAsync(id);

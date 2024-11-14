@@ -15,5 +15,6 @@ namespace BusinessLayer.Service.Interface
         Task<BaseResponseModel<ICollection<PetResponseModel>>> GetByShelterAsync(Guid id,string searchTerm);
         Task<BaseResponseModel<ICollection<PetResponseModel>>> GetBySearchAsync(string? searchTerm);
         Task<BaseResponseModel<ICollection<PetResponseModel>>> GetByUserSearchAsync(string? searchTerm);
+        Task<BaseResponseModel<ICollection<PetResponseModel>>> GetByUserShelterAsync(Guid id, string? searchTerm);
     }
 }
