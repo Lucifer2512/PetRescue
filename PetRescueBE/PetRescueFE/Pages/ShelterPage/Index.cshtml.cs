@@ -1,6 +1,4 @@
-﻿using Azure;
-using DataAccessLayer.Entity;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using PetRescueFE.Pages.Model;
 using PetRescueFE.Pages.Model.Shelters;
@@ -27,7 +25,7 @@ namespace PetRescueFE.Pages.ShelterPage
         {
             var role = HttpContext.Session.GetString("Role");
             var userId = HttpContext.Session.GetString("UserId");
-            
+
             if (role != "d290f1ee-6c54-4b01-90e6-d701748f0851" && role != "f3c8d4e5-6b7a-4c9d-8e2f-0a1b2c3d4e5f")
             {
                 return RedirectToPage("/AuthorizationError");

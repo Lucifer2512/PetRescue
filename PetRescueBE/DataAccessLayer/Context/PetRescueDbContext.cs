@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using DataAccessLayer.Entity;
+﻿using DataAccessLayer.Entity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.Extensions.Configuration;
 
 namespace DataAccessLayer.Context

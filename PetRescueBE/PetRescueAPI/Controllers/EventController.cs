@@ -1,8 +1,8 @@
-﻿using System.ComponentModel;
-using BusinessLayer.Model.Request;
+﻿using BusinessLayer.Model.Request;
 using BusinessLayer.Model.Response;
 using BusinessLayer.Service.Interface;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace PetRescueAPI.Controllers;
@@ -86,5 +86,5 @@ public class EventController : ControllerBase
 }
 public record EventParameter(
     string? usr,
-    [Range(1, int.MaxValue), DefaultValue(1)] int index, 
+    [Range(1, int.MaxValue), DefaultValue(1)] int index,
     [Range(1, 50), DefaultValue(3)] int size = 3);  // Default size of 3, max size of 50

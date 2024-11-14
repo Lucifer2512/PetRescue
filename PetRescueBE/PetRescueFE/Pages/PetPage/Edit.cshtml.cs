@@ -1,16 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using DataAccessLayer.Context;
-using DataAccessLayer.Entity;
 using PetRescueFE.Pages.Model;
 using PetRescueFE.Pages.Model.Shelters;
-using System.IdentityModel.Tokens.Jwt;
 
 namespace PetRescueFE.Pages.PetPage
 {
@@ -95,7 +87,7 @@ namespace PetRescueFE.Pages.PetPage
             }
 
             Pet.Image = ImageFile != null ? await _apiService.ConvertToByteArrayAsync(ImageFile) : null;
-            
+
             // Gọi API để lấy thông tin Pet
             var petResponse = await _apiService.GetAsync<BaseResponseModelFE<PetResponseModelFE>>($"https://localhost:7297/api/pet/id?id={Pet.PetId}");
 

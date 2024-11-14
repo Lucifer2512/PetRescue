@@ -1,14 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using DataAccessLayer.Context;
-using DataAccessLayer.Entity;
 using PetRescueFE.Pages.Model;
-using System.IdentityModel.Tokens.Jwt;
 
 namespace PetRescueFE.Pages.PetPage
 {

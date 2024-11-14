@@ -1,13 +1,8 @@
-﻿using DataAccessLayer.Entity;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using PetRescueFE.Pages.Model;
 using PetRescueFE.Pages.Model.Shelters;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace PetRescueFE.Pages.PetPage
 {
@@ -29,7 +24,7 @@ namespace PetRescueFE.Pages.PetPage
         private async Task LoadShelterAsync()
         {
             var userId = HttpContext.Session.GetString("UserId");
-            var apiUrl =  $"https://localhost:7297/api/shelter/userid/{userId}";
+            var apiUrl = $"https://localhost:7297/api/shelter/userid/{userId}";
             var response = await _apiService.GetAsync<BaseResponseModelFE<IList<ShelterResponseModel>>>(apiUrl);
 
             if (response.Data != null)
@@ -67,8 +62,8 @@ namespace PetRescueFE.Pages.PetPage
             // Gọi API để tạo
             // pet mới
             var response = await _apiService.PostAsync<PetAddRequestModelFE, BaseResponseModelFE<PetResponseModelFE>>("https://localhost:7297/api/pet/add", Pet);
-          
-            
+
+
             if (response == null || response.Data == null)
             {
                 ModelState.AddModelError(string.Empty, response.Message.ToString());

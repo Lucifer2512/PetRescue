@@ -1,16 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using DataAccessLayer.Context;
-using DataAccessLayer.Entity;
-using PetRescueFE.Pages.Model;
-using System.IdentityModel.Tokens.Jwt;
-using PetRescueFE.Pages.Model.Shelters;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using PetRescueFE.Pages.Model;
+using PetRescueFE.Pages.Model.Shelters;
 
 namespace PetRescueFE.Pages.PetPage
 {
@@ -25,15 +17,15 @@ namespace PetRescueFE.Pages.PetPage
 
         public ICollection<PetResponseModelFE> Pets { get; set; } = new List<PetResponseModelFE>();
         public bool IsShelter { get; private set; }
-        [BindProperty(SupportsGet = true)] 
+        [BindProperty(SupportsGet = true)]
         public string? SearchTerm { get; set; }
 
-        [BindProperty(SupportsGet = true)] 
+        [BindProperty(SupportsGet = true)]
         public string? Species { get; set; }
         [BindProperty(SupportsGet = true)]
         public string? Gender { get; set; }
         [BindProperty(SupportsGet = true)]
-        public Guid? ShelterId { get; set; } 
+        public Guid? ShelterId { get; set; }
         [BindProperty(SupportsGet = true)]
         public string? Status { get; set; }
 

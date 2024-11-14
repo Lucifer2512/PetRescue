@@ -33,22 +33,22 @@ namespace PetRescueFE.Pages.Events
             var role = _utility.GetUserRole();
             string? userId = null;
             var url = EventUrlProfile.BASE_URL_S + EventUrlProfile.GETS_P;
-            
+
             CanEdit = role == Role4Event.ADMIN || // Admin
                       role == Role4Event.SHELTER_OWNER;    // ShelterOwner
 
             CanDonate = role == Role4Event.USER; // User
 
             userId = CanEdit ? _utility.GetUserId() : null;
-            
+
             CurrentPage = pageIndex ?? 1;
             url += $"?Index={CurrentPage}&Size=3";
-            
+
             if (userId is not null)
             {
                 url += $"&usr={userId}";
             }
-            
+
             var data = await TryGetData(url);
             if (data is null || !data.Items.Any())
             {

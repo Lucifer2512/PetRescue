@@ -5,9 +5,6 @@ using BusinessLayer.Service.Interface;
 using DataAccessLayer.Entity;
 using DataAccessLayer.UnitOfWork.Interface;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
-using static System.Net.Mime.MediaTypeNames;
 
 
 namespace BusinessLayer.Service.Implement
@@ -36,13 +33,13 @@ namespace BusinessLayer.Service.Implement
             }
 
             // Kiểm tra sự tồn tại của Shelter
-             var checkShelter = await _unitOfWork.Repository<Shelter>().FindAsync(requestModel.ShelterId);
+            var checkShelter = await _unitOfWork.Repository<Shelter>().FindAsync(requestModel.ShelterId);
             if (checkShelter == null)
             {
                 return new BaseResponseModel<PetResponseModel>
                 {
                     Code = 404,
-                    Message = "Shelter not found"                   
+                    Message = "Shelter not found"
                 };
             }
 
@@ -261,7 +258,7 @@ namespace BusinessLayer.Service.Implement
 
         public async Task<BaseResponseModel<PetResponseModel>> UpdateASync(PetUpdateRequestModel requestModel)
         {
-            var petRepos =  _unitOfWork.Repository<Pet>();
+            var petRepos = _unitOfWork.Repository<Pet>();
             var pet = await petRepos.FindAsync(requestModel.PetId);
 
             if (pet == null)
@@ -276,7 +273,7 @@ namespace BusinessLayer.Service.Implement
             try
             {
                 await _unitOfWork.BeginTransaction();
-                await petRepos.UpdateAsync(pet,false);
+                await petRepos.UpdateAsync(pet, false);
                 await _unitOfWork.CommitTransaction();
             }
             catch (Exception ex)

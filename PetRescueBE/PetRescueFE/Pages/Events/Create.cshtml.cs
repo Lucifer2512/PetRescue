@@ -35,7 +35,7 @@ namespace PetRescueFE.Pages.Events
                 {
                     return RedirectToPage("/Login");
                 }
-                
+
                 string shelterUrl = EventUrlProfile.BASE_URL_S + EventUrlProfile.GET_SHELTER_BY_USER_ID + userId;
 
                 // Initialize empty Shelters to avoid case of fire

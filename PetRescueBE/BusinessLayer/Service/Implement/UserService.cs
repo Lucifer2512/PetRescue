@@ -7,7 +7,6 @@ using DataAccessLayer.Entity;
 using DataAccessLayer.UnitOfWork.Interface;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace BusinessLayer.Service.Implement
 {

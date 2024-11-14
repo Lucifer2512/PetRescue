@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using PetRescueFE.Pages.Model;
 
@@ -77,7 +76,7 @@ namespace PetRescueFE.Pages.UserPage
                     return Page();
                 }
 
-                
+
             }
             catch (Exception ex)
             {

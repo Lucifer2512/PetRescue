@@ -355,7 +355,7 @@ namespace BusinessLayer.Service.Implement
             };
         }
 
-        public async Task<BaseResponseModel<ShelterResponseModel>> UpdateBalanceAsync( Guid id,decimal amount)
+        public async Task<BaseResponseModel<ShelterResponseModel>> UpdateBalanceAsync(Guid id, decimal amount)
         {
             var shelterRepository = _unitOfWork.Repository<Shelter>();
 

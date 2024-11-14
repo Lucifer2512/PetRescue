@@ -1,8 +1,6 @@
-﻿using DataAccessLayer.Entity;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using PetRescueFE.Pages.Model;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace PetRescueFE.Pages.UserPage
 {

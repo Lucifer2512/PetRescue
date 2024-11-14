@@ -1,6 +1,5 @@
 ﻿using BusinessLayer.Model.Request;
 using BusinessLayer.Service.Interface;
-using DataAccessLayer.Entity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace PetRescueAPI.Controllers

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace DataAccessLayer.Entity
+﻿namespace DataAccessLayer.Entity
 {
     public partial class Event
     {
