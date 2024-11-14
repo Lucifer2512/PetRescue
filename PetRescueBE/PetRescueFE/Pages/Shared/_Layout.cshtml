@@ -256,9 +256,9 @@
 
                     // Khởi tạo kết nối SignalR không cần truyền userId
                     const connection = new signalR.HubConnectionBuilder()
-                        .withUrl(`/notificationHub`)  // Không cần truyền userId nữa
+                        .withUrl(`/notificationHub?userId=${userId}`)  // Không cần truyền userId nữa
                         .build();
-
+                   
                     // Bắt đầu kết nối
                     connection.start()
                         .then(() => {
@@ -315,7 +315,7 @@
                                 notificationsPopup.removeChild(newNotification);
                                 console.log("Notification removed:", message);
                             }
-                        }, 5000);
+                        }, 20000);
                     }
                 });
             </script>
