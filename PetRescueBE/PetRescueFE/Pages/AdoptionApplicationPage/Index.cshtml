@@ -2,7 +2,6 @@
 @model PetRescueFE.Pages.AdoptionApplicationPage.IndexModel
 
 
-
 <!DOCTYPE html>
 
 <html>
@@ -14,6 +13,13 @@
 <p>
     <a asp-page="Create">Create New</a>
 </p>
+
+    <select id="statusFilter" onchange="location.href = '?statusFilter=' + this.value;">
+        <option value="all" selected="@(Model.StatusFilter == "all")">All</option>
+        <option value="pending" selected="@(Model.StatusFilter == "pending")">Pending</option>
+        <option value="approved" selected="@(Model.StatusFilter == "approved")">Approved</option>
+        <option value="disapproved" selected="@(Model.StatusFilter == "disapproved")">Disapproved</option>
+    </select>
 <table class="table">
     <thead>
         <tr>
@@ -64,3 +70,14 @@
 </table>
 </body>
 </html>
+
+<script>
+    document.getElementById('statusFilter').addEventListener('change', function () {
+        const selectedStatus = this.value;
+        const rows = document.querySelectorAll('#applicationTableBody tr');
+
+        rows.forEach(row => {
+            row.style.display = (selectedStatus === 'all' || row.dataset.status === selectedStatus) ? '' : 'none';
+        });
+    });
+</script>

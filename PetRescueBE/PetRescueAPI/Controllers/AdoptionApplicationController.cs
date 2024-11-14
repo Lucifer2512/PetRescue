@@ -23,23 +23,23 @@ namespace PetRescueAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllApplications()
+        public async Task<IActionResult> GetAllApplications(string status)
         {
-            var response = await _adoptionApplicationService.GetAllAsync();
+            var response = await _adoptionApplicationService.GetAllAsync(status);
             return StatusCode((int)response.Code, response);
         }
 
         [HttpGet("shelter/{id}")]
-        public async Task<IActionResult> GetAllApplicationsForShelter(Guid id)
+        public async Task<IActionResult> GetAllApplicationsForShelter(Guid id, string status)
         {
-            var response = await _adoptionApplicationService.GetAllForShelterAsync(id);
+            var response = await _adoptionApplicationService.GetAllForShelterAsync(id, status);
             return StatusCode((int)response.Code, response);
         }
 
         [HttpGet("user/{id}")]
-        public async Task<IActionResult> GetAllApplicationsForUser(Guid id)
+        public async Task<IActionResult> GetAllApplicationsForUser(Guid id, string status)
         {
-            var response = await _adoptionApplicationService.GetAllForUserAsync(id);
+            var response = await _adoptionApplicationService.GetAllForUserAsync(id, status);
             return StatusCode((int)response.Code, response);
         }
 

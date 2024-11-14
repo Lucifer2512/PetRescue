@@ -54,14 +54,25 @@ namespace BusinessLayer.Service.Implement
             };
         }
 
-        public async Task<BaseResponseModel<IEnumerable<AdoptionApplicationResponseModel>>> GetAllAsync()
+        public async Task<BaseResponseModel<IEnumerable<AdoptionApplicationResponseModel>>> GetAllAsync(string status)
         {
             var repo = _unitOfWork.Repository<AdoptionApplication>();
-
-            var applications = await repo.GetAll()
+            var applications = await repo.GetAllAsync();
+            if (status == "all")
+            {
+                applications = await repo.GetAll()
                 .Include(u => u.User)
                 .Include(p => p.Pet)
                 .ToListAsync();
+            }
+            else
+            {
+                applications = await repo.GetAll()
+                .Include(u => u.User)
+                .Include(p => p.Pet)
+                .Where(u => u.Status == status.ToUpper())
+                .ToListAsync();
+            }
             var responseModels = _mapper.Map<IEnumerable<AdoptionApplicationResponseModel>>(applications);
 
             if (applications.Count() == 0)
@@ -69,7 +80,7 @@ namespace BusinessLayer.Service.Implement
                 return new BaseResponseModel<IEnumerable<AdoptionApplicationResponseModel>>
                 {
                     Code = 200,
-                    Message = "No Shelters in the list",
+                    Message = "No application in the list",
                     Data = responseModels
                 };
             }
@@ -77,22 +88,34 @@ namespace BusinessLayer.Service.Implement
             return new BaseResponseModel<IEnumerable<AdoptionApplicationResponseModel>>
             {
                 Code = 200,
-                Message = "Shelters retrieved successfully",
+                Message = "Applications retrieved successfully",
                 Data = responseModels
             };
         }
 
-        public async Task<BaseResponseModel<IEnumerable<AdoptionApplicationResponseModel>>> GetAllForShelterAsync(Guid id)
+        public async Task<BaseResponseModel<IEnumerable<AdoptionApplicationResponseModel>>> GetAllForShelterAsync(Guid id, string status)
         {
             var applicationRepo = _unitOfWork.Repository<AdoptionApplication>();
             var petRepo = _unitOfWork.Repository<Pet>();
             var userRepo = _unitOfWork.Repository<User>();
-
-            var applications = await applicationRepo.GetAll()
+            var applications = await applicationRepo.GetAllAsync();
+            if (status == "all")
+            {
+                applications = await applicationRepo.GetAll()
                 .Include(u => u.User)
                 .Include(p => p.Pet)
                 .Where(s => s.Pet.Shelter.UsersId == id)
                 .ToListAsync();
+            }
+            else
+            {
+                applications = await applicationRepo.GetAll()
+                .Include(u => u.User)
+                .Include(p => p.Pet)
+                .Where(u => u.Status == status.ToUpper())
+                .Where(s => s.Pet.Shelter.UsersId == id)
+                .ToListAsync();
+            }
             var responseModels = _mapper.Map<IEnumerable<AdoptionApplicationResponseModel>>(applications);
 
             if (applications.Count() == 0)
@@ -100,7 +123,7 @@ namespace BusinessLayer.Service.Implement
                 return new BaseResponseModel<IEnumerable<AdoptionApplicationResponseModel>>
                 {
                     Code = 200,
-                    Message = "No Shelters in the list",
+                    Message = "No application in the list",
                     Data = responseModels
                 };
             }
@@ -108,22 +131,34 @@ namespace BusinessLayer.Service.Implement
             return new BaseResponseModel<IEnumerable<AdoptionApplicationResponseModel>>
             {
                 Code = 200,
-                Message = "Shelters retrieved successfully",
+                Message = "Applications retrieved successfully",
                 Data = responseModels
             };
         }
 
-        public async Task<BaseResponseModel<IEnumerable<AdoptionApplicationResponseModel>>> GetAllForUserAsync(Guid id)
+        public async Task<BaseResponseModel<IEnumerable<AdoptionApplicationResponseModel>>> GetAllForUserAsync(Guid id, string status)
         {
             var applicationRepo = _unitOfWork.Repository<AdoptionApplication>();
             var petRepo = _unitOfWork.Repository<Pet>();
             var userRepo = _unitOfWork.Repository<User>();
-
-            var applications = await applicationRepo.GetAll()
+            var applications = await applicationRepo.GetAllAsync();
+            if (status == "all")
+            {
+                applications = await applicationRepo.GetAll()
                 .Include(u => u.User)
                 .Include(p => p.Pet)
                 .Where(s => s.UserId == id)
                 .ToListAsync();
+            }
+            else
+            {
+                applications = await applicationRepo.GetAll()
+                .Include(u => u.User)
+                .Include(p => p.Pet)
+                .Where(u => u.Status == status.ToUpper())
+                .Where(s => s.UserId == id)
+                .ToListAsync();
+            }
             var responseModels = _mapper.Map<IEnumerable<AdoptionApplicationResponseModel>>(applications);
 
             if (applications.Count() == 0)
@@ -131,7 +166,7 @@ namespace BusinessLayer.Service.Implement
                 return new BaseResponseModel<IEnumerable<AdoptionApplicationResponseModel>>
                 {
                     Code = 200,
-                    Message = "No Shelters in the list",
+                    Message = "No application in the list",
                     Data = responseModels
                 };
             }
@@ -139,7 +174,7 @@ namespace BusinessLayer.Service.Implement
             return new BaseResponseModel<IEnumerable<AdoptionApplicationResponseModel>>
             {
                 Code = 200,
-                Message = "Shelters retrieved successfully",
+                Message = "Applications retrieved successfully",
                 Data = responseModels
             };
         }
@@ -192,6 +227,7 @@ namespace BusinessLayer.Service.Implement
             var userRepo = _unitOfWork.Repository<User>();
 
             var existedApplication = await applicationRepo.FindAsync(id);
+            var existedPet = await petRepo.FindAsync(existedApplication.PetId);
 
             if (existedApplication == null)
             {
@@ -208,12 +244,14 @@ namespace BusinessLayer.Service.Implement
             if (existedApplication.Status == "APPROVED")
             {
                 var notChosen = await applicationRepo.GetAll()
-                    .Where(x => x.ApplicationId != id).ToListAsync();
+                    .Where(x => x.ApplicationId != id & x.PetId == existedApplication.PetId).ToListAsync();
                 foreach (var item in notChosen)
                 {
                     item.Status = "DISAPPROVED";
                 }
                 await applicationRepo.UpdateRangeAsync(notChosen);
+                existedPet.Status = "ADOPTED";
+                await petRepo.UpdateAsync(existedPet);
             }
 
             try
