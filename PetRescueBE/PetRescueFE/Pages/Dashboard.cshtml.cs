@@ -46,15 +46,39 @@ public class DashboardModel : PageModel
         }
         
         var events = await _dashboardService.GetEvents();
+        if (events == null)
+        {
+            TotalEvents = 0;
+            ActiveEvents = 0;
+            InactiveEvents = 0;
+        }
         (TotalEvents, ActiveEvents, InactiveEvents) = await _dashboardService.TotalActiveNInactive(events);
 
         var pets = await _dashboardService.GetPets();
+        if (pets == null)
+        {
+            TotalPets = 0;
+            ActivePets = 0;
+            InactivePets = 0;
+        }
         (TotalPets, ActivePets, InactivePets) = await _dashboardService.TotalActiveNInactive(pets);
 
         var adoptions = await _dashboardService.GetAdoptions();
+        if (adoptions == null)
+        {
+            TotalAdoptions = 0;
+            ActiveAdoptions = 0;
+            InactiveAdoptions = 0;
+        }
         (TotalAdoptions, ActiveAdoptions, InactiveAdoptions) = await _dashboardService.TotalActiveNInactive(adoptions);
 
         var shelters = await _dashboardService.GetShelters();
+        if (shelters == null)
+        {
+            TotalShelters = 0;
+            ActiveShelters = 0;
+            InactiveShelters = 0;
+        }
         (TotalShelters, ActiveShelters, InactiveShelters) = await _dashboardService.TotalActiveNInactive(shelters);
 
         (TotalDonations, TotalDonationAmount, _) = await _dashboardService.TotalAmountDonations();
