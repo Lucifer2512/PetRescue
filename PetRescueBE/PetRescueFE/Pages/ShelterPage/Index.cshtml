@@ -40,7 +40,7 @@
                         <td>@Html.DisplayFor(modelItem => item.ShelterName)</td>
                         <td>@Html.DisplayFor(modelItem => item.ShelterAddress)</td>
                         <td>@Html.DisplayFor(modelItem => item.ShelterPhoneNumber)</td>
-                        <td>@Html.DisplayFor(modelItem => item.Balance)</td>
+                        <td>@item.Balance.ToString("#,0", System.Globalization.CultureInfo.GetCultureInfo("vi-VN")) VND</td>
                         <td>@Html.DisplayFor(modelItem => item.UserEmail)</td>
                         <td class="action-links">
                             <a asp-page="./Edit" asp-route-id="@item.ShelterId" class="btn-action btn-edit">
@@ -112,12 +112,17 @@
             background-color: #3572EF;
             color: white;
             text-align: center;
+            padding: 10px;
+            border: 1px solid #ddd;
         }
 
-        .table td, .table th {
+        .table td {
             padding: 10px;
             text-align: center;
             border: 1px solid #ddd;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
     .btn-action {
