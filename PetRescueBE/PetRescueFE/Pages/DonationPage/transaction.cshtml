@@ -20,6 +20,7 @@
             <thead>
                 <tr>
                    @* <th>ID</th>*@
+                    <th>#</th>
                     <th>Donation Date</th>
                     <th>Amount</th>
                     <th>Payment Method</th>
@@ -31,18 +32,21 @@
             <tbody class="transactionList">
                 @if (transactions.Count > 0)
                 {
+                    var index = 1;
 
                     foreach (var transaction in transactions)
                     {
                         var statusClass = transaction.Status == "Waiting...." ? "status-await-payment" :
                         transaction.Status ==  "Success" ? "status-payment-success" : "";
                         <tr>
+                            <td>@index</td>
                             <td>@transaction.DonationDate</td>
-                            <td>@transaction.Amount</td>                           
+                            <td>@transaction.Amount.ToString("#,0", cultureInfo) VND</td>
                             <td>@transaction.PaymentMethod</td>
                             <td>@transaction.Notes</td>
                             <td class ="@statusClass">@transaction.Status</td>
                         </tr>
+                        index++;
                     }
                 }
             </tbody>
@@ -162,6 +166,7 @@
 
         .header h1 {
             margin: 0;
+            color: #3572EF;
         }
 
     .header-buttons {
@@ -195,6 +200,8 @@
         width: 100%;
         border-collapse: collapse;
         margin-top: 20px;
+        background-color: #ffffff;
+        border-radius: 10px;
     }
 
     th, td {
@@ -204,7 +211,8 @@
     }
 
     th {
-        background-color: #f2f2f2;
+        color: white;
+        background-color: #3572EF;
     }
 
 </style>
