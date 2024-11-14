@@ -398,3 +398,5 @@ FodyWeavers.xsd
 *.sln.iml
 /PetRescueBE/PetRescueAPI/appsettings.json
 /PetRescueBE/PetRescueFE/appsettings.json
+/PetRescueBE/BusinessLayer/Service/Implement/AdoptionApplicationservice.cs
+/PetRescueBE/BusinessLayer/Service/Implement/IAdoptionApplicationservice.cs
