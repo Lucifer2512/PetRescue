@@ -7,6 +7,7 @@ using DataAccessLayer.Entity;
 using DataAccessLayer.UnitOfWork.Interface;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace BusinessLayer.Service.Implement
 {
@@ -248,6 +249,53 @@ namespace BusinessLayer.Service.Implement
                 Code = 200,
                 Message = "Users retrieved successfully",
                 Data = userResponseModels
+            };
+        }
+
+        public async Task<BaseResponseModel<PaginatedList<UserResponseModel>>> GetAllUsersPaginatedAsync(int index, int size)
+        {
+            var userRepository = _unitOfWork.Repository<User>();
+
+            var users = await userRepository.GetAll().Include(u => u.Role)
+                .Skip((index - 1) * size)
+                .Take(size)
+                .ToListAsync();
+
+            var count = await userRepository.GetAll().CountAsync();
+            var totalPages = (int)Math.Ceiling(count / (double)size);
+            var userResponseModels = _mapper.Map<IEnumerable<UserResponseModel>>(users);
+
+            if (users.Count() == 0)
+            {
+                return new BaseResponseModel<PaginatedList<UserResponseModel>>
+                {
+                    Code = 200,
+                    Message = "No Users in the list",
+                    Data = new PaginatedList<UserResponseModel>
+                    {
+                        Items = userResponseModels.ToList(),
+                        PageIndex = index,
+                        TotalPages = totalPages,
+                        TotalCount = count,
+                        HasPreviousPage = index > 1,
+                        HasNextPage = index < totalPages
+                    }
+                };
+            }
+
+            return new BaseResponseModel<PaginatedList<UserResponseModel>>
+            {
+                Code = 200,
+                Message = "Users retrieved successfully",
+                Data = new PaginatedList<UserResponseModel>
+                {
+                    Items = userResponseModels.ToList(),
+                    PageIndex = index,
+                    TotalPages = totalPages,
+                    TotalCount = count,
+                    HasPreviousPage = index > 1,
+                    HasNextPage = index < totalPages
+                }
             };
         }
 

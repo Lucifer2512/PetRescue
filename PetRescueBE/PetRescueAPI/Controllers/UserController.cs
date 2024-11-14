@@ -51,6 +51,13 @@ namespace PetRescueAPI.Controllers
             return StatusCode((int)response.Code, response);
         }
 
+        [HttpGet("paging")]
+        public async Task<IActionResult> GetAllUsersPaginated([FromQuery] int index, [FromQuery] int size)
+        {
+            var response = await _userService.GetAllUsersPaginatedAsync(index, size);
+            return StatusCode((int)response.Code, response);
+        }
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUser(Guid id)
         {
