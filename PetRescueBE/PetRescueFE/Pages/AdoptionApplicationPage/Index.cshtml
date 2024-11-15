@@ -1,7 +1,6 @@
 ﻿@page
 @model PetRescueFE.Pages.AdoptionApplicationPage.IndexModel
 
-
 <!DOCTYPE html>
 
 <html>
@@ -10,63 +9,69 @@
     <title>Index</title>
 </head>
 <body>
-<p>
-    <a asp-page="Create">Create New</a>
-</p>
-
     <select id="statusFilter" onchange="location.href = '?statusFilter=' + this.value;">
         <option value="all" selected="@(Model.StatusFilter == "all")">All</option>
         <option value="pending" selected="@(Model.StatusFilter == "pending")">Pending</option>
         <option value="approved" selected="@(Model.StatusFilter == "approved")">Approved</option>
         <option value="disapproved" selected="@(Model.StatusFilter == "disapproved")">Disapproved</option>
     </select>
-<table class="table">
-    <thead>
-        <tr>
+    <table class="table">
+        <thead>
+            <tr>
                 <th>
                     @Html.DisplayNameFor(model => model.AdoptionApplication[0].UserName)
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.AdoptionApplication[0].PetName)
                 </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AdoptionApplication[0].RequestDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AdoptionApplication[0].Status)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AdoptionApplication[0].Notes)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model.AdoptionApplication) {
-        <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.AdoptionApplication[0].RequestDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.AdoptionApplication[0].Status)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.AdoptionApplication[0].Notes)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody id="applicationTableBody">
+            @foreach (var item in Model.AdoptionApplication)
+            {
+                <tr data-status="@item.Status.ToLower()">
                     <td>
                         @Html.DisplayFor(modelItem => item.UserName)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.PetName)
                     </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RequestDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Status)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Notes)
-            </td>
-            <td>
-                <a asp-page="./Edit" asp-route-id="@item.ApplicationId">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.ApplicationId">Details</a>
-            </td> 
-        </tr>
-}
-    </tbody>
-</table>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.RequestDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Status)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Notes)
+                    </td>
+                    <td>
+                        <a asp-page="./Details" asp-route-id="@item.ApplicationId">Details</a>
+                        @* Check RoleId and display Edit button conditionally *@
+                        @{
+                            string roleId = HttpContext.Session.GetString("Role");
+                            if (roleId == "d290f1ee-6c54-4b01-90e6-d701748f0851" || roleId == "f3c8d4e5-6b7a-4c9d-8e2f-0a1b2c3d4e5f")
+                            {
+                                <span> | </span>
+
+                                <a asp-page="./Edit" asp-route-id="@item.ApplicationId">Edit</a>
+                            }
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
 </body>
 </html>
 

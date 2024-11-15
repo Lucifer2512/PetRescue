@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using PetRescueFE.Pages.Model;
+using System.IdentityModel.Tokens.Jwt;
 
 
 namespace PetRescueFE.Pages.AdoptionApplicationPage
@@ -14,22 +15,14 @@ namespace PetRescueFE.Pages.AdoptionApplicationPage
         {
             _apiService = apiService;
         }
-
-        public async Task<IActionResult> OnGet()
-        {
-            var userUrl = "https://localhost:7297/api/users";
-            var petUrl = "https://localhost:7297/api/pet";
-            var userResponse = await _apiService.GetAsync<BaseResponseModelFE<IEnumerable<UserResponseModelFE>>>(userUrl);
-            var petResponse = await _apiService.GetAsync<BaseResponseModelFE<IEnumerable<PetResponseModelFE>>>(petUrl);
-
-            ViewData["PetId"] = new SelectList(petResponse.Data, "PetId", "Name");
-            ViewData["UserId"] = new SelectList(userResponse.Data, "UserId", "Email");
-            return Page();
-        }
-
         [BindProperty]
         public AdoptionApplicationRequestModel AdoptionApplication { get; set; } = new AdoptionApplicationRequestModel();
-
+        public async Task<IActionResult> OnGet(Guid id)
+        {
+            AdoptionApplication.PetId = id;
+            
+            return Page();
+        }
 
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()

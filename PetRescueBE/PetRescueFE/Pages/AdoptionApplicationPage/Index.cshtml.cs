@@ -16,12 +16,16 @@ namespace PetRescueFE.Pages.AdoptionApplicationPage
         public IList<AdoptionApplicationResponseModel> AdoptionApplication { get; set; } = default!;
         public string StatusFilter { get; set; }
 
-        public async Task OnGetAsync(string statusFilter = "all")
+        public async Task<IActionResult> OnGetAsync(string statusFilter = "all")
         {
             StatusFilter = statusFilter;
             var apiUrl = "https://localhost:7297/api/adoptionapplication";
             var role = HttpContext.Session.GetString("Role");
             var userId = HttpContext.Session.GetString("UserId");
+            if(role == "" || userId == "")
+            {
+                return RedirectToPage("/Login");
+            }
             var response = new BaseResponseModelFE<IList<AdoptionApplicationResponseModel>>();
             switch (role)
             {
@@ -35,10 +39,12 @@ namespace PetRescueFE.Pages.AdoptionApplicationPage
                     response = await _apiService.GetAsync<BaseResponseModelFE<IList<AdoptionApplicationResponseModel>>>($"https://localhost:7297/api/adoptionapplication/user/{userId}?status={statusFilter}");
                     break;
             }
-            if (response.Data != null)
+            if (response.Data == null)
             {
-                AdoptionApplication = response.Data;
+                return RedirectToPage("/Login");
             }
+            AdoptionApplication = response.Data;
+            return Page();
         }
     }
 }

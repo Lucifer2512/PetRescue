@@ -190,6 +190,15 @@
                                     <a class="btn btn-info mx-1" href="@Url.Page("./Edit", new { id = item.PetId })"><i class="bi bi-pencil-square"></i> Edit</a>
                                     <a class="btn btn-danger mx-1" href="@Url.Page("./Delete", new { id = item.PetId })"><i class="bi bi-trash3"></i> Delete</a>
                                 }
+                                @{
+                                    string roleId = HttpContext.Session.GetString("Role");
+                                    if (roleId == "e7b8f3d2-4a2f-4c3b-8f4d-9c5d8a3e1b2c")
+                                    {
+                                        <a class="btn btn-danger mx-1" asp-page="/AdoptionApplicationPage/Create" asp-route-id="@item.PetId">
+                                            <i class="bi bi-trash3"></i> Adopt
+                                        </a>
+                                    }
+                                }
                             </div>
                         </div>
                     </div>
