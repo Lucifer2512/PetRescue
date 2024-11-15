@@ -30,18 +30,27 @@ public class EventService : IEventService
             .ThenInclude(donation => donation.User)*/
             .OrderBy(e => e.StartDateTime)
             .AsQueryable();
-
+        Guid? roleId = null;
         Guid? userIdRaw = null;
+        bool isAdmin = false;
         if (userId != null)
         {
             userIdRaw = Guid.Parse(userId);
+            roleId = _unitOfWork.Repository<User>().Find(userIdRaw!).RoleId;
+            isAdmin = roleId == Guid.Parse("D290F1EE-6C54-4B01-90E6-D701748F0851");
+        }
+        
+        if (userIdRaw != null && isAdmin) // for admin
+        {
+            query = query;
         }
 
-        if (userIdRaw != null)
+        if (userIdRaw != null && isAdmin == false) // for shelter owner
         {
             query = query.Where(e => e.Shelter.Users.UserId == userIdRaw);
         }
-        else
+        
+        if (userIdRaw == null || isAdmin == false) // for user and non login
         {
             query = query.Where(e => e.Status.ToLower() == Status.ACTIVE.ToString().ToLower());
         }
