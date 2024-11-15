@@ -52,6 +52,34 @@ namespace BusinessLayer.Service.Implement
             };
         }
 
+        public async Task<BaseResponseModel<AdoptionApplicationOnlyIdResponseModel>> GetDetailOnlyIdAsync(Guid id)
+        {
+            var applicationRepo = _unitOfWork.Repository<AdoptionApplication>();
+            var petRepo = _unitOfWork.Repository<Pet>();
+            var userRepo = _unitOfWork.Repository<User>();
+
+            var existedApplication = await applicationRepo.FindAsync(id);
+
+            var response = _mapper.Map<AdoptionApplicationOnlyIdResponseModel>(existedApplication);
+
+            if (existedApplication == null)
+            {
+                return new BaseResponseModel<AdoptionApplicationOnlyIdResponseModel>
+                {
+                    Code = 404,
+                    Message = "Application not exists",
+                    Data = null
+                };
+            }
+
+            return new BaseResponseModel<AdoptionApplicationOnlyIdResponseModel>
+            {
+                Code = 200,
+                Message = "Get Application Detail Success",
+                Data = response
+            };
+        }
+
         public async Task<BaseResponseModel<IEnumerable<AdoptionApplicationResponseModel>>> GetAllAsync(string status)
         {
             var repo = _unitOfWork.Repository<AdoptionApplication>();
