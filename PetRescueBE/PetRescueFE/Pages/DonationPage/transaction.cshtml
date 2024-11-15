@@ -30,7 +30,7 @@
                 </tr>
             </thead>
             <tbody class="transactionList">
-                @if (transactions.Count > 0)
+                @if (transactions != null)
                 {
                     var index = 1;
 
@@ -49,6 +49,10 @@
                         index++;
                     }
                 }
+                else
+                {
+                    <p>No transaction yet</p>
+                }
             </tbody>
         </table>
     </div>
@@ -56,46 +60,49 @@
 
 <nav aria-label="Page navigation">
     <ul class="pagination justify-content-center">
-        @if (Model.transaction.HasPreviousPage)
+        @if (Model.transaction != null)
         {
-            <li class="page-item">
-                <a class="page-link" asp-page-handler="Index" asp-route-pageIndex="@(Model.transaction.PageIndex - 1)">Previous</a>
-            </li>
-        }
-        else
-        {
-            <li class="page-item disabled">
-                <span class="page-link">Previous</span>
-            </li>
-        }
-
-        @for (var i = 1; i <= Model.transaction.TotalPages; i++)
-        {
-            if (i == Model.transaction.PageIndex)
+            @if (Model.transaction.HasPreviousPage)
             {
-                <li class="page-item active">
-                    <span class="page-link">@i</span>
+                <li class="page-item">
+                    <a class="page-link" asp-page-handler="Index" asp-route-pageIndex="@(Model.transaction.PageIndex - 1)">Previous</a>
                 </li>
             }
             else
             {
-                <li class="page-item">
-                    <a class="page-link" asp-page-handler="Index" asp-route-pageIndex="@i">@i</a>
+                <li class="page-item disabled">
+                    <span class="page-link">Previous</span>
                 </li>
             }
-        }
 
-        @if (Model.transaction.HasNextPage)
-        {
-            <li class="page-item">
-                <a class="page-link" asp-page-handler="Index" asp-route-pageIndex="@(Model.transaction.PageIndex + 1)">Next</a>
-            </li>
-        }
-        else
-        {
-            <li class="page-item disabled">
-                <span class="page-link">Next</span>
-            </li>
+            @for (var i = 1; i <= Model.transaction.TotalPages; i++)
+            {
+                if (i == Model.transaction.PageIndex)
+                {
+                    <li class="page-item active">
+                        <span class="page-link">@i</span>
+                    </li>
+                }
+                else
+                {
+                    <li class="page-item">
+                        <a class="page-link" asp-page-handler="Index" asp-route-pageIndex="@i">@i</a>
+                    </li>
+                }
+            }
+
+            @if (Model.transaction.HasNextPage)
+            {
+                <li class="page-item">
+                    <a class="page-link" asp-page-handler="Index" asp-route-pageIndex="@(Model.transaction.PageIndex + 1)">Next</a>
+                </li>
+            }
+            else
+            {
+                <li class="page-item disabled">
+                    <span class="page-link">Next</span>
+                </li>
+            }
         }
     </ul>
 </nav>
