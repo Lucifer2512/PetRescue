@@ -1,18 +1,25 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using DataAccessLayer.Entity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.SignalR;
+using Newtonsoft.Json;
 using PetRescueFE.Pages.Model;
 using PetRescueFE.Pages.Model.Shelters;
+using PetRescueFE.SignalRealtime;
 
 namespace PetRescueFE.Pages.PetPage
 {
     public class CreateModel : PageModel
     {
+       
         private readonly ApiService _apiService;
+        private readonly IHubContext<NotificationHub> _notificationHubContext;
 
-        public CreateModel(ApiService apiService)
+        public CreateModel(ApiService apiService, IHubContext<NotificationHub> notificationHubContext)
         {
             _apiService = apiService;
+            _notificationHubContext = notificationHubContext;
         }
 
         [BindProperty]
@@ -70,8 +77,22 @@ namespace PetRescueFE.Pages.PetPage
                 await LoadShelterAsync();
                 return Page();
             }
+            var message = $"A new pet '{Pet.Name}' vew a new pet?";
+            var petId = response.Data.PetId;
+            var detailUrl = $"https://localhost:7132/PetPage/Details?id={petId}";
+            await SendNotification(message, detailUrl);
+
 
             return RedirectToPage("./Index");
+        }
+        public async Task SendNotification(string label, string url)
+        {
+            var message = new
+            {
+                label = label,
+                url = url
+            };
+            await _notificationHubContext.Clients.All.SendAsync("ReceiveNotification", JsonConvert.SerializeObject(message));
         }
     }
 }

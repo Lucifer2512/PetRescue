@@ -274,16 +274,15 @@
             <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/5.0.9/signalr.min.js"></script>
             <script>
                 document.addEventListener("DOMContentLoaded", function () {
-                    // Lấy userId từ ViewData (nếu cần thiết)
-                    //const userId = '@ViewData["UserClientRequestId"]';
-                    const userId = '@Context.Session.GetString("UserId")'
+                    // Lấy userId từ Session (nếu cần thiết)
+                    const userId = '@Context.Session.GetString("UserId")';
                     console.log("UserId:", userId);
 
                     // Khởi tạo kết nối SignalR không cần truyền userId
                     const connection = new signalR.HubConnectionBuilder()
                         .withUrl(`/notificationHub?userId=${userId}`)  // Không cần truyền userId nữa
                         .build();
-                   
+
                     // Bắt đầu kết nối
                     connection.start()
                         .then(() => {
@@ -318,7 +317,7 @@
                         link.className = "notification-link";
                         link.target = "_blank"; // Mở liên kết trong tab mới
                         link.href = messageData.url;
-                        link.innerText = messageData.url;
+                        link.innerText = "View Details"; // User-friendly text for the link
 
                         const closeButton = document.createElement("button");
                         closeButton.className = "close-button";
@@ -344,9 +343,9 @@
                     }
                 });
             </script>
-
         </main>
     </div>
+
 
     <footer>
         &copy; 2024 - PetRescueFE - <a asp-page="/Privacy">Privacy</a>

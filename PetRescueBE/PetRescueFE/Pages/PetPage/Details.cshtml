@@ -35,7 +35,10 @@
     </div>
 
     <div class="text-center mt-4">
-        <a class="btn btn-primary" asp-page="./Edit" asp-route-id="@Model.Pet?.PetId">Edit</a>
+        @if (Model.IsAdmin)
+        {
+            <a class="btn btn-info" asp-page="./Edit" asp-route-id="@Model.Pet?.PetId">Edit</a>
+        }
         <a class="btn btn-secondary" asp-page="/PetPage/Index">Back to List</a>
     </div>
 </div>
