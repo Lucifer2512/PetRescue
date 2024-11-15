@@ -32,6 +32,7 @@ namespace BusinessLayer.Ultility
             CreateMap<Donation, DonationReponseModel>();
             CreateMap<AdoptionApplicationRequestModel, AdoptionApplication>();
             CreateMap<AdoptionApplicationRequestModelForUpdate, AdoptionApplication>();
+            CreateMap<AdoptionApplication, AdoptionApplicationOnlyIdResponseModel>();
             CreateMap<AdoptionApplication, AdoptionApplicationResponseModel>()
                 .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.User.FirstName))
                 .ForMember(dest => dest.PetName, opt => opt.MapFrom(src => src.Pet.Name));

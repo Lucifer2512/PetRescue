@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.SignalR;
+using Newtonsoft.Json;
 using PetRescueFE.Pages.Model;
+using PetRescueFE.SignalRealtime;
 using System.ComponentModel.DataAnnotations;
 
 namespace PetRescueFE.Pages.AdoptionApplicationPage
@@ -8,9 +11,11 @@ namespace PetRescueFE.Pages.AdoptionApplicationPage
     public class EditModel : PageModel
     {
         private readonly ApiService _apiService;
+        private readonly IHubContext<NotificationHub> _hubContext;
 
-        public EditModel(ApiService apiService)
+        public EditModel(ApiService apiService, IHubContext<NotificationHub> hubContext)
         {
+            _hubContext = hubContext;
             _apiService = apiService;
         }
 
@@ -69,8 +74,23 @@ namespace PetRescueFE.Pages.AdoptionApplicationPage
                 ModelState.AddModelError(string.Empty, "Failed to update shelter.");
                 return Page();
             }
-
+            if(AdoptionApplication.Status == "APPROVED")
+            {
+                var getDetailUrl = $"https://localhost:7297/api/adoptionapplication/onlyid/{AdoptionApplication.ApplicationId}";
+                var response = await _apiService.GetAsync<BaseResponseModelFE<AdoptionApplicationOnlyIdResponseModel>>(getDetailUrl);
+                await SendNotificationId($"{response.Data.UserId}", "Your application has been approved, check now!  ", "");
+            }
             return RedirectToPage("./Index");
+        }
+
+        public async Task SendNotificationId(string id, string label, string url)
+        {
+            var message = new
+            {
+                label = label,
+                url = url
+            };
+            await _hubContext.Clients.User(id).SendAsync("ReceiveNotification", JsonConvert.SerializeObject(message));
         }
     }
 }

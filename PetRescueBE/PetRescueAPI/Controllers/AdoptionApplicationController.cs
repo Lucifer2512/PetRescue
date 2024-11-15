@@ -22,6 +22,13 @@ namespace PetRescueAPI.Controllers
             return StatusCode((int)response.Code, response);
         }
 
+        [HttpGet("onlyid/{id}")]
+        public async Task<IActionResult> GetApplicationDetaiOnlyId(Guid id)
+        {
+            var response = await _adoptionApplicationService.GetDetailOnlyIdAsync(id);
+            return StatusCode((int)response.Code, response);
+        }
+
         [HttpGet]
         public async Task<IActionResult> GetAllApplications(string status)
         {

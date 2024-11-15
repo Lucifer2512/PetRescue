@@ -1,7 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.SignalR;
+using Newtonsoft.Json;
 using PetRescueFE.Pages.Model;
+using PetRescueFE.SignalRealtime;
 using System.IdentityModel.Tokens.Jwt;
 
 
