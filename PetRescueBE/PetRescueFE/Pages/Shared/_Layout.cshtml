@@ -205,11 +205,37 @@
         </div>
         <nav>
             <ul>
-                <li><a asp-page="/shelterpage/Index" asp-route-accId="@Context.Session.GetString("UserId")"><i class="fa-solid fa-user-tie"></i> Shelter</a></li>
-                <li><a asp-page="/userpage/Index" asp-route-accId="@Context.Session.GetString("UserId")"><i class="fa-solid fa-user"></i> User</a></li>
-                <li><a asp-page="/Events/Index"><i class="fa-solid fa-credit-card"></i> Events</a></li>
-                <li><a asp-page="/AdoptionApplicationPage/Index" asp-route-accId="@Context.Session.GetString("UserId")"><i class="fa-solid fa-user"></i> Application</a></li>
-                <li><a asp-page="/petpage/Index"><i class="fa-solid fa-hippo"></i> Pet</a></li>
+                @if (Context.Session.GetString("Role") == null)@* GUESS *@
+                {
+                    <li><a asp-page="/petpage/Index"><i class="fa-solid fa-hippo"></i> Pet</a></li>
+                    <li><a asp-page="/Events/Index"><i class="fa-regular fa-calendar"></i>Events</a></li>
+                    <li><a asp-page="/AdoptionApplicationPage/Index" asp-route-accId="@Context.Session.GetString("UserId")"><i class="fa-solid fa-file-invoice"></i> Application</a></li>
+                    <li><a asp-page="/donationpage/transaction" asp-route-Id="@Context.Session.GetString("UserId")"><i class="fa-solid fa-hand-holding-dollar"></i> Donation</a></li>
+                }
+
+                @if (Context.Session.GetString("Role") == "e7b8f3d2-4a2f-4c3b-8f4d-9c5d8a3e1b2c")@* USER *@
+                {
+                    <li><a asp-page="/petpage/Index"><i class="fa-solid fa-hippo"></i> Pet</a></li>
+                    <li><a asp-page="/Events/Index"><i class="fa-regular fa-calendar"></i>Events</a></li>
+                    <li><a asp-page="/AdoptionApplicationPage/Index" asp-route-accId="@Context.Session.GetString("UserId")"><i class="fa-solid fa-file-invoice"></i> Application</a></li>
+                    <li><a asp-page="/donationpage/transaction" asp-route-Id="@Context.Session.GetString("UserId")"><i class="fa-solid fa-hand-holding-dollar"></i> Donation</a></li>
+                }
+
+                @if (Context.Session.GetString("Role") == "f3c8d4e5-6b7a-4c9d-8e2f-0a1b2c3d4e5f")@* ShelterOwner *@
+                {
+                    <li><a asp-page="/shelterpage/Index" asp-route-accId="@Context.Session.GetString("UserId")"><i class="fa-solid fa-house"></i> Shelter</a></li>
+                    <li><a asp-page="/petpage/Index"><i class="fa-solid fa-hippo"></i> Pet</a></li>
+                    <li><a asp-page="/Events/Index"><i class="fa-regular fa-calendar"></i>Events</a></li>
+                    <li><a asp-page="/AdoptionApplicationPage/Index" asp-route-accId="@Context.Session.GetString("UserId")"><i class="fa-solid fa-file-invoice"></i> Application</a></li>
+                }
+
+                @if (Context.Session.GetString("Role") == "d290f1ee-6c54-4b01-90e6-d701748f0851")@* Administrator *@
+                {
+                    <li><a asp-page="/Dashboard"> <i class="fa-solid fa-chart-line"></i> Dashboard</a></li>
+                    <li><a asp-page="/shelterpage/Index" asp-route-accId="@Context.Session.GetString("UserId")"><i class="fa-solid fa-house"></i> Shelter</a></li>
+                    <li><a asp-page="/userpage/Index" asp-route-accId="@Context.Session.GetString("UserId")"><i class="fa-solid fa-user"></i> User</a></li>
+                }
+
             </ul>
         </nav>
        <div class="user-section">
@@ -229,8 +255,7 @@
                         }
                 </div>
                 <ul class="dropdown-menu dropdown-menu-bottom-center" aria-labelledby="userDropdown">
-                    <li><a asp-page="/userpage/Details" asp-route-Id="@Context.Session.GetString("UserId")"><i class="fa-solid fa-user"></i> Profile</a></li>
-                        <li><a asp-page="/donationpage/transaction" asp-route-Id="@Context.Session.GetString("UserId")"><i class="fa-solid fa-hand-holding-dollar"></i> Donation History</a></li>
+                        <li><a asp-page="/userpage/Details" asp-route-Id="@Context.Session.GetString("UserId")"><i class="fa-regular fa-address-card"></i> Profile</a></li>
                     <li><a asp-page="/Logout"><i class="fa-solid fa-right-from-bracket"></i> Logout</a></li>
                 </ul>
             </div>

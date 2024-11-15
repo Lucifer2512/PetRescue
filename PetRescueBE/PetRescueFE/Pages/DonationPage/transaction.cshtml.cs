@@ -48,6 +48,12 @@ namespace PetRescueFE.Pages.DonationPage
                 return Page();
             }
             var UserId = HttpContext.Session.GetString("UserId");
+
+            if (UserId == null)
+            {
+                return RedirectToPage("/Login");
+            }
+
             var reponse = await _apiService.GetAsync<BaseResponseModelFE<List<DonationReponseModel>>>($"donation/getdonationbyuserid/{UserId}"); //"`endpoint-url` cho
 
 
